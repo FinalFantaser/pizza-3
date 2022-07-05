@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Requests\Api\Home\Address;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'address' => 'required|string',
+            'length' => 'nullable|string',
+        ];
+    }
+}
