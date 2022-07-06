@@ -9,7 +9,6 @@ class DeliveryMethodRepository
     public function create(
         string $name, int $cost, $freeFrom,
         int $minWeight, int $maxWeight,
-        int $sort
     ): DeliveryMethod
     {
         $method = DeliveryMethod::create([
@@ -27,7 +26,6 @@ class DeliveryMethodRepository
         DeliveryMethod $deliveryMethod,
         string $name, int $cost, $freeFrom,
         int $minWeight, int $maxWeight,
-        int $sort
     ): void
     {
         $deliveryMethod->update([
@@ -36,7 +34,6 @@ class DeliveryMethodRepository
             'free_from' => $freeFrom,
             'min_weight' => $minWeight,
             'max_weight' => $maxWeight,
-            'sort' => $sort
         ]);
     }
 

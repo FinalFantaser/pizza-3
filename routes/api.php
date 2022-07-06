@@ -50,6 +50,16 @@ Route::prefix('v1')->namespace('App\Http\Controllers')->group(function () {
                     Route::apiResource('products', 'ProductController');
                     Route::post('products.city.attach', 'ProductController@attachToCity');
                     Route::post('products.city.detach', 'ProductController@detachFromCity');
+
+                    //  Методы доставки
+                    Route::apiResource('delivery-methods', 'DeliveryMethodController');
+
+                    //  Управление заказами
+                    Route::apiResource('orders', 'OrderController')->only(['index', 'show', 'destroy']);
+                    Route::post('orders.cancel/{order}', 'OrderController@cancel')->name('order.cancel');
+                    Route::post('orders.pay/{order}', 'OrderController@pay')->name('order.pay');
+                    Route::post('orders.send/{order}', 'OrderController@send')->name('order.send');
+                    Route::post('orders.complete/{order}', 'OrderController@complete')->name('order.complete');
                 });
             });
         });

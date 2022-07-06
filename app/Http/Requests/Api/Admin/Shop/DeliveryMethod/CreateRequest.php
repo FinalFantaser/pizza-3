@@ -19,7 +19,6 @@ class CreateRequest extends FormRequest
             'free_from' => 'nullable|integer|min:0',
             'min_weight' => 'required|integer|min:0',
             'max_weight' => 'required|integer',
-            'sort' => 'required|integer'
         ];
     }
 }

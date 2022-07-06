@@ -20,7 +20,6 @@ class DeliveryMethodResource extends JsonResource
             'free_from' => $this->free_from,
             'min_weight' => $this->min_weight,
             'max_weight' => $this->max_weight,
-            'sort' => $this->sort,
         ];
     }
 }
