@@ -140,9 +140,9 @@ class DatabaseSeeder extends Seeder
 
         $city_balabanovka->products()->attach($product);
 
-        // API tokens
-        User::where('api_token', null)->get()->each->update([
-            'api_token' => Token::generate()
-        ]);
+//        // API tokens
+//        User::where('api_token', null)->get()->each->update([
+//            'api_token' => Token::generate()
+//        ]);
     }
 }
