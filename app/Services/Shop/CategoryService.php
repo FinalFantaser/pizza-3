@@ -22,11 +22,13 @@ class CategoryService{
     } //Конструктор
 
     public function create(Request $request){        
-        $this->repository->create($request->name, $request->seo_title, $request->seo_description, $request->seo_keywords);
+        return
+            $this->repository->create($request->name, $request->seo_title, $request->seo_description, $request->seo_keywords);
     } //create
 
     public function update(Request $request, Category $category){
-        $this->repository->update($category, $request->name, $request->seo_title, $request->seo_description, $request->seo_keywords);
+        return
+            $this->repository->update($category, $request->name, $request->seo_title, $request->seo_description, $request->seo_keywords);
     } //update
 
     public function remove(Category $category){

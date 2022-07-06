@@ -12,7 +12,7 @@
 
     class ProductRepository{
         
-        public function create($name, $price, $priceSale, $description, $advice, $tags, $properties, $seo_title, $seo_description, $seo_keywords): Product{
+        public function create($name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords): Product{
             return Product::create([
                     'name' => $name,
                     'status' => Product::STATUS_DRAFT,
@@ -25,7 +25,7 @@
             ]);
         } //create
 
-        public function update(Product $product, $name, $price, $priceSale, $description, $advice, $tags, $properties, $seo_title, $seo_description, $seo_keywords){
+        public function update(Product $product, $name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords){
             $product->update([
                 'name' => $name,
                 'price' => $price,
@@ -68,11 +68,6 @@
             DB::table('product_city')->where(['product_id' => $product->id])->delete();
         } //clearAllCities
 
-        public function updateRecommended(Request $request, Product $product)
-        {
-            $product->updateRecommended($request->recommended);
-        } //updateRecommended
-
         public function activate(Product $product): void
         {
             $product->activate();
@@ -82,16 +77,6 @@
         {
             $product->draft();
         } //draft
-
-        public function makeAvailable(Product $product): void
-        {
-            $product->makeAvailable();
-        } //makeAvailable
-
-        public function makeUnavailable(Product $product): void
-        {
-            $product->makeUnavailable();
-        } //makeUnavailable
 
         public function reduceQuantity(Product $product): void
         {

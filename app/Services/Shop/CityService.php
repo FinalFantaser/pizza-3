@@ -20,11 +20,11 @@ class CityService{
     } //Конструктор
 
     public function create(CreateRequest $request){        
-        $this->repository->create($request->name);
+        return $this->repository->create($request->name);
     } //create
 
     public function update(UpdateRequest $request, City $city){
-        $this->repository->update($city, $request->name);
+        return $this->repository->update($city, $request->name);
     } //update
 
     public function remove(City $city){

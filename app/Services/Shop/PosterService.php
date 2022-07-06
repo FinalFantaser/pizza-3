@@ -18,11 +18,13 @@ class PosterService{
     } //Конструктор
 
     public function create(CreateRequest $request){
-        $this->repository->create($request->name, $request->description, $request->enabled);
+        return
+            $this->repository->create($request->name, $request->description, $request->enabled);
     } //create
 
     public function update(UpdateRequest $request, Poster $poster){
-        $this->repository->update($poster, $request->name, $request->description, $request->enabled);
+        return
+            $this->repository->update($poster, $request->name, $request->description, $request->enabled);
     } //update
 
     public function remove(Poster $poster){

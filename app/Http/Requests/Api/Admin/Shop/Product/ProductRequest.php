@@ -26,19 +26,18 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required',
             'slug' => 'unique:products,slug,' . (optional($this->products)->id ?: 'NULL'),
-            'category_id' => 'required|not_in:0',
             'price' => 'required|numeric',
             'price_sale' => 'nullable|numeric',
             'description' => 'nullable|string',
             'productImage.*' => 'required|mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
+            'tags' => 'nullable',
             'properties.*' => 'required|integer',
             'properties.weight' => 'required_without:properties.pieces|integer|nullable',
             'properties.pieces' => 'required_without:properties.weight|integer|nullable',
-            'properties.temperature_storage' => 'required|string',
             'properties.structure' => 'required|string',
             'seo_title' => 'nullable|string',
             'seo_description' => 'nullable|string',
-            'seo_keywords' => 'nullable|string'
+            'seo_keywords' => 'nullable|string',
         ];
     }
 }

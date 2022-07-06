@@ -19,11 +19,13 @@ class UserService{
     } //Конструктор
 
     public function create(UsersRequest $request){
-        $this->repository->create($request->name, $request->email, $request->password);
+        return
+            $this->repository->create($request->name, $request->email, $request->password);
     } //create
 
     public function update(UsersRequest $request, User $user){
-        $this->repository->update($user, $request->name, $request->email);
+        return
+            $this->repository->update($user, $request->name, $request->email);
     } //create
 
     public function remove(User $user){
