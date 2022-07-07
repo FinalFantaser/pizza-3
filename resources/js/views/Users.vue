@@ -249,6 +249,8 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "users",
   components: {
@@ -259,5 +261,8 @@ export default {
       },
     };
   },
+    created() {
+      axios.get('api/test')
+    }
 };
 </script>
