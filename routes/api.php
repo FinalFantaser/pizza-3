@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(function () {
     Route::namespace('Api\V1')->group(function(){
-        Route::middleware(['auth:api', 'verified'])->group(function () {
+        //Route::middleware(['auth:api', 'verified'])->group(function () {
 
             //Для администраторов
             Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
@@ -86,6 +86,6 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                 });
             });
-        });
+       // });
     });
 });
