@@ -7,6 +7,7 @@ import "./assets/css/nucleo-svg.css";
 import "./assets/scss/argon-dashboard.scss";
 import ArgonDashboard from "./argon-dashboard";
 
+
 const appInstance = createApp(App);
 appInstance.use(store);
 appInstance.use(router);
