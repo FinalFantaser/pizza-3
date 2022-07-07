@@ -82,4 +82,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(City::class, 'managers', 'user_id', 'city_id');
     }
+
+    public function getCityAttribute() //Геттер для упрощённого доступа к городу, на который назначен пользователь
+    {
+        return $this->cities->first();
+    }
 }

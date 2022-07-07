@@ -15,10 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->namespace('App\Http\Controllers')->group(function () {
+Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(function () {
     Route::namespace('Api\V1')->group(function(){
         Route::middleware(['auth:api', 'verified'])->group(function () {
-            Route::prefix('admin')->namespace('Admin')->group(function(){
+            
+            //Для администраторов
+            Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
                 //  Пользователи
                 Route::apiResource('users', 'UserController');
     
@@ -63,6 +65,25 @@ Route::prefix('v1')->namespace('App\Http\Controllers')->group(function () {
                     Route::post('orders.pay/{order}', 'OrderController@pay')->name('order.pay');
                     Route::post('orders.send/{order}', 'OrderController@send')->name('order.send');
                     Route::post('orders.complete/{order}', 'OrderController@complete')->name('order.complete');
+                });
+            });
+
+            //Для менеджеров
+            Route::prefix('manager')->name('manager.')->namespace('Manager')->middleware(['auth:api', 'verified', 'manager'])->group(function(){
+                Route::namespace('Shop')->group(function(){
+                    
+                    //  Управление заказами
+                    Route::name('orders.')->group(function(){
+                        Route::get('orders', 'OrderController@index')->name('index');
+                        Route::get('orders/{order}', 'OrderController@show')->name('show');
+
+                        Route::post('orders.cancel/{order}', 'OrderController@cancel')->name('order.cancel');
+                        Route::post('orders.pay/{order}', 'OrderController@pay')->name('order.pay');
+                        Route::post('orders.send/{order}', 'OrderController@send')->name('order.send');
+                        Route::post('orders.complete/{order}', 'OrderController@complete')->name('order.complete');
+                    });
+                    
+        
                 });
             });
         });

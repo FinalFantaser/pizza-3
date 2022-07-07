@@ -20,6 +20,9 @@ class OrderReadRepository
     }
 
     public function findByCity(City $city){
-
+        $orders = Order::join('order_customer_data', 'orders.id', '=', 'order_customer_data.id')
+                    ->join('cities', 'order_customer_data.city_id', '=', 'cities.id')
+                    ->get();
+        return $orders;
     } //findByCity
 }

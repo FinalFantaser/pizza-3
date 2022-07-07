@@ -19,8 +19,14 @@ class CheckIfUserIsManager
      */
     public function handle(Request $request, Closure $next)
     {
+        $user = Auth::guard('api')->user();
+        
+        //Если пользователь является администратором, перенаправить его на страницу заказов в админке
+        if($user->isAdmin())
+            return redirect()->route('api.admin.orders.index');
+
         return 
-            Auth::guard('api')->user()->isManager()
+            $user->isManager()
             ? $next($request)
             : response()->json(['message' => 'У вас нет полномочий на просмотр данных']);
     }

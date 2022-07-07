@@ -48,7 +48,7 @@ class Order extends Model
             throw new DomainException('Order is already paid.');
         }
 
-        $this->payment_method = $method;
+        // $this->payment_method = $method; //Возможно, это поле не понадобится
         $this->addStatus('paid');
     }
 

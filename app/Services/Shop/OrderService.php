@@ -3,6 +3,7 @@ namespace App\Services\Shop;
 
 use App\Models\Shop\Order\Order;
 use App\Http\Requests\Api\Admin\Shop\Order\CancelRequest;
+use App\Models\Shop\City;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\OrderReadRepository;
 
@@ -64,5 +65,7 @@ class OrderService{
         return $this->readRepository->getMethods();    
     } //getMethods
 
-    
+    public function findByCity(City $city){
+        return $this->readRepository->findByCity($city);
+    } //findByCity
 }
