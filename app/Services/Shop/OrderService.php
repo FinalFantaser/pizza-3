@@ -61,6 +61,8 @@ class OrderService{
     //Методы для запросов В БД
     //
     public function getMethods(){
-        return $this->readRepository->getMEthods();    
+        return $this->readRepository->getMethods();    
     } //getMethods
+
+    
 }

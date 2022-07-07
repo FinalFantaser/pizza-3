@@ -2,6 +2,8 @@
 
 namespace App\Services\Shop;
 
+use App\Http\Requests\Api\Admin\Shop\Poster\AttachToCityRequest;
+use App\Models\Shop\City;
 use App\Models\Shop\Poster;
 use App\Repository\Shop\PosterRepository;
 use App\ReadRepository\Shop\PosterReadRepository;
@@ -38,6 +40,20 @@ class PosterService{
     public function disable(Poster $poster){
         $this->repository->disable($poster);
     } //poster
+
+    public function attachToCity(AttachToCityRequest $request){
+        $this->repository->attachToCity(
+            Poster::findOrFail($request->city_id),
+            City::findOrFail($request->city_id)
+        );
+    } //attachToCity
+
+    public function detachFromCity(AttachToCityRequest $request){
+        $this->repository->detachFromCity(
+            Poster::findOrFail($request->city_id),
+            City::findOrFail($request->city_id)
+        );
+    } //detachFromCity
 
     public function getMethods(){
         return $this->readRepository->getMethods();

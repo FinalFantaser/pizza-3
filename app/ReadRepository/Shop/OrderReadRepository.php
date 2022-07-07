@@ -18,4 +18,8 @@ class OrderReadRepository
         $order = Order::findOrFail($id);
         return $order;
     }
+
+    public function findByCity(City $city){
+
+    } //findByCity
 }

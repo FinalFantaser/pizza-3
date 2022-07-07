@@ -39,6 +39,9 @@ Route::prefix('v1')->namespace('App\Http\Controllers')->group(function () {
                     Route::apiResource('posters', 'PosterController');
                     Route::post('posters.enable/{poster}', 'PosterController@enable')->name('posters.enable');
                     Route::post('posters.disable/{poster}', 'PosterController@disable')->name('posters.disable');
+                    Route::post('posters.attach', 'PosterController@attachToCity')->name('posters.attach');
+                    Route::post('posters.detach', 'PosterController@detachFromCity')->name('posters.detach');
+
     
                     //  Города
                     Route::apiResource('cities', 'CityController')->only(['index', 'store', 'update', 'destroy']);

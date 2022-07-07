@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Shop\City;
 
@@ -59,6 +60,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasRole(Role::ROLE_ADMIN);
     }
 
+    public function isManager(): bool
+    {
+        return DB::table('managers')->where(['user_id' => $this->id])->exists();
+    } //isManager
+
+    public function isManagerForCity(City $city): bool
+    {
+        return DB::table('managers')->where(['user_id' => $this->id, 'city_id' => $city->id])->exists();
+    } //isManagerForCity
+
     /**
      * Return the user's roles
      */
@@ -67,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
 
-    public function cities()
+    public function cities() //Города, на которые пользователь назначен менеджером
     {
         return $this->belongsToMany(City::class, 'managers', 'user_id', 'city_id');
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin\Shop;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\Api\Admin\Shop\Poster\AttachToCityRequest;
 use App\Models\Shop\Poster;
 use App\Http\Resources\PosterResource;
 use App\Http\Requests\Api\Admin\Shop\Poster\CreateRequest;
@@ -24,7 +24,7 @@ class PosterController extends Controller
     //
     public function index(){
         return PosterResource::collection(
-            $this->service->getMethods()->paginate(20)
+            $this->service->getMethods()->with('cities')->paginate(20)
         );
     } //index
 
@@ -59,4 +59,14 @@ class PosterController extends Controller
         $this->service->disable($poster);
         return response()->json(['message' => 'Постер скрыт от посетителей']);
     } //enable
+
+    public function attachToCity(AttachToCityRequest $request){
+        $this->service->attachToCity($request);
+        return response()->json(['message' => 'Постер прикреплён к городу']);
+    } //attachToCity
+
+    public function detachFromCity(AttachToCityRequest $request){
+        $this->service->detachFromCity($request);
+        return response()->json(['message' => 'Постер откреплён от города']);
+    } //detachFromCity
 }
