@@ -102,6 +102,9 @@ export default {
                   .then( r => {
                       console.log(r)
                   })
+                  .catch( err => {
+                      console.log(err.response)
+                  })
 
           });
       }
