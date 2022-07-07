@@ -15,14 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('cities', (\App\Http\Controllers\Api\V1\Admin\Shop\CityController::class))->only(['index', 'store', 'update', 'destroy']);
-Route::middleware(['auth:sanctum'])->get('test', function (){
-    return 123;
-});
 
 Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(function () {
     Route::namespace('Api\V1')->group(function(){
-        //Route::middleware(['auth:api', 'verified'])->group(function () {
+        Route::middleware(['auth:sanctum'])->group(function () {
 
 
             //Для администраторов
@@ -76,7 +72,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
             });
 
             //Для менеджеров
-            Route::prefix('manager')->name('manager.')->namespace('Manager')->middleware(['auth:api', 'verified', 'manager'])->group(function(){
+            Route::prefix('manager')->name('manager.')->namespace('Manager')->middleware(['manager'])->group(function(){
                 Route::namespace('Shop')->group(function(){
 
                     //  Управление заказами
@@ -93,6 +89,6 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                 });
             });
-       // });
+        });
     });
 });

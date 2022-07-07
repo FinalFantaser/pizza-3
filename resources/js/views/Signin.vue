@@ -99,11 +99,12 @@ export default {
           axios.get('/sanctum/csrf-cookie').then(response => {
 
               axios.post('/login', {email: this.email,password: this.password})
-                  .then( r => {
-                      console.log(r)
+                  .then( res => {
+                      localStorage.setItem('x_xsrf_token' , res.config.headers['X-XSRF-TOKEN'])
+                      this.$router.push({name: "Dashboard"})
                   })
                   .catch( err => {
-                      console.log(err.response)
+                      if (err.response) console.log(err.response)
                   })
 
           });
