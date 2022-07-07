@@ -38,16 +38,12 @@ Coded by www.creative-tim.com
     />
     <router-view />
     <app-footer v-show="this.$store.state.showFooter" />
-    <!-- <configurator
-      :toggle="toggleConfigurator"
-      :class="[
-        this.$store.state.showConfig ? 'show' : '',
-        this.$store.state.hideConfigButton ? 'd-none' : ''
-      ]"
-    /> -->
   </main>
+
+    <loader v-if="this.$store.state.loader"></loader>
 </template>
 <script>
+import Loader from "./examples/Loader.vue"
 import Sidenav from "./examples/Sidenav/index.vue";
 // import Configurator from "@/examples/Configurator.vue";
 import Navbar from "@/examples/Navbars/Navbar.vue";
@@ -58,14 +54,17 @@ export default {
   name: "App",
   components: {
     Sidenav,
-    // Configurator,
     Navbar,
-    AppFooter
+    AppFooter,
+    Loader
   },
   methods: {
     ...mapMutations(["toggleConfigurator", "navbarMinimize"])
   },
   computed: {
+      loader() {
+        return this.$store.state.loader
+      },
     navClasses() {
       return {
         "position-sticky bg-white left-auto top-2 z-index-sticky":
