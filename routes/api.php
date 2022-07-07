@@ -14,7 +14,16 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware(['auth:sanctum', 'can:admin-panel'])->group(function () {
 
+    Route::get('test', function (){
+
+        //if( \Illuminate\Support\Facades\Gate::authorize('admin-panel'))
+          //  return \Illuminate\Support\Facades\Gate::authorize('admin-panel');
+        return 123;
+    });
+
+});
 
 Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(function () {
     Route::namespace('Api\V1')->group(function(){

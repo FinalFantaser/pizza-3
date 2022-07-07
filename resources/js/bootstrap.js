@@ -23,6 +23,11 @@ window.axios.interceptors.response.use({},err => {
         }
         router.push({ name: 'Signin'})
     }
+
+    if ( err.response.status === 403){
+        console.log(err.response)
+        //router.push({ name: 'Forbidden'})
+    }
 })
 
 /**

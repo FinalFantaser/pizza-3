@@ -263,6 +263,7 @@ export default {
   },
     created() {
       axios.get('api/test')
+        .then( res => console.log(res))
     }
 };
 </script>
