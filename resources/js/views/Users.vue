@@ -264,6 +264,11 @@ export default {
     created() {
       axios.get('api/test')
         .then( res => console.log(res))
+
+        // axios.get('api/v1/admin/cities')
+        //     .then( res => console.log(res))
+
+
     }
 };
 </script>
