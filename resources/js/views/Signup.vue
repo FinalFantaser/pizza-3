@@ -135,6 +135,7 @@ import AppFooter from "@/examples/PageLayout/Footer.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
+import axios from "axios";
 const body = document.getElementsByTagName("body")[0];
 
 export default {
@@ -152,6 +153,8 @@ export default {
     this.$store.state.showSidenav = false;
     this.$store.state.showFooter = false;
     body.classList.remove("bg-gray-100");
+
+    axios.get('/api/cities').then( r => console.log(r))
   },
   beforeUnmount() {
     this.$store.state.hideConfigButton = false;
