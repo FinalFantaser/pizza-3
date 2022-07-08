@@ -2,6 +2,7 @@
     namespace App\Services\Shop;
 
     use App\Models\Shop\City;
+    use App\Models\Shop\Category;
     use App\Models\Shop\Product;
     use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
@@ -75,4 +76,8 @@
         public function findByCity(City $city){
             return $this->readRepository->findByCity($city);
         } //findByCity
+
+        public function findByCityAndCategory(City $city, Category $category){
+            return $this->readRepository->findByCityAndCategory($city, $category);
+        } //findByCityAndCategory
     }
