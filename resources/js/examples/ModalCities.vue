@@ -7,7 +7,11 @@
                     <h5 class="modal-title" id="exampleModalLabel">
                         {{ editCity ? 'Измените город' : 'Добавьте город' }}
                     </h5>
-                    <div data-bs-dismiss="modal" aria-label="Close" class="cursor-pointer icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                    <div
+                        data-bs-dismiss="modal" aria-label="Close"
+                        class="cursor-pointer icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center"
+                        ref="close"
+                    >
                         <i class="fa fa-times text-secondary text-lg opacity-10" aria-hidden="true"></i>
                     </div>
                 </div>
@@ -15,7 +19,7 @@
                     <input
                         type="text"
                         v-model="city"
-                        class="m-0"
+                        class="form-control m-0"
                         placeholder="Введите город"
                     >
                 </div>
@@ -30,12 +34,10 @@
 </template>
 
 <script>
-import ArgonInput from ".././components/ArgonInput.vue";
 
 export default {
     name: "ModalCities",
     components: {
-        ArgonInput
     },
     data() {
         return {
@@ -44,17 +46,24 @@ export default {
     },
     methods: {
         changeOrAddCity(event) {
-            const city = this.city
             event.preventDefault()
-            axios.post(`'api/v1/admin/cities/${this.stateCity.slug}'`, {
-                name: city
+            this.$refs.close.click()
+            this.$store.state.loader = true
+            axios[this.editCity ? 'put' : 'post'](`api/v1/admin/cities/${this.editCity ? this.stateCity.id : ''}`, {
+                name: this.city
             })
-                .then(function (response) {
-                console.log(response);
+                .then((response) => {
+                    this.$store.state.loader = false
+                    this.$store.dispatch('getCities')
+                    console.log(response);
                 })
-                .catch(function (error) {
+                .catch((error) => {
+                    this.$store.state.loader = false
                     console.log(error);
-                });
+                })
+                .then(() => {
+                    this.city = '';
+                })
         }
     },
     computed: {
@@ -74,4 +83,7 @@ export default {
 </script>
 
 <style scoped>
+.dark-version .modal-content {
+    background: #111C44;
+}
 </style>

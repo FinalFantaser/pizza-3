@@ -40,7 +40,7 @@ Coded by www.creative-tim.com
     <app-footer v-show="this.$store.state.showFooter" />
   </main>
     <modal-cities></modal-cities>
-    <loader v-if="this.$store.state.loader"></loader>
+    <loader v-if="this.stateLoader"></loader>
 </template>
 <script>
 import ModalCities from './examples/ModalCities.vue'
@@ -64,7 +64,7 @@ export default {
     ...mapMutations(["toggleConfigurator", "navbarMinimize"])
   },
   computed: {
-      loader() {
+      stateLoader() {
         return this.$store.state.loader
       },
     navClasses() {

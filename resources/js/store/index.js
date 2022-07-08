@@ -1,9 +1,9 @@
 import { createStore } from "vuex";
-import cities from "./cities/index.js";
+import citiesModule from "./cities/index.js";
 
 export default createStore({
     modules: {
-        cities
+        citiesModule
     },
   state: {
     hideConfigButton: false,

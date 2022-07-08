@@ -22,7 +22,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="city in cities">
+                                <tr v-for="city in stateCities">
                                     <td>
                                         <p class="m-0 p-2 py-1 text-xl">{{ city.name }}</p>
                                     </td>
@@ -35,7 +35,10 @@
                                             >
                                                 <i class="fa fa-pencil text-secondary text-sm opacity-10" aria-hidden="true"></i>
                                             </div>
-                                            <div class="cursor-pointer icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                                            <div
+                                                class="cursor-pointer icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center"
+                                                @click="deleteCity(city.id)"
+                                            >
                                                 <i class="fa fa-times text-secondary text-sm opacity-10" aria-hidden="true"></i>
                                             </div>
                                         </div>
@@ -57,27 +60,37 @@ export default {
     name: "Cities",
     data() {
         return {
-            cities: null
+        }
+    },
+    computed: {
+        getCities() {
+            this.$store.dispatch('getCities')
+        },
+        stateCities() {
+            return this.$store.state.citiesModule.cities
         }
     },
     methods: {
+        deleteCity(id) {
+            this.$store.state.loader = true
+            axios.delete(`api/v1/admin/cities/${id}`)
+                .then( (response) => {
+                    this.$store.state.loader = false
+                    this.$store.dispatch('getCities')
+                })
+                .catch(function (error) {
+                    this.$store.state.loader = false
+                    console.log(error);
+                })
+        },
         editCity(city) {
             this.$store.state.editCity = true
             this.$store.state.city = city
         }
 
     },
-    created() {
-        axios.get('api/v1/admin/cities')
-            .then(data => {
-                this.cities = data.data.data
-                console.log(data.data.data)
-            })
-            .catch( (error) => {
-                console.log(error);
-            })
-    },
-    components: {
+    async created() {
+        await this.getCities
     }
 }
 </script>
