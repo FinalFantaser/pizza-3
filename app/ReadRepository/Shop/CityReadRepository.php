@@ -9,6 +9,10 @@
             return $methods;
         } //getMethods
 
+        public function findAll(){ //Найти ВСЕ записи БЕЗ пагинации
+            return City::orderBy('name')->get();
+        } //findAll
+
         public function findById($id){
             return City::findOrFail($id);
         } //findById

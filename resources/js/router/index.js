@@ -9,11 +9,12 @@ import Cities from "../views/Cities.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
+import Logout from "../views/Logout.vue";
 
 const routes = [
   {
     path: "/",
-    name: "Mafia Pizza",
+    name: "Dashboard",
     component: Dashboard,
   },
   {
@@ -71,6 +72,11 @@ const routes = [
     name: "Signup",
     component: Signup,
   },
+  {
+    path: "/logout",
+    name: "Logout",
+    component: Logout,
+  },
 
 ];
 
@@ -79,5 +85,18 @@ const router = createRouter({
   routes,
   linkActiveClass: "active",
 });
+
+router.beforeEach((to,from,next) => {
+    const token = localStorage.getItem('x_xsrf_token')
+    if(!token){
+        if (to.name === 'Signin') return next()
+
+        return next({ name: 'Signin'})
+    }
+
+    if (to.name === 'Signin') return next({name: 'Dashboard'})
+
+    next()
+})
 
 export default router;

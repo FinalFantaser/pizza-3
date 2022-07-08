@@ -3,6 +3,7 @@
 
     use App\Models\Shop\Product;
     use App\Models\Shop\Category;
+    use App\Models\Shop\City;
 
     class ProductReadRepository{
         public function getMethods()
@@ -24,8 +25,8 @@
             return $product;
         }
 
-        public function findByCity(City $city){
-            return $city->products;
+        public function findByCity(City $city, int $num = 50){
+            return $city->products()->paginate($num);
         }
 
         public function checkIsAvailable(Product $product): bool

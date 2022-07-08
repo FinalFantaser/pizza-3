@@ -14,10 +14,21 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware(['auth:sanctum', 'can:admin-panel'])->group(function () {
+
+    Route::get('test', function (){
+
+        //if( \Illuminate\Support\Facades\Gate::authorize('admin-panel'))
+          //  return \Illuminate\Support\Facades\Gate::authorize('admin-panel');
+        return 123;
+    });
+
+});
 
 Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(function () {
     Route::namespace('Api\V1')->group(function(){
-        //Route::middleware(['auth:api', 'verified'])->group(function () {
+        Route::middleware(['auth:sanctum'])->group(function () {
+
 
             //Для администраторов
             Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
@@ -48,6 +59,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     //  Города
                     Route::apiResource('cities', \App\Http\Controllers\Api\V1\Admin\Shop\CityController::class)->only(['index', 'store', 'update', 'destroy']);
 
+
                     //  Категории
                     Route::apiResource('categories', 'CategoryController')->only(['index', 'store', 'show', 'update', 'destroy']);
 
@@ -69,7 +81,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
             });
 
             //Для менеджеров
-            Route::prefix('manager')->name('manager.')->namespace('Manager')->middleware(['auth:api', 'verified', 'manager'])->group(function(){
+            Route::prefix('manager')->name('manager.')->namespace('Manager')->middleware(['manager'])->group(function(){
                 Route::namespace('Shop')->group(function(){
 
                     //  Управление заказами
@@ -86,6 +98,17 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                 });
             });
-       // });
+
+            //Гостевая страница
+            Route::prefix('home')->name('home.')->namespace('Home')->group(function(){
+                Route::namespace('Shop')->group(function(){
+                    //Список городов
+                    Route::get('cities', 'ShowCitiesController')->name('cities');
+                    
+                    //Спиоск продуктов по городам
+                    // Route::get('{city}/', 'ProductController@index')->name('products');
+                });
+            });
+        });
     });
 });
