@@ -34,4 +34,8 @@ class CityService{
     public function getMethods(){
         return $this->readRepository->getMethods();
     } //getMethods
+
+    public function findAll(){
+        return $this->readRepository->findAll();
+    } //findAll
 }

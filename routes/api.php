@@ -98,6 +98,17 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                 });
             });
+
+            //Гостевая страница
+            Route::prefix('home')->name('home.')->namespace('Home')->group(function(){
+                Route::namespace('Shop')->group(function(){
+                    //Список городов
+                    Route::get('cities', 'ShowCitiesController')->name('cities');
+                    
+                    //Спиоск продуктов по городам
+                    // Route::get('{city}/', 'ProductController@index')->name('products');
+                });
+            });
         });
     });
 });
