@@ -10,7 +10,7 @@
       <div class="pt-3 pb-0 bg-transparent card-header">
         <div
           class=""
-          :class="this.$store.state.isRTL ? 'float-end' : 'float-start'"
+          :class="this.$store.state.argon.isRTL ? 'float-end' : 'float-start'"
         >
           <h5 class="mt-3 mb-0">Argon Configurator</h5>
           <p>See our dashboard options.</p>
@@ -18,7 +18,7 @@
         <div
           class="mt-4"
           @click="toggle"
-          :class="this.$store.state.isRTL ? 'float-start' : 'float-end'"
+          :class="this.$store.state.argon.isRTL ? 'float-start' : 'float-end'"
         >
           <button class="p-0 btn btn-link text-dark fixed-plugin-close-button">
             <i class="fa fa-close"></i>
@@ -35,7 +35,7 @@
         <a href="#" class="switch-trigger background-color">
           <div
             class="my-2 badge-colors"
-            :class="this.$store.state.isRTL ? 'text-end' : ' text-start'"
+            :class="this.$store.state.argon.isRTL ? 'text-end' : ' text-start'"
           >
             <span
               class="badge filter bg-gradient-primary active"
@@ -79,7 +79,7 @@
             id="btn-white"
             class="btn w-100 px-3 mb-2"
             :class="
-              this.$store.state.sidebarType === 'bg-white'
+              this.$store.state.argon.sidebarType === 'bg-white'
                 ? 'bg-gradient-success'
                 : 'btn-outline-success'
             "
@@ -91,7 +91,7 @@
             id="btn-dark"
             class="btn w-100 px-3 mb-2"
             :class="
-              this.$store.state.sidebarType === 'bg-default'
+              this.$store.state.argon.sidebarType === 'bg-default'
                 ? 'bg-gradient-success'
                 : 'btn-outline-success'
             "
@@ -111,11 +111,11 @@
             <input
               class="mt-1 form-check-input"
               :class="
-                this.$store.state.isRTL ? 'float-end  me-auto' : ' ms-auto'
+                this.$store.state.argon.isRTL ? 'float-end  me-auto' : ' ms-auto'
               "
               type="checkbox"
               id="navbarFixed"
-              :checked="this.$store.state.isNavFixed"
+              :checked="this.$store.state.argon.isNavFixed"
               @click="setNavbarFixed"
             />
           </div>
@@ -123,14 +123,14 @@
 
         <hr class="horizontal dark my-4" />
         <div class="mt-2 mb-5 d-flex">
-          <h6 class="mb-0" :class="this.$store.state.isRTL ? 'ms-2' : ''">
+          <h6 class="mb-0" :class="this.$store.state.argon.isRTL ? 'ms-2' : ''">
             Light / Dark
           </h6>
           <div class="form-check form-switch ps-0 ms-auto my-auto">
             <input
               class="form-check-input mt-1 ms-auto"
               type="checkbox"
-              :checked="this.$store.state.darkMode"
+              :checked="this.$store.state.argon.darkMode"
               @click="setDarkMode"
             />
           </div>
@@ -186,28 +186,28 @@ export default {
     ...mapMutations(["navbarMinimize", "sidebarType", "navbarFixed"]),
     sidebarColor(color = "success") {
       document.querySelector("#sidenav-main").setAttribute("data-color", color);
-      this.$store.state.mcolor = `card-background-mask-${color}`;
+      this.$store.state.argon.mcolor = `card-background-mask-${color}`;
     },
     sidebarType(type) {
-      this.$store.state.sidebarType = type;
+      this.$store.state.argon.sidebarType = type;
     },
     setNavbarFixed() {
       if (
         this.$route.name !== "Profile" ||
         this.$route.name !== "All Projects"
       ) {
-        this.$store.state.isNavFixed = !this.$store.state.isNavFixed;
+        this.$store.state.argon.isNavFixed = !this.$store.state.argon.isNavFixed;
       }
     },
     setDarkMode() {
-      if (this.$store.state.darkMode) {
-        this.$store.state.darkMode = false;
-        this.$store.state.sidebarType = "bg-white";
+      if (this.$store.state.argon.darkMode) {
+        this.$store.state.argon.darkMode = false;
+        this.$store.state.argon.sidebarType = "bg-white";
         deactivateDarkMode();
         return;
       } else {
-        this.$store.state.darkMode = true;
-        this.$store.state.sidebarType = "bg-default";
+        this.$store.state.argon.darkMode = true;
+        this.$store.state.argon.sidebarType = "bg-default";
         activateDarkMode();
       }
     },
@@ -226,7 +226,7 @@ export default {
     }
   },
   beforeMount() {
-    this.$store.state.isTransparent = "bg-transparent";
+    this.$store.state.argon.isTransparent = "bg-transparent";
     window.addEventListener("resize", this.sidenavTypeOnResize);
     window.addEventListener("load", this.sidenavTypeOnResize);
   }

@@ -9,7 +9,7 @@
                         <button
                             data-bs-toggle="modal" data-bs-target="#ModalCities"
                             class="btn btn-success btn-sm ms-auto"
-                            @click="this.$store.state.editCity = false"
+                            @click="this.$store.state.argon.editCity = false"
                         >Add city</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -72,20 +72,20 @@ export default {
     },
     methods: {
         deleteCity(id) {
-            this.$store.state.loader = true
+            this.$store.state.argon.loader = true
             axios.delete(`api/v1/admin/cities/${id}`)
                 .then( (response) => {
-                    this.$store.state.loader = false
+                    this.$store.state.argon.loader = false
                     this.$store.dispatch('getCities')
                 })
                 .catch(function (error) {
-                    this.$store.state.loader = false
+                    this.$store.state.argon.loader = false
                     console.log(error);
                 })
         },
         editCity(city) {
-            this.$store.state.editCity = true
-            this.$store.state.city = city
+            this.$store.state.argon.editCity = true
+            this.$store.state.argon.city = city
         }
 
     },

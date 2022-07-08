@@ -6,7 +6,7 @@ export default {
     },
     actions: {
         getCities({state}) {
-            this.state.loader = true
+            this.state.argon.loader = true
             axios.get('api/v1/admin/cities')
                 .then(data => {
                     state.cities = data.data.data
@@ -16,7 +16,7 @@ export default {
                     console.log(error);
                 })
                 .then(() => {
-                    this.state.loader = false
+                    this.state.argon.loader = false
                 })
         }
     }

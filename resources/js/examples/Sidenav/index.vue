@@ -1,16 +1,16 @@
 <template>
   <div
-    v-show="this.$store.state.layout === 'default'"
+    v-show="this.$store.state.argon.layout === 'default'"
     class="min-height-300 position-absolute w-100"
-    :class="`${this.$store.state.darkMode ? 'bg-transparent' : 'bg-success'}`"
+    :class="`${this.$store.state.argon.darkMode ? 'bg-transparent' : 'bg-success'}`"
   />
   <aside
     class="my-3 overflow-auto border-0 sidenav navbar navbar-vertical navbar-expand-xs border-radius-xl fixed-start ms-3"
     :class="`${
-      this.$store.state.layout === 'landing'
+      this.$store.state.argon.layout === 'landing'
         ? 'bg-transparent shadow-none'
         : ' '
-    } ${this.$store.state.sidebarType}`"
+    } ${this.$store.state.argon.sidebarType}`"
     id="sidenav-main"
   >
     <div class="sidenav-header">
@@ -22,8 +22,8 @@
       <router-link class="m-0 navbar-brand" to="/">
         <img
           :src="
-            this.$store.state.darkMode ||
-            this.$store.state.sidebarType === 'bg-default'
+            this.$store.state.argon.darkMode ||
+            this.$store.state.argon.sidebarType === 'bg-default'
               ? logoWhite
               : logo
           "

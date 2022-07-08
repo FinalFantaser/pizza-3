@@ -2,7 +2,7 @@
   <nav
     class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
     :class="
-      this.$store.state.isRTL ? 'top-0 position-sticky z-index-sticky' : ''
+      this.$store.state.argon.isRTL ? 'top-0 position-sticky z-index-sticky' : ''
     "
     v-bind="$attrs"
     id="navbarBlur"
@@ -18,7 +18,7 @@
             <input
               class="form-check-input mt-1 ms-auto"
               type="checkbox"
-              :checked="this.$store.state.darkMode"
+              :checked="this.$store.state.argon.darkMode"
               @click="setDarkMode"
             />
           </div>
@@ -38,27 +38,19 @@
               type="text"
               class="form-control"
               :placeholder="
-                this.$store.state.isRTL ? 'أكتب هنا...' : 'Type here...'
+                this.$store.state.argon.isRTL ? 'أكتب هنا...' : 'Type here...'
               "
             />
           </div>
         </div>
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-flex align-items-center">
-            <router-link
-              :to="{ name: 'Signin' }"
-              class="px-0 nav-link font-weight-bold text-white"
-              target="_blank"
-            >
-              <i
-                class="fa fa-user"
-                :class="this.$store.state.isRTL ? 'ms-sm-2' : 'me-sm-2'"
-              ></i>
-              <span v-if="this.$store.state.isRTL" class="d-sm-inline d-none"
-                >يسجل دخول</span
-              >
-              <span v-else class="d-sm-inline d-none">Sign In</span>
-            </router-link>
+              <a
+                  @click.prevent="$store.dispatch('logout')"
+                  href="#"
+                  class="px-0 nav-link font-weight-bold text-white">
+                  <i class="fa fa-user"></i> <span class="d-sm-inline d-none">logout</span>
+              </a>
           </li>
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a
@@ -81,7 +73,7 @@
           </li>
           <li
             class="nav-item dropdown d-flex align-items-center"
-            :class="this.$store.state.isRTL ? 'ps-2' : 'pe-2'"
+            :class="this.$store.state.argon.isRTL ? 'ps-2' : 'pe-2'"
           >
             <a
               href="#"
@@ -232,14 +224,14 @@ export default {
       this.navbarMinimize();
     },
     setDarkMode() {
-      if (this.$store.state.darkMode) {
-        this.$store.state.darkMode = false;
-        this.$store.state.sidebarType = "bg-white";
+      if (this.$store.state.argon.darkMode) {
+        this.$store.state.argon.darkMode = false;
+        this.$store.state.argon.sidebarType = "bg-white";
         deactivateDarkMode();
         return;
       } else {
-        this.$store.state.darkMode = true;
-        this.$store.state.sidebarType = "bg-default";
+        this.$store.state.argon.darkMode = true;
+        this.$store.state.argon.sidebarType = "bg-default";
         activateDarkMode();
       }
     },

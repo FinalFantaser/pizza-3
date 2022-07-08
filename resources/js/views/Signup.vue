@@ -148,19 +148,19 @@ export default {
     ArgonButton,
   },
   created() {
-    this.$store.state.hideConfigButton = true;
-    this.$store.state.showNavbar = false;
-    this.$store.state.showSidenav = false;
-    this.$store.state.showFooter = false;
+    this.$store.state.argon.hideConfigButton = true;
+    this.$store.state.argon.showNavbar = false;
+    this.$store.state.argon.showSidenav = false;
+    this.$store.state.argon.showFooter = false;
     body.classList.remove("bg-gray-100");
 
     axios.get('/api/cities').then( r => console.log(r))
   },
   beforeUnmount() {
-    this.$store.state.hideConfigButton = false;
-    this.$store.state.showNavbar = true;
-    this.$store.state.showSidenav = true;
-    this.$store.state.showFooter = true;
+    this.$store.state.argon.hideConfigButton = false;
+    this.$store.state.argon.showNavbar = true;
+    this.$store.state.argon.showSidenav = true;
+    this.$store.state.argon.showFooter = true;
     body.classList.add("bg-gray-100");
   },
 };

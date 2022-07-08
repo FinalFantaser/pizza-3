@@ -95,22 +95,36 @@ export default {
       password: null
   }),
   methods: {
-      login(){
-          axios.get('/sanctum/csrf-cookie').then(response => {
+      // login(){
+      //     axios.get('/sanctum/csrf-cookie').then(response => {
+      //
+      //         axios.post('/login', {email: this.email,password: this.password})
+      //             .then( res => {
+      //                 localStorage.setItem('x_xsrf_token' , res.config.headers['X-XSRF-TOKEN'])
+      //                 this.$router.push({name: "Dashboard"})
+      //             })
+      //             .catch( err => {
+      //                 if (err.response) console.log(err.response)
+      //             })
+      //             .catch( err => {
+      //                 console.log(err.response)
+      //             })
+      //
+      //     });
+      // }
 
-              axios.post('/login', {email: this.email,password: this.password})
-                  .then( res => {
-                      localStorage.setItem('x_xsrf_token' , res.config.headers['X-XSRF-TOKEN'])
-                      this.$router.push({name: "Dashboard"})
-                  })
-                  .catch( err => {
-                      if (err.response) console.log(err.response)
-                  })
-                  .catch( err => {
-                      console.log(err.response)
-                  })
+      async login(){
 
-          });
+          const user = { email: this.email, password: this.password }
+
+          try {
+              await this.$store.dispatch("login", { user });
+          } catch (e) {
+              console.log('Not connection')
+              //await this.$store.dispatch("alerts/error", "Invalid credentials!");
+              //this.setApiValidation(e.response.data.errors);
+          }
+
       }
     },
   components: {
@@ -120,17 +134,17 @@ export default {
     ArgonButton,
   },
   created() {
-    this.$store.state.hideConfigButton = true;
-    this.$store.state.showNavbar = false;
-    this.$store.state.showSidenav = false;
-    this.$store.state.showFooter = false;
+    this.$store.state.argon.hideConfigButton = true;
+    this.$store.state.argon.showNavbar = false;
+    this.$store.state.argon.showSidenav = false;
+    this.$store.state.argon.showFooter = false;
     body.classList.remove("bg-gray-100");
   },
   beforeUnmount() {
-    this.$store.state.hideConfigButton = false;
-    this.$store.state.showNavbar = true;
-    this.$store.state.showSidenav = true;
-    this.$store.state.showFooter = true;
+    this.$store.state.argon.hideConfigButton = false;
+    this.$store.state.argon.showNavbar = true;
+    this.$store.state.argon.showSidenav = true;
+    this.$store.state.argon.showFooter = true;
     body.classList.add("bg-gray-100");
   },
 };

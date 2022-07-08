@@ -311,23 +311,23 @@ export default {
   components: { ProfileCard, ArgonInput, ArgonButton },
 
   mounted() {
-    this.$store.state.isAbsolute = true;
+    this.$store.state.argon.isAbsolute = true;
     setNavPills();
     setTooltip();
   },
   beforeMount() {
-    this.$store.state.imageLayout = "profile-overview";
-    this.$store.state.showNavbar = false;
-    this.$store.state.showFooter = true;
-    this.$store.state.hideConfigButton = true;
+    this.$store.state.argon.imageLayout = "profile-overview";
+    this.$store.state.argon.showNavbar = false;
+    this.$store.state.argon.showFooter = true;
+    this.$store.state.argon.hideConfigButton = true;
     body.classList.add("profile-overview");
   },
   beforeUnmount() {
-    this.$store.state.isAbsolute = false;
-    this.$store.state.imageLayout = "default";
-    this.$store.state.showNavbar = true;
-    this.$store.state.showFooter = true;
-    this.$store.state.hideConfigButton = false;
+    this.$store.state.argon.isAbsolute = false;
+    this.$store.state.argon.imageLayout = "default";
+    this.$store.state.argon.showNavbar = true;
+    this.$store.state.argon.showFooter = true;
+    this.$store.state.argon.hideConfigButton = false;
     body.classList.remove("profile-overview");
   }
 };

@@ -14,15 +14,15 @@ Coded by www.creative-tim.com
 -->
 <template>
   <div
-    v-show="this.$store.state.layout === 'landing'"
+    v-show="this.$store.state.argon.layout === 'landing'"
     class="landing-bg h-100 bg-gradient-primary position-fixed w-100"
   ></div>
   <sidenav
-    :custom_class="this.$store.state.mcolor"
+    :custom_class="this.$store.state.argon.mcolor"
     :class="[
-      this.$store.state.isTransparent
+      this.$store.state.argon.isTransparent
     ]"
-    v-if="this.$store.state.showSidenav"
+    v-if="this.$store.state.argon.showSidenav"
   />
   <main
     class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
@@ -31,13 +31,13 @@ Coded by www.creative-tim.com
     <navbar
       :class="[navClasses]"
       :textWhite="
-        this.$store.state.isAbsolute ? 'text-white opacity-8' : 'text-white'
+        this.$store.state.argon.isAbsolute ? 'text-white opacity-8' : 'text-white'
       "
       :minNav="navbarMinimize"
-      v-if="this.$store.state.showNavbar"
+      v-if="this.$store.state.argon.showNavbar"
     />
     <router-view />
-    <app-footer v-show="this.$store.state.showFooter" />
+    <app-footer v-show="this.$store.state.argon.showFooter" />
   </main>
     <modal-cities></modal-cities>
     <loader v-if="this.stateLoader"></loader>
@@ -65,22 +65,22 @@ export default {
   },
   computed: {
       stateLoader() {
-        return this.$store.state.loader
+        return this.$store.state.argon.loader
       },
     navClasses() {
       return {
         "position-sticky bg-white left-auto top-2 z-index-sticky":
-          this.$store.state.isNavFixed && !this.$store.state.darkMode,
+          this.$store.state.argon.isNavFixed && !this.$store.state.argon.darkMode,
         "position-sticky bg-default left-auto top-2 z-index-sticky":
-          this.$store.state.isNavFixed && this.$store.state.darkMode,
+          this.$store.state.argon.isNavFixed && this.$store.state.argon.darkMode,
         "position-absolute px-4 mx-0 w-100 z-index-2": this.$store.state
           .isAbsolute,
-        "px-0 mx-4": !this.$store.state.isAbsolute
+        "px-0 mx-4": !this.$store.state.argon.isAbsolute
       };
     }
   },
   beforeMount() {
-    this.$store.state.isTransparent = "bg-transparent";
+    this.$store.state.argon.isTransparent = "bg-transparent";
   }
 };
 </script>
