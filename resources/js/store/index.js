@@ -1,6 +1,10 @@
 import { createStore } from "vuex";
+import cities from "./cities/index.js";
 
 export default createStore({
+    modules: {
+        cities
+    },
   state: {
     hideConfigButton: false,
     isPinned: true,
@@ -51,5 +55,6 @@ export default createStore({
       commit("sidebarType", payload);
     }
   },
-  getters: {}
+  getters: {
+  }
 });

@@ -39,10 +39,11 @@ Coded by www.creative-tim.com
     <router-view />
     <app-footer v-show="this.$store.state.showFooter" />
   </main>
-
+    <modal-cities></modal-cities>
     <loader v-if="this.$store.state.loader"></loader>
 </template>
 <script>
+import ModalCities from './examples/ModalCities.vue'
 import Loader from "./examples/Loader.vue"
 import Sidenav from "./examples/Sidenav/index.vue";
 // import Configurator from "@/examples/Configurator.vue";
@@ -56,7 +57,8 @@ export default {
     Sidenav,
     Navbar,
     AppFooter,
-    Loader
+    Loader,
+      ModalCities
   },
   methods: {
     ...mapMutations(["toggleConfigurator", "navbarMinimize"])
