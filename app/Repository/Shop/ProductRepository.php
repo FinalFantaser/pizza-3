@@ -12,7 +12,7 @@
 
     class ProductRepository{
         
-        public function create($name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords): Product{
+        public function create($name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords, $category_id, $city_id): Product{
             $product = Product::create([
                     'name' => $name,
                     'status' => Product::STATUS_DRAFT,
@@ -27,13 +27,17 @@
             //Загрузка картинки
             $this->updateImage($product);
 
-            //Привязка к категории
-            // $this->updateCategory($product, Category::findOr )
+            //Назначение категории
+            $this->updateCategory($product, Category::find($category_id));
+
+            //Привязка к городу
+            if(!is_null($city_id))
+                $this->attachToCity($product, City::find($city_id));
 
             return $product;
         } //create
 
-        public function update(Product $product, $name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords){
+        public function update(Product $product, $name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords, $category_id, $city_id){
             $product->update([
                 'name' => $name,
                 'price' => $price,
@@ -44,16 +48,31 @@
                 'properties' => $properties,
             ]);
 
+            //Назначение категории
+            $this->updateCategory($product, Category::find($category_id));
+
+            //Привязка к городу
+            if(!is_null($city_id))
+                $this->attachToCity($product, City::find($city_id));
+
             //Загрузка картинки
             $this->updateImage($product);
 
             return $product;
         } //update
 
+        public function deleteCategory(Product $product){ //Удалить продукт из категории
+            // DB::table('category_product')->where(['product_id' => $product->id, 'category_id' => $category->id])->delete();
+            DB::table('category_product')->where(['product_id' => $product->id])->delete();
+        } //deleteCategory
+
         public function updateCategory(Product $product, Category $category){ //Занести продукт в категорию
-            
-                $product->categories()->detach();
-                $product->categories()->attach([$category->id]);
+            //Пока что сделано так, чтобы продукт можно было занести только в одну категорию
+            $this->deleteCategory($product);
+            DB::table('category_product')->updateOrInsert(['product_id' => $product->id], ['category_id' => $category->id]);
+
+            // $product->categories()->detach();
+            // $product->categories()->attach([$category->id]);
         } //attachCategory
 
         public function deleteImage(Product $product){
@@ -73,7 +92,10 @@
         } //updateImage
 
         public function remove(Product $product): void{
-            $this->deleteImage($product);
+            $this->deleteImage($product); //Удаление картинки
+            $this->deleteCategory($product); //Удаление из категории
+            $this->clearAllCities($product); //Отвязка от всех городов
+
             $product->delete();
         } //remove
 

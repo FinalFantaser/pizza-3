@@ -28,7 +28,9 @@
                 $request->properties,
                 $request->seo_title,
                 $request->seo_description,
-                $request->seo_keywords
+                $request->seo_keywords,
+                $request->category_id,
+                $request->city_id ?? null
             );
         } //create
 
@@ -43,7 +45,9 @@
                 $request->properties,
                 $request->seo_title,
                 $request->seo_description,
-                $request->seo_keywords
+                $request->seo_keywords,
+                $request->category_id,
+                $request->city_id ?? null
             );
         } //update
 
