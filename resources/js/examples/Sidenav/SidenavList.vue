@@ -8,7 +8,7 @@
         <sidenav-item
           url="/"
           :class="getRoute() === 'dashboard-default' ? 'active' : ''"
-          :navText="'Dashboard'"
+          :navText="'Главная'"
         >
           <template v-slot:icon>
             <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
@@ -19,7 +19,7 @@
         <sidenav-item
           url="/users"
           :class="getRoute() === 'users' ? 'active' : ''"
-          :navText="'Users'"
+          :navText="'Пользователи'"
         >
           <template v-slot:icon>
             <i
@@ -28,11 +28,33 @@
           </template>
         </sidenav-item>
       </li>
+        <li class="nav-item">
+            <sidenav-item
+                url="/cities"
+                :class="getRoute() === '/cities' ? 'active' : ''"
+                :navText="'Города'"
+            >
+                <template v-slot:icon>
+                    <i class="ni ni-istanbul text-danger text-sm opacity-10"></i>
+                </template>
+            </sidenav-item>
+        </li>
+        <li class="nav-item">
+            <sidenav-item
+                url="/categories"
+                :class="getRoute() === '/categories' ? 'active' : ''"
+                :navText="'Категории'"
+            >
+                <template v-slot:icon>
+                    <i class="ni ni-ungroup text-secondary text-sm opacity-10"></i>
+                </template>
+            </sidenav-item>
+        </li>
       <li class="nav-item">
         <sidenav-item
           url="/products"
           :class="getRoute() === '/products' ? 'active' : ''"
-          :navText="'Products'"
+          :navText="'Продукты'"
         >
           <template v-slot:icon>
             <i class="ni ni-archive-2 text-success text-sm opacity-10"></i>
@@ -43,21 +65,10 @@
         <sidenav-item
           url="/orders"
           :class="getRoute() === '/orders' ? 'active' : ''"
-          :navText="'Orders'"
+          :navText="'Заказы'"
         >
           <template v-slot:icon>
             <i class="ni ni-app text-info text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li>
-      <li class="nav-item">
-        <sidenav-item
-          url="/cities"
-          :class="getRoute() === '/cities' ? 'active' : ''"
-          :navText="'Cities'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-istanbul text-warning text-sm opacity-10"></i>
           </template>
         </sidenav-item>
       </li>
@@ -72,7 +83,7 @@
         <sidenav-item
           url="/profile"
           :class="getRoute() === 'profile' ? 'active' : ''"
-          :navText="'Profile'"
+          :navText="'Профиль'"
         >
           <template v-slot:icon>
             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>

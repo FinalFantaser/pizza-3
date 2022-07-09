@@ -2,10 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Users from "../views/Users.vue";
 import UserInfo from "../views/UserInfo.vue";
+import Cities from "../views/Cities.vue";
+import Categories from "../views/Categories.vue";
+import CategoryInfo from "../views/CategoryInfo.vue";
 import Products from "../views/Products.vue";
 import ProductInfo from "../views/ProductInfo.vue";
 import Orders from "../views/Orders.vue";
-import Cities from "../views/Cities.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
@@ -32,6 +34,26 @@ const routes = [
     name: "users.edit",
     component: UserInfo
   },
+    {
+        path: "/cities",
+        name: "Cities",
+        component: Cities,
+    },
+    {
+        path: "/categories",
+        name: "Categories",
+        component: Categories,
+    },
+    {
+        path: "/categories/create",
+        name: "categories.create",
+        component: CategoryInfo,
+    },
+    {
+        path: "/categories/:id/edit",
+        name: "categories.edit",
+        component: CategoryInfo,
+    },
   {
     path: "/products",
     name: "Products",
@@ -51,11 +73,6 @@ const routes = [
     path: "/orders",
     name: "Orders",
     component: Orders,
-  },
-  {
-    path: "/cities",
-    name: "Cities",
-    component: Cities,
   },
   {
     path: "/profile",

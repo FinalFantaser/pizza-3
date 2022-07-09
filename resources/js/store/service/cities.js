@@ -5,9 +5,9 @@ export default {
         cities: null
     },
     actions: {
-        getCities({state}) {
+        async getCities({state}) {
             this.state.argon.loader = true
-            axios.get('api/v1/admin/cities')
+            await axios.get('/api/v1/admin/cities')
                 .then(data => {
                     state.cities = data.data.data
                     console.log(data.data.data)

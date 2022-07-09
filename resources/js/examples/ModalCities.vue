@@ -2,7 +2,7 @@
     <!-- Modal -->
     <div class="modal fade" id="ModalCities" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form @submit="changeOrAddCity($event)" action="#" class="modal-content">
+            <form @submit.prevent="changeOrAddCity()" action="#" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
                         {{ editCity ? 'Измените город' : 'Добавьте город' }}
@@ -45,11 +45,10 @@ export default {
         }
     },
     methods: {
-        changeOrAddCity(event) {
-            event.preventDefault()
+        changeOrAddCity() {
             this.$refs.close.click()
             this.$store.state.argon.loader = true
-            axios[this.editCity ? 'put' : 'post'](`api/v1/admin/cities/${this.editCity ? this.stateCity.id : ''}`, {
+            axios[this.editCity ? 'put' : 'post'](`/api/v1/admin/cities/${this.editCity ? this.stateCity.id : ''}`, {
                 name: this.city
             })
                 .then((response) => {
