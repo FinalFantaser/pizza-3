@@ -1,12 +1,16 @@
 import { createStore } from "vuex";
-import citiesModule from "./cities/index.js";
 import argon from "./modules/argon";
 import auth from "./modules/auth";
+import serviceCities from "./service/cities";
+import serviceCategories from "./service/categories";
+import serviceProducts from "./service/products";
 
 export default createStore({
     modules: {
+        serviceCities,
+        serviceCategories,
+        serviceProducts,
         argon,
-        citiesModule,
         auth
     }
 });

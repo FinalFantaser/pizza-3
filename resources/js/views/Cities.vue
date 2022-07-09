@@ -63,17 +63,17 @@ export default {
         }
     },
     computed: {
-        getCities() {
-            this.$store.dispatch('getCities')
-        },
         stateCities() {
-            return this.$store.state.citiesModule.cities
+            return this.$store.state.serviceCities.cities
         }
     },
     methods: {
+        getCities() {
+            this.$store.dispatch('getCities')
+        },
         deleteCity(id) {
             this.$store.state.argon.loader = true
-            axios.delete(`api/v1/admin/cities/${id}`)
+            axios.delete(`/api/v1/admin/cities/${id}`)
                 .then( (response) => {
                     this.$store.state.argon.loader = false
                     this.$store.dispatch('getCities')
@@ -89,8 +89,8 @@ export default {
         }
 
     },
-    async created() {
-        await this.getCities
+    created() {
+        this.getCities()
     }
 }
 </script>

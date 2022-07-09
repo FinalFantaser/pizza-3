@@ -58,7 +58,7 @@
                         <option value="15">15</option>
                         <option value="20">20</option>
                         <option value="25">25</option>
-                      </select> 
+                      </select>
                       entries per page
                     </label>
                   </div>
@@ -80,18 +80,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr v-for="product in stateProducts">
                         <td>
                           <div class="d-flex">
                             <div class="form-check my-auto">
                               <input class="form-check-input" type="checkbox" id="customCheck5">
                             </div>
                             <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/fendi-coat.jpg" alt="fendi">
-                            <h6 class="ms-3 my-auto">Fendi Gradient Coat</h6>
+                            <h6 class="ms-3 my-auto">{{ product.name }}</h6>
                           </div>
                         </td>
                         <td class="text-sm">Clothing</td>
-                        <td class="text-sm">$869</td>
+                        <td class="text-sm">{{ product.price + ' ₽' }}</td>
                         <td class="text-sm">634729</td>
                         <td class="text-sm">725</td>
                         <td>
@@ -104,181 +104,10 @@
                           <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
                             <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
                           </router-link>
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                            <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="d-flex">
-                            <div class="form-check my-auto">
-                              <input class="form-check-input" type="checkbox" id="customCheck4">
-                            </div>
-                            <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/orange-sofa.jpg" alt="yohji">
-                            <h6 class="ms-3 my-auto">Derbyshire Orange Sofa</h6>
-                          </div>
-                        </td>
-                        <td class="text-sm">Furniture</td>
-                        <td class="text-sm">$2,999</td>
-                        <td class="text-sm">561151</td>
-                        <td class="text-sm">22</td>
-                        <td>
-                          <span class="badge badge-success badge-sm">in Stock</span>
-                        </td>
-                        <td class="text-sm">
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                            <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
-                          </a>
-                          <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                            <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
-                          </router-link>
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                            <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="d-flex">
-                            <div class="form-check my-auto">
-                              <input class="form-check-input" type="checkbox" id="customCheck7" checked="">
-                            </div>
-                            <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/yohji-yamamoto.jpg" alt="yohji">
-                            <h6 class="ms-3 my-auto">Y-3 Yohji Yamamoto</h6>
-                          </div>
-                        </td>
-                        <td class="text-sm">Shoes</td>
-                        <td class="text-sm">$869</td>
-                        <td class="text-sm">634729</td>
-                        <td class="text-sm">725</td>
-                        <td>
-                          <span class="badge badge-success badge-sm">In Stock</span>
-                        </td>
-                        <td class="text-sm">
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                            <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
-                          </a>
-                          <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                            <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
-                          </router-link>
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                            <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="d-flex">
-                            <div class="form-check my-auto">
-                              <input class="form-check-input" type="checkbox" id="customCheck11" checked="">
-                            </div>
-                            <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/yellow-chair.jpg" alt="coco">
-                            <h6 class="ms-3 my-auto">Luin Floor Lamp</h6>
-                          </div>
-                        </td>
-                        <td class="text-sm">Furniture</td>
-                        <td class="text-sm">$1,900</td>
-                        <td class="text-sm">434729</td>
-                        <td class="text-sm">1100191321</td>
-                        <td>
-                          <span class="badge badge-success badge-sm">In Stock</span>
-                        </td>
-                        <td class="text-sm">
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                            <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
-                          </a>
-                          <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                            <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
-                          </router-link>
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                            <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="d-flex">
-                            <div class="form-check my-auto">
-                              <input class="form-check-input" type="checkbox" id="customCheck9" checked="">
-                            </div>
-                            <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/mcqueen-shirt.jpg" alt="mcqueen">
-                            <h6 class="ms-3 my-auto">Alexander McQueen</h6>
-                          </div>
-                        </td>
-                        <td class="text-sm">Clothing</td>
-                        <td class="text-sm">$1,199</td>
-                        <td class="text-sm">00121399</td>
-                        <td class="text-sm">51293</td>
-                        <td>
-                          <span class="badge badge-success badge-sm">in Stock</span>
-                        </td>
-                        <td class="text-sm">
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                            <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
-                          </a>
-                          <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                            <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
-                          </router-link>
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                            <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="d-flex">
-                            <div class="form-check my-auto">
-                              <input class="form-check-input" type="checkbox" id="customCheck3">
-                            </div>
-                            <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/metro-chair.jpg" alt="metro-chair">
-                            <h6 class="ms-3 my-auto">Metro Bar Stool</h6>
-                          </div>
-                        </td>
-                        <td class="text-sm">Furniture</td>
-                        <td class="text-sm">$99</td>
-                        <td class="text-sm">0134729</td>
-                        <td class="text-sm">978</td>
-                        <td>
-                          <span class="badge badge-success badge-sm">in Stock</span>
-                        </td>
-                        <td class="text-sm">
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                          <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
-                          </a>
-                          <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                          <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
-                          </router-link>
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                          <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="d-flex">
-                            <div class="form-check my-auto">
-                              <input class="form-check-input" type="checkbox" id="customCheck8" checked="">
-                            </div>
-                            <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/burberry.jpg" alt="undercover">
-                            <h6 class="ms-3 my-auto">Burberry Low-Tops</h6>
-                          </div>
-                        </td>
-                        <td class="text-sm">Shoes</td>
-                        <td class="text-sm">$869</td>
-                        <td class="text-sm">634729</td>
-                        <td class="text-sm">725</td>
-                        <td>
-                          <span class="badge badge-success badge-sm">in Stock</span>
-                        </td>
-                        <td class="text-sm">
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
-                            <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
-                          </a>
-                          <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                            <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
-                          </router-link>
-                          <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Delete product">
+                          <a
+                              href="javascript:;"
+                              @click="deleteProduct(product.id)"
+                          >
                             <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
                           </a>
                         </td>
@@ -316,19 +145,29 @@ export default {
   },
   data() {
     return {
-      salary: {
-        classIcon: "text-white fas fa-landmark",
-        title: "Salary",
-        desc: "Belong Interactive",
-        price: "+$2000",
-      },
-      paypal: {
-        classIcon: "text-white fab fa-paypal",
-        title: "Paypal",
-        desc: "Freelance Payment",
-        price: "$455.00",
-      },
     };
   },
+    computed: {
+      stateProducts() {
+          return this.$store.state.serviceProducts.products
+      }
+    },
+    methods: {
+        getProducts() {
+            this.$store.dispatch('getProducts')
+        },
+        deleteProduct(id) {
+            axios.delete(`api/v1/admin/products/${id}`)
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+    },
+    created () {
+      this.getProducts()
+    }
 };
 </script>
