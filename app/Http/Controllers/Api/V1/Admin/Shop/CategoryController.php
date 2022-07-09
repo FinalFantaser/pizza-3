@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api\V1\Admin\Shop;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+
+use App\Http\Requests\Api\Admin\Shop\Category\CreateRequest;
+use App\Http\Requests\Api\Admin\Shop\Category\UpdateRequest;
 
 use App\Models\Shop\Category;
 use App\Http\Resources\CategoryResource;
@@ -25,20 +28,20 @@ class CategoryController extends Controller
 
     public function show(int $category){
         //TODO Разобраться с проблемой привязки моделей
-        $category = Category::find($category);
+        $category = Category::findOrFail($category);
 
         return new CategoryResource($category);
     } //show
 
-    public function store(Request $request){
+    public function store(CreateRequest $request){
         $this->service->create($request);
         return response()->json(['message' => 'Категория создана']);
     } //store
 
-    public function update(Request $request, int $category){
+    public function update(UpdateRequest $request, int $category){
         //TODO Разобраться с проблемой привязки моделей
-        $category = Category::find($category);
-
+        $category = Category::findOrFail($category);
+        
         $this->service->update($request, $category);
         return response()->json(['message' => 'Данные категории обновлены']);
     } //update

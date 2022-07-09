@@ -20,6 +20,8 @@ class CategoryResource extends JsonResource
             'SEO_title' => $this->meta['title'] ?? null,
             'SEO_keywords' => $this->meta['keywords'] ?? null,
             'SEO_description' => $this->meta['description'] ?? null,
+            'imageUrl' => $this->getFirstMediaUrl('products'),
+            'thumbUrl' => $this->imageUrl('thumb'),
         ];
     }
 }

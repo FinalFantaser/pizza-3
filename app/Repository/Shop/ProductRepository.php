@@ -24,15 +24,15 @@
                     'properties' => $properties,
             ]);
 
-            //Загрузка картинки
-            $this->updateImage($product);
-
             //Назначение категории
             $this->updateCategory($product, Category::find($category_id));
 
             //Привязка к городу
             if(!is_null($city_id))
                 $this->attachToCity($product, City::find($city_id));
+
+            //Загрузка картинки
+            $this->updateImage($product);
 
             return $product;
         } //create
@@ -75,24 +75,19 @@
             // $product->categories()->attach([$category->id]);
         } //attachCategory
 
-        public function deleteImage(Product $product){
-            if($product->getFirstMedia('product'))
-                $product->getFirstMedia(('product'))->delete();
-        }
-
         public function updateImage(Product $product){ //Обновить изображение у продукта
             // $product->addMultipleMediaFromRequest(['productImage'])
             //         ->each(function ($fileAdder) use ($product) {
             //             $fileAdder->toMediaCollection('product');
             //         });
 
-            $this->deleteImage($product);
+            $product->clearMediaCollection('products');
             if(request()->hasFile('productImage') )
-                $product->addMediaFromRequest('productImage')->toMediaCollection('product');
+                $product->addMediaFromRequest('productImage')->toMediaCollection('products');
         } //updateImage
 
         public function remove(Product $product): void{
-            $this->deleteImage($product); //Удаление картинки
+            $product->clearMediaCollection('products'); //Удаление картинки
             $this->deleteCategory($product); //Удаление из категории
             $this->clearAllCities($product); //Отвязка от всех городов
 

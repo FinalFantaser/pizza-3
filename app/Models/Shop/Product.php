@@ -132,7 +132,7 @@ class Product extends Model implements HasMedia
     }
     public function imageUrl(string $thumb = null): string
     {
-        return  !$thumb ? $this->getFirstMediaUrl('product') : $this->getFirstMediaUrl('product', $thumb);
+        return  !$thumb ? $this->getFirstMediaUrl('products') : $this->getFirstMediaUrl('products', $thumb);
     }
 
     public function registerMediaConversions(Media $media = null): void

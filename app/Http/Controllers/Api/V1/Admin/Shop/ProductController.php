@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
 use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
-
+use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
 use App\Models\Shop\Product;
 use App\Http\Resources\ProductResource;
 use App\Services\Shop\ProductService;
@@ -69,4 +69,9 @@ class ProductController extends Controller
         $this->service->detachFromCity($request);
         return response()->json(['message' => 'Продукт откреплён от города']);
     } //attachToCity
+
+    public function updateCategory(UpdateCategoryRequest $request){
+        $this->service->updateCategory($request);
+        return response()->json(['message' => 'Продукт назначен на категорию']);
+    } //updateCategory
 }
