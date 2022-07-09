@@ -16,16 +16,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware(['auth:sanctum', 'can:admin-panel'])->group(function () {
-
-    Route::get('test', function (){
-
-        //if( \Illuminate\Support\Facades\Gate::authorize('admin-panel'))
-          //  return \Illuminate\Support\Facades\Gate::authorize('admin-panel');
-        return 123;
-    });
-
-});
 
 Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(function () {
     Route::namespace('Api\V1')->group(function(){
@@ -63,12 +53,12 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
 
                     //  Категории
-                    Route::apiResource('categories', 'CategoryController')->only(['index', 'store', 'show', 'update', 'destroy']);
+                    Route::apiResource('categories', \App\Http\Controllers\Api\V1\Admin\Shop\CategoryController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 
                     //  Продукты
-                    Route::apiResource('products', 'ProductController');
-                    Route::post('products.city.attach', 'ProductController@attachToCity');
-                    Route::post('products.city.detach', 'ProductController@detachFromCity');
+                    Route::apiResource('products', \App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class);
+                    Route::post('products.city.attach', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'attachToCity']);
+                    Route::post('products.city.detach', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'detachFromCity']);
 
                     //  Методы доставки
                     Route::apiResource('delivery-methods', 'DeliveryMethodController');
