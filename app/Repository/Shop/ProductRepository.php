@@ -13,7 +13,7 @@
     class ProductRepository{
         
         public function create($name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords): Product{
-            return Product::create([
+            $product = Product::create([
                     'name' => $name,
                     'status' => Product::STATUS_DRAFT,
                     'price' => $price,
@@ -23,6 +23,11 @@
                     'tags' => $tags,
                     'properties' => $properties,
             ]);
+
+            //Загрузка картинки
+            $this->updateImage($product);
+
+            return $product;
         } //create
 
         public function update(Product $product, $name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords){
@@ -36,6 +41,9 @@
                 'properties' => $properties,
             ]);
 
+            //Загрузка картинки
+            $this->updateImage($product);
+
             return $product;
         } //update
 
@@ -45,6 +53,11 @@
                 $product->categories()->attach([$category->id]);
         } //attachCategory
 
+        public function deleteImage(Product $product){
+            if($product->getFirstMedia('product'))
+                $product->getFirstMedia(('product'))->delete();
+        }
+
         public function updateImage(Product $product){ //Обновить изображение у продукта
             $product->addMultipleMediaFromRequest(['productImage'])
                     ->each(function ($fileAdder) use ($product) {
@@ -53,6 +66,7 @@
         } //updateImage
 
         public function remove(Product $product): void{
+            $this->deleteImage($product);
             $product->delete();
         } //remove
 

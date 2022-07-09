@@ -38,4 +38,8 @@ class CityService{
     public function findAll(){
         return $this->readRepository->findAll();
     } //findAll
+
+    public function findById(int $id){
+        return $this->readRepository->findById($id);
+    } //findById
 }

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\V1\Admin\AdminController;
 use App\Http\Controllers\Api\V1\Admin\ManagerController;
+use App\Models\Shop\Category;
+use App\Models\Shop\City;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -98,16 +100,12 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                 });
             });
+        });
 
-            //Гостевая страница
-            Route::prefix('home')->name('home.')->namespace('Home')->group(function(){
-                Route::namespace('Shop')->group(function(){
-                    //Список городов
-                    Route::get('cities', 'ShowCitiesController')->name('cities');
-                    
-                    //Спиоск продуктов по городам
-                    // Route::get('{city}/', 'ProductController@index')->name('products');
-                });
+        //Гостевая страница
+        Route::prefix('home')->name('home.')->namespace('Home')->group(function(){
+            Route::namespace('Shop')->group(function(){
+                Route::get('{category:slug}', 'ProductController@index')->name('index');
             });
         });
     });
