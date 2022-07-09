@@ -45,9 +45,9 @@ class CategoryController extends Controller
 
     public function destroy(int $category){
         //TODO Разобраться с проблемой привязки моделей
-        $category = Category::find($category);
-        
+        $category = Category::findOrFail($category);
+
         $category->delete();
-        return response()->json(['message' => 'Категория удалена']); 
+        return response()->json(['message' => 'Категория удалена']);
     } //destroy
 }
