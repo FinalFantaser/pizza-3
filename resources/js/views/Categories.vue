@@ -105,7 +105,7 @@
                                                 </router-link>
                                                 <a
                                                     href="javascript:;"
-                                                    @click="deleteCategory(index)"
+                                                    @click="deleteCategory(category.id)"
                                                 >
                                                     <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
                                                 </a>
