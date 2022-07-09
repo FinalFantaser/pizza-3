@@ -27,6 +27,9 @@
             //Загрузка картинки
             $this->updateImage($product);
 
+            //Привязка к категории
+            // $this->updateCategory($product, Category::findOr )
+
             return $product;
         } //create
 
@@ -59,10 +62,14 @@
         }
 
         public function updateImage(Product $product){ //Обновить изображение у продукта
-            $product->addMultipleMediaFromRequest(['productImage'])
-                    ->each(function ($fileAdder) use ($product) {
-                        $fileAdder->toMediaCollection('product');
-                    });
+            // $product->addMultipleMediaFromRequest(['productImage'])
+            //         ->each(function ($fileAdder) use ($product) {
+            //             $fileAdder->toMediaCollection('product');
+            //         });
+
+            $this->deleteImage($product);
+            if(request()->hasFile('productImage') )
+                $product->addMediaFromRequest('productImage')->toMediaCollection('product');
         } //updateImage
 
         public function remove(Product $product): void{
