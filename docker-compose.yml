@@ -63,8 +63,10 @@ services:
        - MYSQL_DATABASE=laravel
   redis:
      image: arm64v8/redis:3.0
+     container_name: redis
      ports:
        - 6379:6379
+
   #adminer:
         #image: adminer
         #restart: always
