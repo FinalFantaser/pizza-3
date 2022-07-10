@@ -61,38 +61,54 @@
                         </div>
                         <div class="row mb-sm-3">
                             <div class="col-12 col-sm-6">
-                                <label>Город</label>
-                                <select
-                                    v-model="city"
-                                    class="form-select"
-                                    aria-label="Default select example"
-                                >
-                                    <option
-                                        v-for="city in stateCities"
-                                        :value="city.id"
-                                    >{{ city.name }}</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-6">
                                 <label>Цена</label>
                                 <input
                                     placeholder="Введите цену"
                                     v-model="price"
+                                    class="form-control mb-sm-3"
+                                    type="text"
+                                >
+                                <label>Цена со скидкой</label>
+                                <input
+                                    placeholder="Введите цену со скидкой"
+                                    v-model="price_sale"
                                     class="form-control"
                                     type="text"
                                 >
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-sm-6">
                                 <label>Описание</label>
                                 <textarea
                                     placeholder="Опишите продукт"
                                     v-model="description"
                                     class="form-control"
                                     id="exampleFormControlTextarea1"
-                                    rows="3"
+                                    rows="5"
                                 ></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <label>Параметры</label>
+                                <input
+                                    v-model="sizes"
+                                    class="form-control"
+                                    type="text"
+                                    placeholder="Введите размеры через запятую"
+                                >
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>Города</label>
+                                <div v-for="(city, index) in stateCities" class="form-check">
+                                    <input
+                                        :id="'city ' + (index + 1)"
+                                        v-model="cities"
+                                        :value="city.id"
+                                        class="form-check-input" type="checkbox" id="flexCheckChecked">
+                                    <label class="form-check-label" :for="'city ' + (index + 1)">
+                                        {{ city.name }}
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -110,9 +126,11 @@ export default {
         return {
             name: '',
             category: 'Выберите категорию',
-            city: 'Выберите город',
+            cities: [],
             price: '',
-            description: ''
+            price_sale: '',
+            description: '',
+            sizes: ''
         }
     },
     computed: {
@@ -132,15 +150,18 @@ export default {
         },
         addProduct() {
             this.$store.state.argon.loader = true
-            console.log(this.city, this.category)
-            const arr = {size: 123}
+            const properties = {size: []}
+            const arr = this.sizes.split(', ')
+            arr.forEach(item => {
+                properties.size.push(item)
+            })
             axios.post('/api/v1/admin/products', {
                 name: this.name,
                 category_id: this.category,
-                city_id: this.city,
+                city_id: 1,
                 price: this.price,
-                price_sell: 0,
-                properties: JSON.stringify(arr),
+                price_sale: this.price_sale ? this.price_sale: 0,
+                properties: JSON.stringify(properties),
                 description: this.description,
             })
                 .then((data) => {
@@ -157,6 +178,9 @@ export default {
     async created() {
         await this.getCities()
         await this.getCategories()
+        this.stateCities.forEach(item => {
+            this.cities.push(item.id)
+        })
     }
 }
 
