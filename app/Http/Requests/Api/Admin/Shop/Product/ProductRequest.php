@@ -40,7 +40,7 @@ class ProductRequest extends FormRequest
             'seo_description' => 'nullable|string',
             'seo_keywords' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'city_id' => 'exists:cities,id'
+            'city_id' => 'exists:cities,id',
         ];
     }
 }

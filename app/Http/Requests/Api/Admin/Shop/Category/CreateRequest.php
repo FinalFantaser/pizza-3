@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Api\Admin\Shop\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class CreateRequest extends FormRequest
 {
@@ -24,8 +26,14 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:categories|string|max:255',
-            'categoryImage' => 'required|mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
+            'name' => 'required|unique:categories|string|max:255',
+            'categoryImage' => 'mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }
