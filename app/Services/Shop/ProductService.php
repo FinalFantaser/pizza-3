@@ -6,6 +6,7 @@
     use App\Models\Shop\Product;
     use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
+    use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
     use App\Repository\Shop\ProductRepository;
     use App\ReadRepository\Shop\ProductReadRepository;
 
@@ -54,6 +55,13 @@
         public function remove(Product $product){
             $this->repository->remove($product);
         } //remove
+
+        public function updateCategory(UpdateCategoryRequest $request){
+            $this->repository->updateCategory(
+                Product::findOrFail($request->product_id),
+                Category::findOrFail($request->category_id)
+            );
+        } //updateCategory
 
         public function attachToCity(AttachToCityRequest $request){
             $this->repository->attachToCity(

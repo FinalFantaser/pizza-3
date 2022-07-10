@@ -44,7 +44,7 @@ class Category extends Model implements HasMedia
 
     public function imageUrl(string $thumb = null): string
     {
-        $url = !$thumb ? $this->getFirstMediaUrl('categoryImages') : $this->getFirstMediaUrl('categoryImages', $thumb);
+        $url = !$thumb ? $this->getFirstMediaUrl('categories') : $this->getFirstMediaUrl('categories', $thumb);
         return $url;
     } //imageUrl
 
@@ -72,9 +72,6 @@ class Category extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(370)
             ->height(370);
-
-        $this->addMediaConversion('categoryImages')
-            ->withResponsiveImages();
     } //registerMediaConversions
 
 }
