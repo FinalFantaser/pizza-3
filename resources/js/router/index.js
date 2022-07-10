@@ -4,9 +4,11 @@ import Users from "../views/Users.vue";
 import UserInfo from "../views/UserInfo.vue";
 import Cities from "../views/Cities.vue";
 import Categories from "../views/Categories.vue";
-import CategoryInfo from "../views/CategoryInfo.vue";
+import CategoryCreate from "../views/CategoryCreate.vue";
+import CategoryEdit from "../views/CategoryEdit.vue";
 import Products from "../views/Products.vue";
-import ProductInfo from "../views/ProductInfo.vue";
+import ProductCreate from "../views/ProductCreate.vue";
+import ProductEdit from "../views/ProductEdit.vue";
 import Orders from "../views/Orders.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
@@ -47,12 +49,12 @@ const routes = [
     {
         path: "/categories/create",
         name: "categories.create",
-        component: CategoryInfo,
+        component: CategoryCreate,
     },
     {
         path: "/categories/:id/edit",
         name: "categories.edit",
-        component: CategoryInfo,
+        component: CategoryEdit,
     },
   {
     path: "/products",
@@ -62,12 +64,12 @@ const routes = [
   {
     path: "/products/create",
     name: "products.create",
-    component: ProductInfo,
+    component: ProductCreate,
   },
   {
     path: "/products/:id/edit",
     name: "products.edit",
-    component: ProductInfo,
+    component: ProductEdit,
   },
   {
     path: "/orders",

@@ -68,8 +68,8 @@ export default {
         }
     },
     methods: {
-        getCities() {
-            this.$store.dispatch('getCities')
+        async getCities() {
+            await this.$store.dispatch('getCities')
         },
         deleteCity(id) {
             this.$store.state.argon.loader = true
@@ -89,8 +89,8 @@ export default {
         }
 
     },
-    created() {
-        this.getCities()
+    async created() {
+        await this.getCities()
     }
 }
 </script>

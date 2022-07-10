@@ -32,7 +32,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Информация о продукте</h5>
-                        <div class="row mb-3">
+                        <div class="row mb-sm-3">
                             <div class="col-12 col-sm-6">
                                 <label>Название</label>
                                 <input class="form-control" type="text">
@@ -47,7 +47,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-sm-3">
                             <div class="col-12 col-sm-6">
                                 <label>Город</label>
                                 <select class="form-select" aria-label="Default select example">
@@ -174,22 +174,11 @@
 </template>
 
 <script>
-
 export default {
-    name: 'ProductInfo',
-    computed: {
-        stateCities() {
-            return this.$store.state.serviceCities.cities
-        }
-    },
-    methods: {
-        getCities() {
-            this.$store.dispatch('getCities')
-        }
-    },
-    created() {
-        this.getCities()
-    }
+    name: "ProductEdit"
 }
-
 </script>
+
+<style scoped>
+
+</style>

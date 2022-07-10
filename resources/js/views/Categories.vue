@@ -100,7 +100,7 @@
                                                 <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
                                                     <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
                                                 </a>
-                                                <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
+                                                <router-link :to="'/categories/' + category.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
                                                     <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
                                                 </router-link>
                                                 <a
@@ -146,8 +146,8 @@ export default {
         }
     },
     methods: {
-        getCategories() {
-            this.$store.dispatch('getCategories')
+        async getCategories() {
+            await this.$store.dispatch('getCategories')
         },
         deleteCategory(id) {
             this.$store.state.argon.loader = true
@@ -162,8 +162,8 @@ export default {
                 })
         }
     },
-    created() {
-        this.getCategories()
+    async created() {
+        await this.getCategories()
     }
 }
 </script>
