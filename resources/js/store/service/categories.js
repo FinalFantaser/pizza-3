@@ -1,5 +1,5 @@
 export default {
-    data: {
+    state: {
         categories: null
     },
     actions: {

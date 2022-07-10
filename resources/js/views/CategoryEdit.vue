@@ -1,17 +1,17 @@
 <template>
-    <div class="container-fluid py-4">
+    <div v-if="category" class="container-fluid py-4">
         <div class="row">
             <div class="col-lg-6">
-                <h4 class="text-white">Добавьте информацию о продукте</h4>
-                <p class="text-white opacity-8">We’re constantly trying to express ourselves and actualize our dreams. If you have the opportunity to play.</p>
+                <h4 class="text-white">Редактирование категории</h4>
+                <p class="text-white opacity-8">Отредактируйте данные о категории ниже.</p>
             </div>
             <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
                 <button
-                    @click="addCategory"
+                    @click="editCategory()"
                     type="button"
                     class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2"
                 >
-                    Добавить
+                    Сохранить
                 </button>
             </div>
         </div>
@@ -38,7 +38,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder text-center">Информация о категории</h5>
-                        <div class="row mb-3">
+                        <div class="row mb-sm-3">
                             <div class="col-12 col-sm-8 m-auto">
                                 <label>Название</label>
                                 <input
@@ -48,7 +48,7 @@
                                 >
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-sm-3">
                             <div class="col-12 col-sm-8 m-auto">
                                 <label>Описание</label>
                                 <textarea
@@ -64,33 +64,53 @@
             </div>
         </div>
     </div>
+    <h4 v-else class="text-white text-center ь-4">Категория не найдена</h4>
 </template>
 
 <script>
 export default {
-    name: "CategoryInfo",
+    name: "CategoryEdit",
     data() {
         return {
             name: '',
-            description: ''
+            description: '',
+            category: null
+        }
+    },
+    computed: {
+        stateCategories() {
+            return this.$store.state.serviceCategories.categories
         }
     },
     methods: {
-        addCategory() {
+        async getCategories() {
+            await this.$store.dispatch('getCategories')
+        },
+        editCategory() {
             this.$store.state.argon.loader = true
-            axios.post('/api/v1/admin/categories', {
+            axios.put(`/api/v1/admin/categories/${this.category.id}`, {
                 name: this.name
             })
-                .then((data) => {
-                    this.name = ''
+                .then(data => {
                     console.log(data)
                 })
-                .catch((error) => {
-                    console.log(error)
+                .catch( (error) => {
+                    console.log(error);
                 })
                 .then(() => {
                     this.$store.state.argon.loader = false
                 })
+        }
+    },
+    async created() {
+        await this.getCategories()
+        if(this.stateCategories) {
+            this.category = this.stateCategories.find((elem) => {
+                return elem.id == this.$route.params.id
+            })
+            if(this.category) {
+                this.name = this.category.name
+            }
         }
     }
 }

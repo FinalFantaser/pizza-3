@@ -14,7 +14,7 @@
               </div>
               <div class="ms-auto my-auto mt-lg-0 mt-4">
                 <div class="ms-auto my-auto">
-                  <router-link to="/products/create" class="btn bg-gradient-primary btn-sm mb-0">+&nbsp; New Product</router-link>
+                  <router-link to="/products/create" class="btn bg-gradient-primary btn-sm mb-0">Добавить продукт</router-link>
                   <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
                     Import
                   </button>
@@ -153,8 +153,8 @@ export default {
       }
     },
     methods: {
-        getProducts() {
-            this.$store.dispatch('getProducts')
+        async getProducts() {
+            await this.$store.dispatch('getProducts')
         },
         deleteProduct(id) {
             axios.delete(`api/v1/admin/products/${id}`)
@@ -166,8 +166,8 @@ export default {
                 })
         }
     },
-    created () {
-      this.getProducts()
+    async created () {
+      await this.getProducts()
     }
 };
 </script>
