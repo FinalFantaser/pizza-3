@@ -85,7 +85,11 @@
                                                     <div class="form-check my-auto">
                                                         <input class="form-check-input" type="checkbox" id="customCheck5">
                                                     </div>
-                                                    <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/fendi-coat.jpg" alt="fendi">
+                                                    <img
+                                                        class="w-10 ms-3"
+                                                        :src=" category.thumbUrl ? category.thumbUrl : 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/fendi-coat.jpg' "
+                                                        alt="fendi"
+                                                    >
                                                     <h6 class="ms-3 my-auto">{{ category.name }}</h6>
                                                 </div>
                                             </td>
