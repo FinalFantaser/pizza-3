@@ -83,7 +83,7 @@ class Product extends Model implements HasMedia
     }
 
     public function cities(){
-        return $this->belongsToMany(City::class, 'product_city', 'city_id', 'product_id');
+        return $this->belongsToMany(City::class, 'product_city', 'product_id', 'city_id');
     }
 
     public function getPrice()
