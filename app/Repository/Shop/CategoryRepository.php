@@ -6,7 +6,7 @@
     use Illuminate\Support\Facades\DB;
 
     class CategoryRepository{
-        
+
         public function create($name, $seo_title, $seo_description, $seo_keywords){
             $category = Category::create([
                 'name' => $name,
@@ -34,10 +34,10 @@
         } //detachAllProducts
 
         public function updateImage(Category $category){
-            $category->clearMediaCollection('categories');
-            
-            if(request()->hasFile('categoryImage'))
+            if(request()->hasFile('categoryImage')) {
+                $category->clearMediaCollection('categories');
                 $category->addMediaFromRequest('categoryImage')->toMediaCollection('categories');
+            }
         } //updateImage
 
         public function remove(Category $category): void{
