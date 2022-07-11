@@ -3,6 +3,9 @@
 namespace App\Http\Requests\Api\Admin\Shop\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use App\Rules\CitiesExist;
 
 class ProductRequest extends FormRequest
 {
@@ -40,7 +43,14 @@ class ProductRequest extends FormRequest
             'seo_description' => 'nullable|string',
             'seo_keywords' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'city_id' => 'exists:cities,id',
+            // 'city_id' => 'exists:cities,id',
+            'city_id' => ['json', new CitiesExist],
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }

@@ -42,6 +42,16 @@ class ProductController extends Controller
     } //store
 
     public function update(ProductRequest $request, $product){
+        // $data = array_map(function($value) use ($product) {
+        //     return [
+        //         'product_id' => intval($product),
+        //         'city_id' => $value
+        //     ];
+        // }, json_decode($request->city_id));
+        
+        
+        // return response()->json($data);
+
         //TODO Разобраться с привязкой моделей
         $product = Product::findOrFail($product);
 
