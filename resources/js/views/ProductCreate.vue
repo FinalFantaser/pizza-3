@@ -20,12 +20,19 @@
                         <h5 class="font-weight-bolder">Изображение продукта</h5>
                         <div class="row">
                             <div class="col-12">
-                                <img class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+                                <img v-if="!image" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+
+                                <div v-else
+                                     class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
+                                     :style="{ 'background-image' : `url(${previewImage})` }"
+                                     @click="selectImage"
+                                ></div>
+                                <input ref="fileInput" type="file" @input="pickFile" style="display: none">
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
-                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button">Edit</button>
-                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button">Remove</button>
+                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Edit</button>
+                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button" @click.prevent="previewImage=null,image=null">Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +137,9 @@ export default {
             price: '',
             price_sale: '',
             description: '',
-            sizes: ''
+            sizes: '',
+            previewImage: null,
+            image: null
         }
     },
     computed: {
@@ -142,6 +151,21 @@ export default {
         }
     },
     methods: {
+        selectImage() {
+            this.$refs.fileInput.click()
+        },
+        pickFile() {
+            let input = this.$refs.fileInput
+            let file = input.files
+            if (file && file[0]){
+                let reader = new FileReader
+                reader.onload = e => {
+                    this.previewImage = e.target.result
+                }
+                reader.readAsDataURL(file[0])
+                this.image = file[0]
+            }
+        },
         async getCities() {
             await this.$store.dispatch('getCities')
         },
@@ -158,7 +182,7 @@ export default {
             axios.post('/api/v1/admin/products', {
                 name: this.name,
                 category_id: this.category,
-                city_id: 1,
+                city_id: JSON.stringify(this.cities),
                 price: this.price,
                 price_sale: this.price_sale ? this.price_sale: 0,
                 properties: JSON.stringify(properties),
@@ -185,3 +209,15 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.imagePreviewWrapper{
+    width: 250px;
+    height: 250px;
+    display: block;
+    cursor: pointer;
+    margin: 0 auto 30px;
+    background-size: cover;
+    background-position: center center;
+}
+</style>

@@ -66,14 +66,14 @@
         public function attachToCity(AttachToCityRequest $request){
             $this->repository->attachToCity(
                 Product::findOrFail($request->product_id),
-                City::findOrFail($request->city_id)
+                $request->city_id
             );
         } //attachToCity
 
         public function detachFromCity(AttachToCityRequest $request){
             $this->repository->detachFromCity(
                 Product::findOrFail($request->product_id),
-                City::findOrFail($request->city_id)
+                $request->city_id
             );
         } //detachFromCity
 
