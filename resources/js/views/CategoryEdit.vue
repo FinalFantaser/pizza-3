@@ -107,7 +107,6 @@ export default {
             this.$refs.fileInput.click()
         },
         pickFile() {
-            console.log(1)
             let input = this.$refs.fileInput
             let file = input.files
             if (file && file[0]) {
