@@ -1,6 +1,14 @@
 export default {
-    state: {
-        categories: null
+    namespaced: true,
+    state() {
+        return {
+            categories: null
+        }
+    },
+    getters: {
+        stateCategories(state) {
+            return state.categories
+        }
     },
     actions: {
         async getCategories({state}) {

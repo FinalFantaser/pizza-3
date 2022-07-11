@@ -135,21 +135,21 @@ export default {
     },
     computed: {
         stateCities() {
-            return this.$store.state.serviceCities.cities
+            return this.$store.getters['serviceCities/stateCities']
         },
         stateCategories() {
-            return this.$store.state.serviceCategories.categories
+            return this.$store.getters['serviceCategories/stateCategories']
         }
     },
     methods: {
         async getCities() {
-            await this.$store.dispatch('getCities')
+            await this.$store.dispatch('serviceCities/getCities')
         },
         async getCategories() {
-            await this.$store.dispatch('getCategories')
+            await this.$store.dispatch('serviceCategories/getCategories')
         },
         addProduct() {
-            this.$store.state.argon.loader = true
+            this.$store.commit('loaderTrue')
             const properties = {size: []}
             const arr = this.sizes.split(', ')
             arr.forEach(item => {
@@ -171,7 +171,7 @@ export default {
                     console.log(error)
                 })
                 .then(() => {
-                    this.$store.state.argon.loader = false
+                    this.$store.commit('loaderFalse')
                 })
         }
     },

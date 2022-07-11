@@ -1,19 +1,21 @@
 export default {
-    state: {
-        hideConfigButton: false,
-        isPinned: true,
-        showConfig: false,
-        sidebarType: "bg-white",
-        mcolor: "",
-        darkMode: false,
-        isNavFixed: false,
-        isAbsolute: false,
-        showNavs: true,
-        showSidenav: true,
-        showNavbar: true,
-        showFooter: true,
-        showMain: true,
-        layout: "default"
+    state() {
+        return {
+            hideConfigButton: false,
+            isPinned: true,
+            showConfig: false,
+            sidebarType: "bg-white",
+            mcolor: "",
+            darkMode: false,
+            isNavFixed: false,
+            isAbsolute: false,
+            showNavs: true,
+            showSidenav: true,
+            showNavbar: true,
+            showFooter: true,
+            showMain: true,
+            layout: "default"
+        }
     },
     mutations: {
         toggleConfigurator(state) {

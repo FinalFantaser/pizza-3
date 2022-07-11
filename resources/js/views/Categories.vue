@@ -86,9 +86,16 @@
                                                         <input class="form-check-input" type="checkbox" id="customCheck5">
                                                     </div>
                                                     <img
+                                                        v-if="category.thumbUrl"
                                                         class="w-10 ms-3"
-                                                        :src=" category.thumbUrl ? category.thumbUrl : 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/fendi-coat.jpg' "
-                                                        alt="fendi"
+                                                        :src="category.thumbUrl"
+                                                        alt="category"
+                                                    >
+                                                    <img
+                                                        v-else
+                                                        class="w-10 ms-3"
+                                                        src="@/assets/img/CategoryDefault.png"
+                                                        alt="category"
                                                     >
                                                     <h6 class="ms-3 my-auto">{{ category.name }}</h6>
                                                 </div>
@@ -140,28 +147,27 @@
 </template>
 
 <script>
-import serviceCategories from "../store/service/categories";
 
 export default {
     name: "Categories",
     computed: {
         stateCategory() {
-            return this.$store.state.serviceCategories.categories
+            return this.$store.getters['serviceCategories/stateCategories']
         }
     },
     methods: {
         async getCategories() {
-            await this.$store.dispatch('getCategories')
+            await this.$store.dispatch('serviceCategories/getCategories')
         },
         deleteCategory(id) {
-            this.$store.state.argon.loader = true
+            this.$store.commit('loaderTrue')
             axios.delete(`/api/v1/admin/categories/${id}`)
                 .then( (response) => {
-                    this.$store.state.argon.loader = false
-                    this.$store.dispatch('getCategories')
+                    this.$store.commit('loaderFalse')
+                    this.$store.dispatch('serviceCategories/getCategories')
                 })
                 .catch(function (error) {
-                    this.$store.state.argon.loader = false
+                    this.$store.commit('loaderFalse')
                     console.log(error);
                 })
         }

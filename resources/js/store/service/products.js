@@ -1,6 +1,14 @@
 export default {
-    state: {
-        products: null
+    namespaced: true,
+    state() {
+        return {
+            products: null
+        }
+    },
+    getters: {
+        stateProducts(state) {
+            return state.products
+        }
     },
     actions: {
         async getProducts({state}) {

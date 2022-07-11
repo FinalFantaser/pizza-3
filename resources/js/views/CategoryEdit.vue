@@ -21,13 +21,30 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Изображение категории</h5>
                         <div class="row">
-                            <div class="col-12">
-                                <img class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+                            <div class="col-12 cursor-pointer">
+                                <img v-if="!imgPath && !img" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="@/assets/img/CategoryDefault.png" alt="category_image">
+                                <img v-else-if="imgPath && !img"
+                                     @click="selectImage"
+                                     class="w-100 border-radius-lg shadow-lg mt-3"
+                                     :src="imgPath"
+                                     alt="category_image"
+                                >
+                                <div v-else
+                                     class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
+                                     :style="{ 'background-image' : `url(${previewImage})` }"
+                                     @click="selectImage"
+                                ></div>
+                                <input ref="fileInput" type="file" @input.prevent="pickFile" style="display: none">
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
-                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button">Edit</button>
-                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button">Remove</button>
+                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Загрузить</button>
+                                    <button
+                                        class="btn btn-outline-dark btn-sm mb-0"
+                                        type="button"
+                                        name="button"
+                                        @click.prevent="imgPath=null, previewImage=null, img=null"
+                                    >Удалить</button>
                                 </div>
                             </div>
                         </div>
@@ -74,23 +91,48 @@ export default {
         return {
             name: '',
             description: '',
-            category: null
+            category: null,
+            img: null,
+            previewImage: null,
+            imgPath: null
         }
     },
     computed: {
         stateCategories() {
-            return this.$store.state.serviceCategories.categories
+            return this.$store.getters['serviceCategories/stateCategories']
         }
     },
     methods: {
+        selectImage() {
+            this.$refs.fileInput.click()
+        },
+        pickFile() {
+            console.log(1)
+            let input = this.$refs.fileInput
+            let file = input.files
+            if (file && file[0]) {
+                let reader = new FileReader
+                reader.onload = e => {
+                    this.previewImage = e.target.result
+                }
+                reader.readAsDataURL(file[0])
+                this.img = file[0]
+                console.log(this.img)
+            }
+        },
         async getCategories() {
-            await this.$store.dispatch('getCategories')
+            await this.$store.dispatch('serviceCategories/getCategories')
         },
         editCategory() {
-            this.$store.state.argon.loader = true
-            axios.put(`/api/v1/admin/categories/${this.category.id}`, {
-                name: this.name
-            })
+            this.$store.commit('loaderTrue')
+            const data = new FormData()
+            data.append('name', this.name)
+            if(this.img) {
+                data.append('categoryImage', this.img)
+            }
+            data.append("_method", "put");
+            console.log(this.name)
+            axios.post(`/api/v1/admin/categories/${this.category.id}`, data)
                 .then(data => {
                     console.log(data)
                 })
@@ -98,24 +140,38 @@ export default {
                     console.log(error);
                 })
                 .then(() => {
-                    this.$store.state.argon.loader = false
+                    this.$store.commit('loaderFalse')
                 })
         }
     },
     async created() {
-        await this.getCategories()
-        if(this.stateCategories) {
-            this.category = this.stateCategories.find((elem) => {
-                return elem.id == this.$route.params.id
+        this.$store.commit('loaderTrue')
+        await axios.get(`/api/v1/admin/categories/${this.$route.params.id}`)
+            .then(data => {
+                this.category = data.data.data
+                console.log(data.data.data)
             })
-            if(this.category) {
-                this.name = this.category.name
-            }
+            .catch( (error) => {
+                console.log(error);
+            })
+            .then(() => {
+                this.$store.commit('loaderFalse')
+            })
+        if (this.category) {
+            this.name = this.category.name
+            this.imgPath = this.category.thumbUrl
         }
     }
 }
 </script>
 
 <style scoped>
-
+.imagePreviewWrapper{
+    height: 250px;
+    display: block;
+    cursor: pointer;
+    margin: 0 auto 30px;
+    background-size: cover;
+    background-position: center center;
+}
 </style>

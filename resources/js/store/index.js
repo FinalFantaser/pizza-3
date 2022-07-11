@@ -12,5 +12,23 @@ export default createStore({
         serviceProducts,
         argon,
         auth
+    },
+    state() {
+        return {
+            loader: false
+        }
+    },
+    getters: {
+        stateLoader(state) {
+            return state.loader
+        }
+    },
+    mutations: {
+        loaderTrue(state) {
+            state.loader = true
+        },
+        loaderFalse(state) {
+            state.loader = false
+        }
     }
 });

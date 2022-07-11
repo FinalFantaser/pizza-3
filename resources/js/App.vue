@@ -64,7 +64,7 @@ export default {
   },
   computed: {
       stateLoader() {
-        return this.$store.state.argon.loader
+        return this.$store.getters.stateLoader
       },
     navClasses() {
       return {

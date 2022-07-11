@@ -9,7 +9,7 @@
                         <button
                             data-bs-toggle="modal" data-bs-target="#ModalCities"
                             class="btn btn-success btn-sm ms-auto"
-                            @click="this.$store.state.argon.editCity = false"
+                            @click="this.$store.commit('serviceCities/editCityFalse')"
                         >Add city</button>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -64,28 +64,28 @@ export default {
     },
     computed: {
         stateCities() {
-            return this.$store.state.serviceCities.cities
+            return this.$store.getters['serviceCities/stateCities']
         }
     },
     methods: {
         async getCities() {
-            await this.$store.dispatch('getCities')
+            await this.$store.dispatch('serviceCities/getCities')
         },
         deleteCity(id) {
-            this.$store.state.argon.loader = true
+            this.$store.commit('loaderTrue')
             axios.delete(`/api/v1/admin/cities/${id}`)
                 .then( (response) => {
-                    this.$store.state.argon.loader = false
-                    this.$store.dispatch('getCities')
+                    this.$store.commit('loaderFalse')
+                    this.$store.dispatch('serviceCities/getCities')
                 })
-                .catch(function (error) {
-                    this.$store.state.argon.loader = false
+                .catch((error) => {
+                    this.$store.commit('loaderFalse')
                     console.log(error);
                 })
         },
         editCity(city) {
-            this.$store.state.argon.editCity = true
-            this.$store.state.argon.city = city
+            this.$store.commit('serviceCities/editCityTrue')
+            this.$store.commit('serviceCities/addCity', city)
         }
 
     },
