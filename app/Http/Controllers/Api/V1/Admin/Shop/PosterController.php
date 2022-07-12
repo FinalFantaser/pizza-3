@@ -33,8 +33,9 @@ class PosterController extends Controller
     } //show
 
     public function store(CreateRequest $request){
+//        dd($request->enabled);
         $this->service->create($request);
-        return response()->json(['message' => 'Постер добавлен в базу данных']);
+        return response()->json(['message' => 'Постер добавлен в базу данных'], 201);
     } //store
 
     public function update(UpdateRequest $request, Poster $poster){
@@ -49,7 +50,7 @@ class PosterController extends Controller
 
     //
     //                  Управление постерами
-    //  
+    //
     public function enable(Poster $poster){
         $this->service->enable($poster);
         return response()->json(['message' => 'Постер виден посетителям']);

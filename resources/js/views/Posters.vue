@@ -128,8 +128,19 @@ export default {
         }
     },
     methods: {
-        deletePoster() {
-
+        deletePoster(id) {
+            this.$store.commit('loaderTrue')
+            axios.delete(`api/v1/admin/posters/${id}`)
+                .then((data) => {
+                    console.log(data)
+                    this.getPosters()
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .then(() => {
+                    this.$store.commit('loaderFalse')
+                })
         },
         async getPosters() {
             await this.$store.dispatch('servicePosters/getPosters')
