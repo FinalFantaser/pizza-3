@@ -54,6 +54,7 @@
             $this->updateImage($product);
 
             //Привязка к городам
+            $this->clearAllCities($product);
             $this->attachToCity($product, $city_id);
 
             return $product;
