@@ -21,12 +21,23 @@ class PosterService{
 
     public function create(CreateRequest $request){
         return
-            $this->repository->create($request->name, $request->description, $request->enabled);
+            $this->repository->create(
+                $request->name,
+                $request->description,
+                $request->enabled,
+                $request->has('city_id') ? $request->city_id : null
+            );
     } //create
 
     public function update(UpdateRequest $request, Poster $poster){
         return
-            $this->repository->update($poster, $request->name, $request->description, $request->enabled);
+            $this->repository->update(
+                $poster,
+                $request->name,
+                $request->description,
+                $request->enabled,
+                $request->has('city_id') ? $request->city_id : null
+            );
     } //update
 
     public function remove(Poster $poster){
@@ -43,15 +54,15 @@ class PosterService{
 
     public function attachToCity(AttachToCityRequest $request){
         $this->repository->attachToCity(
-            Poster::findOrFail($request->city_id),
-            City::findOrFail($request->city_id)
+            Poster::findOrFail($request->poster_id),
+            $request->city_id
         );
     } //attachToCity
 
     public function detachFromCity(AttachToCityRequest $request){
         $this->repository->detachFromCity(
-            Poster::findOrFail($request->city_id),
-            City::findOrFail($request->city_id)
+            Poster::findOrFail($request->poster_id),
+            $request->city_id
         );
     } //detachFromCity
 

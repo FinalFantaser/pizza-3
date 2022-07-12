@@ -5,6 +5,9 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use App\Rules\CitiesExist;
 
 class UpdateRequest extends FormRequest
 {
@@ -30,18 +33,13 @@ class UpdateRequest extends FormRequest
             'description' => 'required|string|max:512',
             'enabled' => 'required|boolean',
             'posterImage' => 'mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
+            'city_id' => ['json', new CitiesExist],
         ];
     } //rules
 
-    protected function failedValidation(Validator $validator)
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        $errors = $validator->errors();
-
-        $response = response()->json([
-            'message' => 'Invalid data send',
-            'details' => $errors->messages(),
-        ], 422);
-
-        throw new \Illuminate\Http\Exceptions\HttpResponseException($response);
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }
