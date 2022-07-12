@@ -3,6 +3,9 @@
 namespace App\Http\Requests\Api\Admin\Shop\Poster;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use App\Rules\CitiesExist;
 
 class CreateRequest extends FormRequest
 {
@@ -28,6 +31,13 @@ class CreateRequest extends FormRequest
             'description' => 'required|string|max:512',
             'enabled' => 'required|boolean',
             'posterImage' => 'required|mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
+            'city_id' => ['json', new CitiesExist],
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }

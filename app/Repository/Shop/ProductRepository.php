@@ -72,9 +72,10 @@
         } //attachCategory
 
         public function updateImage(Product $product){ //Обновить изображение у продукта
-            $product->clearMediaCollection('products');
-            if(request()->hasFile('productImage') )
+            if(request()->hasFile('productImage') ){
+                $product->clearMediaCollection('products');
                 $product->addMediaFromRequest('productImage')->toMediaCollection('products');
+            }
         } //updateImage
 
         public function remove(Product $product): void{
@@ -90,7 +91,7 @@
                 $ids = json_decode($city);
             
                 if(is_int($ids)){
-                    DB::table('product_city')->updateOrInsert(['product_id' => $product->id, 'city_id' => $city]);
+                    DB::table('product_city')->updateOrInsert(['product_id' => $product->id, 'city_id' => $ids]);
                     return;
                 }
 
