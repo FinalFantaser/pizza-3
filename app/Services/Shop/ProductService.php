@@ -81,8 +81,11 @@
             return $this->readRepository->getMethods();
         } //getMethods
 
-        public function findById(int $id){
-            return $this->readRepository->findById($id);
+        public function findById(int $id, string|array $with = null){
+            return $this->readRepository->findById(
+                id: $id,
+                with: $with
+            );
         } //findById
 
         public function findByCity(City $city){

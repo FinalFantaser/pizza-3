@@ -19,9 +19,15 @@
             return $products;
         } //findLatest
 
-        public function findById(int $id)
+        public function findById(int $id, string|array $with = null)
         {
-            $product = Product::where('id', $id)->first();
+            $product = Product::where('id', $id)
+                ->when(function($query) use ($with){
+                    return is_null($with)
+                        ? $query
+                        : $query->with($with);
+                })
+                ->first();
             return $product;
         } //findById
 

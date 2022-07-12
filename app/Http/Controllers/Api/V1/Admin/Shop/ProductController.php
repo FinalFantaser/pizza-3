@@ -29,12 +29,11 @@ class ProductController extends Controller
     } //index
 
     public function show($product){
-        //TODO Разобраться с привязкой моделей
-        // $product = Product::findOrFail($product);
-        $product = $this->service->findById($product);
-        $product->load('cities:id,name');
+        $product = $this->service->findById(
+            id: $product,
+            with: ['cities:id,name', 'categories:id,name']
+        );
 
-        //TODO Сделать загрузку из сервиса и возвращать ресурс
         return new ProductResource($product);
     } //show
 
