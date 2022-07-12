@@ -89,7 +89,7 @@
             return $this->readRepository->findByCity($city);
         } //findByCity
 
-        public function findByCityAndCategory(City $city, Category $category){
-            return $this->readRepository->findByCityAndCategory($city, $category);
+        public function findByCityAndCategory(City $city, Category $category, string|array $with = null){
+            return $this->readRepository->findByCityAndCategory($city, $category, $with);
         } //findByCityAndCategory
     }

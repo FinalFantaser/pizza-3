@@ -19,6 +19,9 @@ class CityService{
         $this->readRepository = $readRepository;
     } //Конструктор
 
+    //
+    // CRUD-методы
+    //
     public function create(CreateRequest $request){        
         return $this->repository->create($request->name);
     } //create
@@ -31,6 +34,10 @@ class CityService{
         $this->repository->remove($city);
     } //remove
 
+
+    //
+    // Загрузка моделей
+    //
     public function getMethods(){
         return $this->readRepository->getMethods();
     } //getMethods
@@ -42,4 +49,8 @@ class CityService{
     public function findById(int $id){
         return $this->readRepository->findById($id);
     } //findById
+
+    public function findBySlug(string $slug){
+        return $this->readRepository->findBySlug($slug);
+    } //findBySlug
 }

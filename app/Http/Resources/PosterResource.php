@@ -14,6 +14,14 @@ class PosterResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'name' => $this->name,
+            'description' => $this->description,
+            'enabled' => $this->enabled,
+            'cities' => $this->whenLoaded('cities'),
+            'imageUrl' => $this->getFirstMediaUrl(),
+            'thumbUrl' => $this->getFirstMediaUrl('thumb'),
+            'thumbAdminUrl' => $this->getFirstMediaUrl('thumb_admin'),
+        ];
     }
 }

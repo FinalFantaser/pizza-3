@@ -22,18 +22,20 @@ class ProductController extends Controller
     ){} //Конструктор
 
     public function index(Request $request, Category $category){
-        $city = $this->cityService->findById($request->city_id);
+        $city = $this->cityService->findBySlug($request->city);
 
         return ProductResource::collection(
-            $this->productService->findByCityAndCategory($city, $category)
+            $this->productService->findByCityAndCategory(
+                city: $city,
+                category: $category,
+                with: ['categories:id,name']
+            )
         );
-
-        return response($city->name, 200);
     } //index
 
-    public function show(City $city, category $category, Product $product){
+    public function show(Request $request, Product $product){
         return new ProductResource(
-            $product->load('category')
+            $product->load('categories:slug,name', 'cities:slug,name')
         );
-    }
+    } //show
 }

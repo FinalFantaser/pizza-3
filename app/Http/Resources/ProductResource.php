@@ -17,6 +17,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
             'status' => $this->status,
             'price' => $this->price,
             'price_sale' => $this->price_sale,
@@ -24,8 +25,8 @@ class ProductResource extends JsonResource
             'imageUrl' => $this->imageUrl('product'),
             'thumbUrl' => $this->imageUrl('product_thumb_admin'),
             'properties' => $this->properties,
-            'category' => $this->category,
-            'cities' => $this->cities
+            'category' => $this->whenLoaded('categories', $this->category),
+            'cities' => $this->whenLoaded('cities')
         ];
     }
 }
