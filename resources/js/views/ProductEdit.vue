@@ -65,14 +65,9 @@
                             <div class="col-12 col-sm-6">
                                 <label>Категория</label>
                                 <select
-                                    v-model="category"
+                                    v-model="category_id"
                                     class="form-select"
                                 >
-                                    <option
-                                        disabled
-                                        selected
-                                        value=""
-                                    >{{ category }}</option>
                                     <option
                                         v-for="category in stateCategories"
                                         :value="category.id"
@@ -130,6 +125,7 @@
                                         {{ city.name }}
                                     </label>
                                 </div>
+                                <p> {{ cities }} </p>
                             </div>
                         </div>
                     </div>
@@ -151,7 +147,7 @@ export default {
             price_sale: '',
             cities: [],
             description: '',
-            category: '',
+            category_id: '',
             sizes: '',
             imgPath: null,
             previewImage: null,
@@ -190,7 +186,7 @@ export default {
 
             const data = new FormData()
             data.append('name',this.name)
-            data.append('category_id', this.category)
+            data.append('category_id', this.category_id)
             data.append('city_id', JSON.stringify(this.cities))
             data.append('price', this.price)
             data.append('price_sale', this.price_sale ? this.price_sale: 0)
@@ -207,7 +203,7 @@ export default {
                 data.append('properties', JSON.stringify(properties))
             }
             data.append("_method", "put");
-            axios.post('/api/v1/admin/products', data)
+            axios.post(`/api/v1/admin/products/${this.product.id}`, data)
                 .then((data) => {
                     console.log(data)
                 })
@@ -245,7 +241,7 @@ export default {
         await this.getCategories()
         if (this.product) {
             this.name = this.product.name
-            this.category = this.product.category.name
+            this.category_id = this.product.category.id
             this.price = this.product.price
             this.price_sale = this.product.price_sale !== 0 ? this.product.price_sale : ''
             this.description = this.product.description ? this.product.description : ''
