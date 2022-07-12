@@ -71,6 +71,7 @@
                                     <option
                                         disabled
                                         selected
+                                        value=""
                                     >{{ category }}</option>
                                     <option
                                         v-for="category in stateCategories"
@@ -244,7 +245,7 @@ export default {
         await this.getCategories()
         if (this.product) {
             this.name = this.product.name
-            this.category = this.product.category
+            this.category = this.product.category.name
             this.price = this.product.price
             this.price_sale = this.product.price_sale !== 0 ? this.product.price_sale : ''
             this.description = this.product.description ? this.product.description : ''
