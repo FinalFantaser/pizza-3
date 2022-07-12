@@ -29,7 +29,7 @@ class CreateRequest extends FormRequest
         return [
             'name' => 'required|unique:posters|string|max:255',
             'description' => 'required|string|max:512',
-            'enabled' => 'required|boolean',
+            'enabled' => 'required|in:true,false',
             'posterImage' => 'required|mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
             'city_id' => ['json', new CitiesExist],
         ];

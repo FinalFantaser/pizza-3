@@ -4,12 +4,14 @@ import auth from "./modules/auth";
 import serviceCities from "./service/cities";
 import serviceCategories from "./service/categories";
 import serviceProducts from "./service/products";
+import servicePosters from "./service/posters";
 
 export default createStore({
     modules: {
         serviceCities,
         serviceCategories,
         serviceProducts,
+        servicePosters,
         argon,
         auth
     },

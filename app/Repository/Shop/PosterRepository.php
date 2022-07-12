@@ -7,7 +7,7 @@
     use App\Models\Shop\Poster;
 
     class PosterRepository{
-        
+
         public function create(string $name, string $description, bool $enabled, $city = null){
             $poster = Poster::create(['name' => $name, 'description' => $description, 'enabled' => $enabled]);
 
@@ -63,7 +63,7 @@
                 DB::table('posters_cities')->updateOrInsert(['poster_id' => $poster->id, 'city_id' => $city]);
             elseif(is_string($city)){
                 $ids = json_decode($city);
-            
+
                 if(is_int($ids)){
                     DB::table('posters_cities')->updateOrInsert(['poster_id' => $poster->id, 'city_id' => $ids]);
                     return;
@@ -71,7 +71,7 @@
 
                 if(count($ids) < 1)
                     return;
-                
+
                 //Создание массива
                 $data = array_map(function($value) use ($poster) {
                     return [
@@ -79,7 +79,7 @@
                         'city_id' => $value
                     ];
                 }, $ids);
-                
+
                 foreach($data as $item)
                     DB::table('posters_cities')->updateOrInsert($item);
             }

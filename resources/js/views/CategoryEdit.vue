@@ -132,6 +132,7 @@ export default {
             data.append("_method", "put");
             axios.post(`/api/v1/admin/categories/${this.category.id}`, data)
                 .then(data => {
+                    window.location.href = '/categories'
                     console.log(data)
                 })
                 .catch( (error) => {

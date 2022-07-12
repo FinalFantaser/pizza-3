@@ -2,8 +2,8 @@
     <div v-if="product" class="container-fluid py-4">
         <div class="row">
             <div class="col-lg-6">
-                <h4 class="text-white">Make the changes below</h4>
-                <p class="text-white opacity-8">We’re constantly trying to express ourselves and actualize our dreams. If you have the opportunity to play.</p>
+                <h4 class="text-white">Редактирование продукта</h4>
+                <p class="text-white opacity-8">Отредактируйте информацию о продукте ниже.</p>
             </div>
             <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
                 <button
@@ -16,7 +16,7 @@
             <div class="col-lg-4">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="font-weight-bolder">Product Image</h5>
+                        <h5 class="font-weight-bolder">Изображение продукта</h5>
                         <div class="row">
                             <div class="col-12 cursor-pointer">
                                 <img v-if="!imgPath && !img" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="@/assets/img/ProductDefault.png" alt="category_image">
@@ -35,13 +35,13 @@
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
-                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Загрузить</button>
-                                    <button
-                                        class="btn btn-outline-dark btn-sm mb-0"
-                                        type="button"
-                                        name="button"
-                                        @click.prevent="imgPath=null, previewImage=null, img=null"
-                                    >Удалить</button>
+                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Выбрать</button>
+<!--                                    <button-->
+<!--                                        class="btn btn-outline-dark btn-sm mb-0"-->
+<!--                                        type="button"-->
+<!--                                        name="button"-->
+<!--                                        @click.prevent="imgPath=null, previewImage=null, img=null"-->
+<!--                                    >Удалить</button>-->
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,6 @@
                                         {{ city.name }}
                                     </label>
                                 </div>
-                                <p> {{ cities }} </p>
                             </div>
                         </div>
                     </div>
@@ -205,6 +204,7 @@ export default {
             data.append("_method", "put");
             axios.post(`/api/v1/admin/products/${this.product.id}`, data)
                 .then((data) => {
+                    window.location.href = '/products'
                     console.log(data)
                 })
                 .catch((error) => {
@@ -246,7 +246,8 @@ export default {
             this.price_sale = this.product.price_sale !== 0 ? this.product.price_sale : ''
             this.description = this.product.description ? this.product.description : ''
             if(this.product.properties) {
-                this.sizes = this.product.properties.size.join(', ')
+                JSON.parse(this.product.properties)
+                this.sizes = JSON.parse(this.product.properties).size.join(', ')
             }
             this.imgPath = this.product.thumbUrl
             if(this.product.cities.length > 0) {

@@ -25,6 +25,7 @@ class PosterService{
                 $request->name,
                 $request->description,
                 $request->enabled,
+//                settype($request->enabled, 'boolean'),
                 $request->has('city_id') ? $request->city_id : null
             );
     } //create

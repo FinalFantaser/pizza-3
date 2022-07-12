@@ -30,8 +30,8 @@ export default {
         }
     },
     actions: {
-        async getCities({state}) {
-            this.state.argon.loader = true
+        async getCities({state, commit}) {
+            commit('loaderTrue', null, { root: true })
             await axios.get('/api/v1/admin/cities')
                 .then(data => {
                     state.cities = data.data.data
@@ -41,7 +41,7 @@ export default {
                     console.log(error);
                 })
                 .then(() => {
-                    this.state.argon.loader = false
+                    commit('loaderFalse', null, { root: true })
                 })
         }
     }

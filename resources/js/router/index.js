@@ -9,6 +9,9 @@ import CategoryEdit from "../views/CategoryEdit.vue";
 import Products from "../views/Products.vue";
 import ProductCreate from "../views/ProductCreate.vue";
 import ProductEdit from "../views/ProductEdit.vue";
+import Posters from "../views/Posters.vue";
+import PosterCreate from "../views/PosterCreate.vue";
+import PosterEdit from "../views/PosterEdit.vue";
 import Orders from "../views/Orders.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
@@ -70,6 +73,21 @@ const routes = [
     path: "/products/:id/edit",
     name: "products.edit",
     component: ProductEdit,
+  },
+    {
+    path: "/posters",
+    name: "posters",
+    component: Posters,
+  },
+    {
+    path: "/posters/create",
+    name: "posters.create",
+    component: PosterCreate,
+  },
+    {
+    path: "/posters/:id/edit",
+    name: "posters.edit",
+    component: PosterEdit,
   },
   {
     path: "/orders",

@@ -11,8 +11,8 @@ export default {
         }
     },
     actions: {
-        async getProducts({state}) {
-            this.state.argon.loader = true
+        async getProducts({state, commit}) {
+            commit('loaderTrue', null, { root: true })
             await axios.get('/api/v1/admin/products')
                 .then((data) => {
                     console.log(data.data.data)
@@ -22,7 +22,7 @@ export default {
                     console.log(error)
                 })
                 .then(() => {
-                    this.state.argon.loader = false
+                    commit('loaderFalse', null, { root: true })
                 })
         }
     }

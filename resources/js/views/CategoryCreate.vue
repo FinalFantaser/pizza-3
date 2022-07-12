@@ -111,7 +111,7 @@ export default {
 
             axios.post('/api/v1/admin/categories', data)
                 .then((data) => {
-                    this.name = ''
+                    window.location.href = '/categories'
                     console.log(data)
                 })
                 .catch((error) => {
