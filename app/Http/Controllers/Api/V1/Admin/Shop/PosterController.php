@@ -29,7 +29,7 @@ class PosterController extends Controller
     } //index
 
     public function show(Poster $poster){
-        return new PosterResource($poster);
+        return new PosterResource($poster->load('cities:id,name'));
     } //show
 
     public function store(CreateRequest $request){
