@@ -89,7 +89,6 @@
                                         {{ city.name }}
                                     </label>
                                 </div>
-                                <p>{{enabled}}</p>
                             </div>
                         </div>
                     </div>
@@ -132,7 +131,7 @@ export default {
             console.log(JSON.parse(data.get('enabled')))
             axios.post('/api/v1/admin/posters', data)
                 .then((data) => {
-                    // window.location.href = '/posters'
+                    window.location.href = '/posters'
                     console.log(data)
                 })
                 .catch((error) => {

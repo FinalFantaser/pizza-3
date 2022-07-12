@@ -24,8 +24,8 @@ class PosterService{
             $this->repository->create(
                 $request->name,
                 $request->description,
-                $request->enabled,
-//                settype($request->enabled, 'boolean'),
+//                $request->enabled,
+                filter_var( $request->enabled, FILTER_VALIDATE_BOOLEAN ),
                 $request->has('city_id') ? $request->city_id : null
             );
     } //create
@@ -36,7 +36,8 @@ class PosterService{
                 $poster,
                 $request->name,
                 $request->description,
-                $request->enabled,
+//                $request->enabled,
+                filter_var( $request->enabled, FILTER_VALIDATE_BOOLEAN ),
                 $request->has('city_id') ? $request->city_id : null
             );
     } //update
