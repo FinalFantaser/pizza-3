@@ -79,7 +79,7 @@ class Product extends Model implements HasMedia
 
     public function getCategoryAttribute()
     {
-        return $this->categories()->first();
+        return $this->categories->first();
     }
 
     public function cities(){
