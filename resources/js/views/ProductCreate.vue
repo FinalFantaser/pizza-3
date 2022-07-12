@@ -186,11 +186,10 @@ export default {
                 data.append('productImage', this.image)
             }
             if (this.sizes) {
-                const properties = {size: []}
+
                 const arr = this.sizes.split(', ')
-                arr.forEach(item => {
-                    properties.size.push(item)
-                })
+                const properties = { size: [ arr ] }
+
                 data.append('properties', JSON.stringify(properties))
             }
 
