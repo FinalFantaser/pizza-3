@@ -14,14 +14,14 @@
 
         public function findLatest()
         {
-            $products = Product::orderByDesc('id')->active();
+            $products = Product::orderByDesc('id');
 
             return $products;
         } //findLatest
 
         public function findById(int $id)
         {
-            $product = Product::where('id', $id)->active()->first();
+            $product = Product::where('id', $id)->first();
             return $product;
         } //findById
 
