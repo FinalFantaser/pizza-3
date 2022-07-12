@@ -14,6 +14,7 @@ class City extends Model
     use HasFactory, Sluggable;
 
     protected $fillable = ['name', 'slug'];
+    protected $hidden = ['pivot'];
 
     public function sluggable(): array //Преобразование названия города в латиницу
     {

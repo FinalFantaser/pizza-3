@@ -24,8 +24,10 @@ class ProductResource extends JsonResource
             // 'cities' => $this->cities,
             'imageUrl' => $this->imageUrl('product'),
             'thumbUrl' => $this->imageUrl('product_thumb_admin'),
-            'properties' => json_decode($this->properties),
             'category' => ['name' => $this->category->name, 'id' => $this->category->id],
+            'properties' => $this->properties,
+            // 'category' => $this->category->only(['id', 'name']),
+            'category' => $this->category,
             'cities' => $this->cities
         ];
     }

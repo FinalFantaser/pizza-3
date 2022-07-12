@@ -19,6 +19,8 @@ class Category extends Model implements HasMedia
 
     protected $fillable = ['name','meta'];
 
+    protected $hidden = ['pivot'];
+
     protected $casts = [
         'meta' => 'array'
     ];
