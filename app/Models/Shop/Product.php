@@ -77,7 +77,7 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Category::class, 'category_product', 'product_id', 'category_id');
     }
 
-    public function category()
+    public function getCategoryAttribute()
     {
         return $this->categories()->first();
     }
