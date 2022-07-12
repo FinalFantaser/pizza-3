@@ -86,7 +86,18 @@
                             <div class="form-check my-auto">
                               <input class="form-check-input" type="checkbox" id="customCheck5">
                             </div>
-                            <img class="w-10 ms-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/fendi-coat.jpg" alt="fendi">
+                              <img
+                                  v-if="product.thumbUrl"
+                                  class="w-10 ms-3"
+                                  :src="product.thumbUrl"
+                                  alt="category"
+                              >
+                              <img
+                                  v-else
+                                  class="w-10 ms-3"
+                                  src="@/assets/img/ProductDefault.png"
+                                  alt="category"
+                              >
                             <h6 class="ms-3 my-auto">{{ product.name }}</h6>
                           </div>
                         </td>
@@ -101,7 +112,7 @@
                           <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
                             <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
                           </a>
-                          <router-link :to="'/products/' + 'helo' + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
+                          <router-link :to="'/products/' + product.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
                             <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
                           </router-link>
                           <a
@@ -149,20 +160,25 @@ export default {
   },
     computed: {
       stateProducts() {
-          return this.$store.state.serviceProducts.products
+          return this.$store.getters['serviceProducts/stateProducts']
       }
     },
     methods: {
         async getProducts() {
-            await this.$store.dispatch('getProducts')
+            await this.$store.dispatch('serviceProducts/getProducts')
         },
         deleteProduct(id) {
+            this.$store.commit('loaderTrue')
             axios.delete(`api/v1/admin/products/${id}`)
                 .then((data) => {
                     console.log(data)
+                    this.$store.dispatch('serviceProducts/getProducts')
                 })
                 .catch((error) => {
                     console.log(error)
+                })
+                .then(() => {
+                    this.$store.commit('loaderFalse')
                 })
         }
     },

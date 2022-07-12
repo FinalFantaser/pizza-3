@@ -21,8 +21,8 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Изображение категории</h5>
                         <div class="row">
-                            <div class="col-12">
-                                <img v-if="!image" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+                            <div class="col-12 cursor-pointer">
+                                <img v-if="!img" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="@/assets/img/CategoryDefault.png" alt="category_image">
 
                                 <div v-else
                                     class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
@@ -33,8 +33,8 @@
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
-                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Edit</button>
-                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button" @click.prevent="previewImage=null,image=null">Remove</button>
+                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Загрузить</button>
+                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button" @click.prevent="previewImage=null,img=null">Удалить</button>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@ export default {
             name: '',
             description: '',
             previewImage: null,
-            image: null
+            img: null
         }
     },
     methods: {
@@ -91,32 +91,34 @@ export default {
         pickFile() {
             let input = this.$refs.fileInput
             let file = input.files
-            if (file && file[0]){
+            if (file && file[0]) {
                 let reader = new FileReader
                 reader.onload = e => {
                     this.previewImage = e.target.result
                 }
                 reader.readAsDataURL(file[0])
-                this.image = file[0]
+                this.img = file[0]
             }
         },
         addCategory() {
-            this.$store.state.argon.loader = true
+            this.$store.commit('loaderTrue')
 
             const data = new FormData()
             data.append('name',this.name)
-            data.append('categoryImage', this.image)
+            if(this.img) {
+                data.append('categoryImage', this.img)
+            }
 
             axios.post('/api/v1/admin/categories', data)
                 .then((data) => {
-                    this.name = ''
+                    window.location.href = '/categories'
                     console.log(data)
                 })
                 .catch((error) => {
                     console.log(error)
                 })
                 .then(() => {
-                    this.$store.state.argon.loader = false
+                    this.$store.commit('loaderFalse')
                 })
         }
     }
@@ -125,7 +127,6 @@ export default {
 
 <style scoped>
 .imagePreviewWrapper{
-    width: 250px;
     height: 250px;
     display: block;
     cursor: pointer;

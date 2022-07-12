@@ -61,6 +61,17 @@
           </template>
         </sidenav-item>
       </li>
+        <li class="nav-item">
+            <sidenav-item
+                url="/posters"
+                :class="getRoute() === '/posters' ? 'active' : ''"
+                :navText="'Постеры'"
+            >
+                <template v-slot:icon>
+                    <i class="ni ni-album-2 text-primary text-sm opacity-10"></i>
+                </template>
+            </sidenav-item>
+        </li>
       <li class="nav-item">
         <sidenav-item
           url="/orders"

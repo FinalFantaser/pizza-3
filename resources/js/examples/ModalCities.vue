@@ -47,17 +47,17 @@ export default {
     methods: {
         changeOrAddCity() {
             this.$refs.close.click()
-            this.$store.state.argon.loader = true
+            this.$store.commit('loaderTrue')
             axios[this.editCity ? 'put' : 'post'](`/api/v1/admin/cities/${this.editCity ? this.stateCity.id : ''}`, {
                 name: this.city
             })
                 .then((response) => {
-                    this.$store.state.argon.loader = false
-                    this.$store.dispatch('getCities')
+                    this.$store.commit('loaderFalse')
+                    this.$store.dispatch('serviceCities/getCities')
                     console.log(response);
                 })
                 .catch((error) => {
-                    this.$store.state.argon.loader = false
+                    this.$store.commit('loaderFalse')
                     console.log(error);
                 })
                 .then(() => {
@@ -67,15 +67,15 @@ export default {
     },
     computed: {
         editCity() {
-            if (this.$store.state.argon.editCity) {
+            if (this.$store.getters['serviceCities/stateEditCity']) {
                 this.city = this.stateCity.name
             } else {
                 this.city = ''
             }
-            return this.$store.state.argon.editCity
+            return this.$store.getters['serviceCities/stateEditCity']
         },
         stateCity() {
-            return this.$store.state.argon.city
+            return this.$store.getters['serviceCities/stateCity']
         }
     }
 }

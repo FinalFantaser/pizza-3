@@ -1,12 +1,37 @@
 export default {
-    state: {
-        editCity: false,
-        city: {},
-        cities: null
+    namespaced: true,
+    state()  {
+        return {
+            editCity: false,
+            city: {},
+            cities: null
+        }
+    },
+    getters: {
+        stateEditCity(state) {
+            return state.editCity
+        },
+        stateCity(state) {
+            return state.city
+        },
+        stateCities(state) {
+            return state.cities
+        }
+    },
+    mutations: {
+        editCityTrue(state) {
+            state.editCity = true
+        },
+        editCityFalse(state) {
+            state.editCity = false
+        },
+        addCity(state, payload) {
+            state.city = payload
+        }
     },
     actions: {
-        async getCities({state}) {
-            this.state.argon.loader = true
+        async getCities({state, commit}) {
+            commit('loaderTrue', null, { root: true })
             await axios.get('/api/v1/admin/cities')
                 .then(data => {
                     state.cities = data.data.data
@@ -16,7 +41,7 @@ export default {
                     console.log(error);
                 })
                 .then(() => {
-                    this.state.argon.loader = false
+                    commit('loaderFalse', null, { root: true })
                 })
         }
     }

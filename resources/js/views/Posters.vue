@@ -6,41 +6,14 @@
                     <div class="card-header pb-0">
                         <div class="d-lg-flex">
                             <div>
-                                <h5 class="mb-0">Все категории</h5>
+                                <h5 class="mb-0">Все постеры</h5>
                                 <p class="text-sm mb-0">
-                                    A lightweight, extendable, dependency-free javascript HTML table plugin.
+                                    Ниже представлен список всех имеющихся постеров.
                                 </p>
                             </div>
                             <div class="ms-auto my-auto mt-lg-0 mt-4">
                                 <div class="ms-auto my-auto">
-                                    <router-link to="/categories/create" class="btn bg-gradient-primary btn-sm mb-0">Добавить категорию</router-link>
-                                    <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
-                                        Import
-                                    </button>
-                                    <div class="modal fade" id="import" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog mt-lg-10">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="ModalLabel">Import CSV</h5>
-                                                    <i class="fas fa-upload ms-3" aria-hidden="true"></i>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>You can browse your computer for a file.</p>
-                                                    <input type="text" placeholder="Browse file..." class="form-control mb-3" onfocus="focused(this)" onfocusout="defocused(this)">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="importCheck" checked="">
-                                                        <label class="custom-control-label" for="importCheck">I accept the terms and conditions</label>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn bg-gradient-primary btn-sm">Upload</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button>
+                                    <router-link to="/posters/create" class="btn bg-gradient-primary btn-sm mb-0">Добавить постер</router-link>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +42,7 @@
                                     <table class="table table-flush dataTable-table" id="products-list">
                                         <thead class="thead-light">
                                         <tr>
-                                            <th data-sortable="" style="width: 31.7521%;"><a href="#" class="dataTable-sorter">Product</a></th>
+                                            <th data-sortable="" style="width: 31.7521%;"><a href="#" class="dataTable-sorter">Постер</a></th>
                                             <th data-sortable="" style="width: 12.3972%;" class=""><a href="#" class="dataTable-sorter">Category</a></th>
                                             <th data-sortable="" style="width: 9.55092%;" class=""><a href="#" class="dataTable-sorter">Price</a></th>
                                             <th data-sortable="" style="width: 12.5237%;" class=""><a href="#" class="dataTable-sorter">SKU</a></th>
@@ -79,25 +52,25 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="(category, index) in stateCategories">
+                                        <tr v-for="(poster, index) in statePosters">
                                             <td>
                                                 <div class="d-flex">
                                                     <div class="form-check my-auto">
                                                         <input class="form-check-input" type="checkbox" id="customCheck5">
                                                     </div>
                                                     <img
-                                                        v-if="category.thumbUrl"
+                                                        v-if="poster.thumbUrl"
                                                         class="w-10 ms-3"
-                                                        :src="category.thumbUrl"
+                                                        :src="poster.thumbUrl"
                                                         alt="category"
                                                     >
                                                     <img
                                                         v-else
                                                         class="w-10 ms-3"
-                                                        src="@/assets/img/CategoryDefault.png"
+                                                        src="@/assets/img/PosterDefault.png"
                                                         alt="category"
                                                     >
-                                                    <h6 class="ms-3 my-auto">{{ category.name }}</h6>
+                                                    <h6 class="ms-3 my-auto">{{ poster.name }}</h6>
                                                 </div>
                                             </td>
                                             <td class="text-sm">Clothing</td>
@@ -111,12 +84,12 @@
                                                 <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
                                                     <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
                                                 </a>
-                                                <router-link :to="'/categories/' + category.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
+                                                <router-link :to="'/posters/' + poster.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
                                                     <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
                                                 </router-link>
                                                 <a
                                                     href="javascript:;"
-                                                    @click="deleteCategory(category.id)"
+                                                    @click="deletePoster(poster.id)"
                                                 >
                                                     <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
                                                 </a>
@@ -147,33 +120,23 @@
 </template>
 
 <script>
-
 export default {
-    name: "Categories",
+    name: "Posters",
     computed: {
-        stateCategories() {
-            return this.$store.getters['serviceCategories/stateCategories']
+        statePosters() {
+            return this.$store.getters['servicePosters/statePosters']
         }
     },
     methods: {
-        async getCategories() {
-            await this.$store.dispatch('serviceCategories/getCategories')
+        deletePoster() {
+
         },
-        deleteCategory(id) {
-            this.$store.commit('loaderTrue')
-            axios.delete(`/api/v1/admin/categories/${id}`)
-                .then( (response) => {
-                    this.$store.commit('loaderFalse')
-                    this.$store.dispatch('serviceCategories/getCategories')
-                })
-                .catch(function (error) {
-                    this.$store.commit('loaderFalse')
-                    console.log(error);
-                })
+        async getPosters() {
+            await this.$store.dispatch('servicePosters/getPosters')
         }
     },
     async created() {
-        await this.getCategories()
+        await this.getPosters()
     }
 }
 </script>

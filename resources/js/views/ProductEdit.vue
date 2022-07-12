@@ -1,27 +1,47 @@
 <template>
-    <div class="container-fluid py-4">
+    <div v-if="product" class="container-fluid py-4">
         <div class="row">
             <div class="col-lg-6">
-                <h4 class="text-white">Make the changes below</h4>
-                <p class="text-white opacity-8">We’re constantly trying to express ourselves and actualize our dreams. If you have the opportunity to play.</p>
+                <h4 class="text-white">Редактирование продукта</h4>
+                <p class="text-white opacity-8">Отредактируйте информацию о продукте ниже.</p>
             </div>
             <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-                <button type="button" class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Save</button>
+                <button
+                    @click="editProduct()"
+                    type="button"
+                    class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Сохранить</button>
             </div>
         </div>
         <div class="row mt-4">
             <div class="col-lg-4">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="font-weight-bolder">Product Image</h5>
+                        <h5 class="font-weight-bolder">Изображение продукта</h5>
                         <div class="row">
-                            <div class="col-12">
-                                <img class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+                            <div class="col-12 cursor-pointer">
+                                <img v-if="!imgPath && !img" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="@/assets/img/ProductDefault.png" alt="category_image">
+                                <img v-else-if="imgPath && !img"
+                                     @click="selectImage"
+                                     class="w-100 border-radius-lg shadow-lg mt-3"
+                                     :src="imgPath"
+                                     alt="category_image"
+                                >
+                                <div v-else
+                                     class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
+                                     :style="{ 'background-image' : `url(${previewImage})` }"
+                                     @click="selectImage"
+                                ></div>
+                                <input ref="fileInput" type="file" @input.prevent="pickFile" style="display: none">
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
-                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button">Edit</button>
-                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button">Remove</button>
+                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Выбрать</button>
+<!--                                    <button-->
+<!--                                        class="btn btn-outline-dark btn-sm mb-0"-->
+<!--                                        type="button"-->
+<!--                                        name="button"-->
+<!--                                        @click.prevent="imgPath=null, previewImage=null, img=null"-->
+<!--                                    >Удалить</button>-->
                                 </div>
                             </div>
                         </div>
@@ -35,134 +55,75 @@
                         <div class="row mb-sm-3">
                             <div class="col-12 col-sm-6">
                                 <label>Название</label>
-                                <input class="form-control" type="text">
+                                <input
+                                    v-model="name"
+                                    class="form-control"
+                                    type="text"
+                                    placeholder="Название продукта"
+                                >
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label>Категория</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option disabled selected>Выберите категорию</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select
+                                    v-model="category_id"
+                                    class="form-select"
+                                >
+                                    <option
+                                        v-for="category in stateCategories"
+                                        :value="category.id"
+                                    >{{ category.name }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-sm-3">
                             <div class="col-12 col-sm-6">
-                                <label>Город</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option disabled selected>Выберите город</option>
-                                    <option v-for="city in stateCities" value="1">{{ city.name }}</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
                                 <label>Цена</label>
-                                <input class="form-control" type="text" value="$90">
+                                <input
+                                    placeholder="Введите цену"
+                                    v-model="price"
+                                    class="form-control mb-sm-3"
+                                    type="text"
+                                >
+                                <label>Цена со скидкой</label>
+                                <input
+                                    placeholder="Введите цену со скидкой"
+                                    v-model="price_sale"
+                                    class="form-control"
+                                    type="text"
+                                >
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>Описание</label>
+                                <textarea
+                                    placeholder="Опишите продукт"
+                                    v-model="description"
+                                    class="form-control"
+                                    id="exampleFormControlTextarea1"
+                                    rows="5"
+                                ></textarea>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
-                                <label class="mt-4">Description</label>
-                                <p class="form-text text-muted text-xs ms-1 d-inline">
-                                    (optional)
-                                </p>
-                                <div class="ql-toolbar ql-snow">
-                                    <span class="ql-formats">
-                                        <span class="ql-header ql-picker">
-                                            <span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-0">
-                                                <svg viewBox="0 0 18 18">
-                                                    <polygon class="ql-stroke" points="7 11 9 13 11 11 7 11"></polygon>
-                                                    <polygon class="ql-stroke" points="7 7 9 5 11 7 7 7"></polygon>
-                                                </svg>
-                                            </span>
-                                            <span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-0">
-                                                <span tabindex="0" role="button" class="ql-picker-item" data-value="1"></span>
-                                                <span tabindex="0" role="button" class="ql-picker-item" data-value="2"></span>
-                                                <span tabindex="0" role="button" class="ql-picker-item" data-value="3"></span>
-                                                <span tabindex="0" role="button" class="ql-picker-item"></span>
-                                            </span>
-                                        </span>
-                                        <select class="ql-header" style="display: none;">
-                                            <option value="1"></option>
-                                            <option value="2"></option>
-                                            <option value="3"></option>
-                                            <option selected="selected"></option>
-                                        </select>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button type="button" class="ql-bold">
-                                            <svg viewBox="0 0 18 18">
-                                                <path class="ql-stroke" d="M5,4H9.5A2.5,2.5,0,0,1,12,6.5v0A2.5,2.5,0,0,1,9.5,9H5A0,0,0,0,1,5,9V4A0,0,0,0,1,5,4Z"></path>
-                                                <path class="ql-stroke" d="M5,9h5.5A2.5,2.5,0,0,1,13,11.5v0A2.5,2.5,0,0,1,10.5,14H5a0,0,0,0,1,0,0V9A0,0,0,0,1,5,9Z"></path>
-                                            </svg>
-                                        </button>
-                                        <button type="button" class="ql-italic">
-                                            <svg viewBox="0 0 18 18">
-                                                <line class="ql-stroke" x1="7" x2="13" y1="4" y2="4"></line>
-                                                <line class="ql-stroke" x1="5" x2="11" y1="14" y2="14"></line>
-                                                <line class="ql-stroke" x1="8" x2="10" y1="14" y2="4"></line>
-                                            </svg>
-                                        </button>
-                                        <button type="button" class="ql-underline">
-                                            <svg viewBox="0 0 18 18">
-                                                <path class="ql-stroke" d="M5,3V9a4.012,4.012,0,0,0,4,4H9a4.012,4.012,0,0,0,4-4V3"></path>
-                                                <rect class="ql-fill" height="1" rx="0.5" ry="0.5" width="12" x="3" y="15"></rect>
-                                            </svg>
-                                        </button>
-                                        <button type="button" class="ql-link">
-                                            <svg viewBox="0 0 18 18">
-                                                <line class="ql-stroke" x1="7" x2="11" y1="7" y2="11"></line>
-                                                <path class="ql-even ql-stroke" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"></path>
-                                                <path class="ql-even ql-stroke" d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"></path>
-                                            </svg>
-                                        </button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button type="button" class="ql-list" value="ordered">
-                                            <svg viewBox="0 0 18 18">
-                                                <line class="ql-stroke" x1="7" x2="15" y1="4" y2="4"></line>
-                                                <line class="ql-stroke" x1="7" x2="15" y1="9" y2="9"></line>
-                                                <line class="ql-stroke" x1="7" x2="15" y1="14" y2="14"></line>
-                                                <line class="ql-stroke ql-thin" x1="2.5" x2="4.5" y1="5.5" y2="5.5"></line>
-                                                <path class="ql-fill" d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"></path>
-                                                <path class="ql-stroke ql-thin" d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"></path>
-                                                <path class="ql-stroke ql-thin" d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"></path>
-                                            </svg>
-                                        </button>
-                                        <button type="button" class="ql-list" value="bullet">
-                                            <svg viewBox="0 0 18 18">
-                                                <line class="ql-stroke" x1="6" x2="15" y1="4" y2="4"></line>
-                                                <line class="ql-stroke" x1="6" x2="15" y1="9" y2="9"></line>
-                                                <line class="ql-stroke" x1="6" x2="15" y1="14" y2="14"></line>
-                                                <line class="ql-stroke" x1="3" x2="3" y1="4" y2="4"></line>
-                                                <line class="ql-stroke" x1="3" x2="3" y1="9" y2="9"></line>
-                                                <line class="ql-stroke" x1="3" x2="3" y1="14" y2="14"></line>
-                                            </svg>
-                                        </button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button type="button" class="ql-clean">
-                                            <svg class="" viewBox="0 0 18 18">
-                                                <line class="ql-stroke" x1="5" x2="13" y1="3" y2="3"></line>
-                                                <line class="ql-stroke" x1="6" x2="9.35" y1="12" y2="3"></line>
-                                                <line class="ql-stroke" x1="11" x2="15" y1="11" y2="15"></line>
-                                                <line class="ql-stroke" x1="15" x2="11" y1="11" y2="15"></line>
-                                                <rect class="ql-fill" height="1" rx="0.5" ry="0.5" width="7" x="2" y="14"></rect>
-                                            </svg>
-                                        </button>
-                                    </span>
-                                </div>
-                                <div id="edit-deschiption-edit" class="h-50 ql-container ql-snow">
-                                    <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                        <p>Long sleeves black denim jacket with a twisted design. Contrast stitching. Button up closure. White arrow prints on the back.</p>
-                                    </div>
-                                    <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
-                                    <div class="ql-tooltip ql-hidden">
-                                        <a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a>
-                                        <input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">
-                                        <a class="ql-action"></a>
-                                        <a class="ql-remove"></a>
-                                    </div>
+                            <div class="col-12 col-sm-6">
+                                <label>Параметры</label>
+                                <input
+                                    v-model="sizes"
+                                    class="form-control"
+                                    type="text"
+                                    placeholder="Введите размеры через запятую"
+                                >
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>Города</label>
+                                <div v-for="(city, index) in stateCities" class="form-check">
+                                    <input
+                                        :id="'city ' + (index + 1)"
+                                        v-model="cities"
+                                        :value="city.id"
+                                        class="form-check-input" type="checkbox" id="flexCheckChecked">
+                                    <label class="form-check-label" :for="'city ' + (index + 1)">
+                                        {{ city.name }}
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -171,14 +132,141 @@
             </div>
         </div>
     </div>
+    <h4 v-else class="text-white text-center ь-4">Продукт не найден</h4>
 </template>
 
 <script>
 export default {
-    name: "ProductEdit"
+    name: "ProductEdit",
+    data() {
+        return {
+            product: null,
+            name: '',
+            price: '',
+            price_sale: '',
+            cities: [],
+            description: '',
+            category_id: '',
+            sizes: '',
+            imgPath: null,
+            previewImage: null,
+            img: null
+        }
+    },
+    computed: {
+        stateCities() {
+            return this.$store.getters['serviceCities/stateCities']
+        },
+        stateCategories() {
+            return this.$store.getters['serviceCategories/stateCategories']
+        },
+        stateProducts() {
+            return this.$store.getters['serviceProducts/stateProducts']
+        }
+    },
+    methods: {
+        selectImage() {
+            this.$refs.fileInput.click()
+        },
+        pickFile() {
+            let input = this.$refs.fileInput
+            let file = input.files
+            if (file && file[0]){
+                let reader = new FileReader
+                reader.onload = e => {
+                    this.previewImage = e.target.result
+                }
+                reader.readAsDataURL(file[0])
+                this.img = file[0]
+            }
+        },
+        editProduct() {
+            this.$store.commit('loaderTrue')
+
+            const data = new FormData()
+            data.append('name',this.name)
+            data.append('category_id', this.category_id)
+            data.append('city_id', JSON.stringify(this.cities))
+            data.append('price', this.price)
+            data.append('price_sale', this.price_sale ? this.price_sale: 0)
+            data.append('description', this.description)
+            if(this.img) {
+                data.append('productImage', this.img)
+            }
+            if (this.sizes) {
+                const properties = {size: []}
+                const arr = this.sizes.split(', ')
+                arr.forEach(item => {
+                    properties.size.push(item)
+                })
+                data.append('properties', JSON.stringify(properties))
+            }
+            data.append("_method", "put");
+            axios.post(`/api/v1/admin/products/${this.product.id}`, data)
+                .then((data) => {
+                    window.location.href = '/products'
+                    console.log(data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .then(() => {
+                    this.$store.commit('loaderFalse')
+                })
+        },
+        async getCities() {
+            await this.$store.dispatch('serviceCities/getCities')
+        },
+        async getCategories() {
+            await this.$store.dispatch('serviceCategories/getCategories')
+        },
+        async getProducts() {
+            await this.$store.dispatch('serviceProducts/getProducts')
+        }
+    },
+    async created() {
+        this.$store.commit('loaderTrue')
+        await axios.get(`/api/v1/admin/products/${this.$route.params.id}`)
+            .then(data => {
+                this.product = data.data.data
+                console.log(data.data.data)
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
+            .then(() => {
+                this.$store.commit('loaderFalse')
+            })
+        await this.getCities()
+        await this.getCategories()
+        if (this.product) {
+            this.name = this.product.name
+            this.category_id = this.product.category.id
+            this.price = this.product.price
+            this.price_sale = this.product.price_sale !== 0 ? this.product.price_sale : ''
+            this.description = this.product.description ? this.product.description : ''
+            if(this.product.properties) {
+                JSON.parse(this.product.properties)
+                this.sizes = JSON.parse(this.product.properties).size.join(', ')
+            }
+            this.imgPath = this.product.thumbUrl
+            if(this.product.cities.length > 0) {
+                this.product.cities.forEach(item => {
+                    this.cities.push(item.id)
+                })
+            }
+        }
+    }
 }
 </script>
 
 <style scoped>
-
+.imagePreviewWrapper{
+    height: 250px;
+    display: block;
+    cursor: pointer;
+    margin: 0 auto 30px;
+    background-size: cover;
+    background-position: center center;
+}
 </style>
