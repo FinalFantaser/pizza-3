@@ -6,7 +6,10 @@
                 <p class="text-white opacity-8">We’re constantly trying to express ourselves and actualize our dreams. If you have the opportunity to play.</p>
             </div>
             <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-                <button type="button" class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Save</button>
+                <button
+                    @click="editProduct()"
+                    type="button"
+                    class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Сохранить</button>
             </div>
         </div>
         <div class="row mt-4">
@@ -15,13 +18,30 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Product Image</h5>
                         <div class="row">
-                            <div class="col-12">
-                                <img class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+                            <div class="col-12 cursor-pointer">
+                                <img v-if="!imgPath && !img" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="@/assets/img/ProductDefault.png" alt="category_image">
+                                <img v-else-if="imgPath && !img"
+                                     @click="selectImage"
+                                     class="w-100 border-radius-lg shadow-lg mt-3"
+                                     :src="imgPath"
+                                     alt="category_image"
+                                >
+                                <div v-else
+                                     class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
+                                     :style="{ 'background-image' : `url(${previewImage})` }"
+                                     @click="selectImage"
+                                ></div>
+                                <input ref="fileInput" type="file" @input.prevent="pickFile" style="display: none">
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
-                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button">Edit</button>
-                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button">Remove</button>
+                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Загрузить</button>
+                                    <button
+                                        class="btn btn-outline-dark btn-sm mb-0"
+                                        type="button"
+                                        name="button"
+                                        @click.prevent="imgPath=null, previewImage=null, img=null"
+                                    >Удалить</button>
                                 </div>
                             </div>
                         </div>
@@ -48,6 +68,10 @@
                                     v-model="category"
                                     class="form-select"
                                 >
+                                    <option
+                                        disabled
+                                        selected
+                                    >{{ category }}</option>
                                     <option
                                         v-for="category in stateCategories"
                                         :value="category.id"
@@ -127,7 +151,10 @@ export default {
             cities: [],
             description: '',
             category: '',
-            sizes: ''
+            sizes: '',
+            imgPath: null,
+            previewImage: null,
+            img: null
         }
     },
     computed: {
@@ -142,6 +169,54 @@ export default {
         }
     },
     methods: {
+        selectImage() {
+            this.$refs.fileInput.click()
+        },
+        pickFile() {
+            let input = this.$refs.fileInput
+            let file = input.files
+            if (file && file[0]){
+                let reader = new FileReader
+                reader.onload = e => {
+                    this.previewImage = e.target.result
+                }
+                reader.readAsDataURL(file[0])
+                this.img = file[0]
+            }
+        },
+        editProduct() {
+            this.$store.commit('loaderTrue')
+
+            const data = new FormData()
+            data.append('name',this.name)
+            data.append('category_id', this.category)
+            data.append('city_id', JSON.stringify(this.cities))
+            data.append('price', this.price)
+            data.append('price_sale', this.price_sale ? this.price_sale: 0)
+            data.append('description', this.description)
+            if(this.img) {
+                data.append('productImage', this.img)
+            }
+            if (this.sizes) {
+                const properties = {size: []}
+                const arr = this.sizes.split(', ')
+                arr.forEach(item => {
+                    properties.size.push(item)
+                })
+                data.append('properties', JSON.stringify(properties))
+            }
+            data.append("_method", "put");
+            axios.post('/api/v1/admin/products', data)
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .then(() => {
+                    this.$store.commit('loaderFalse')
+                })
+        },
         async getCities() {
             await this.$store.dispatch('serviceCities/getCities')
         },
@@ -165,15 +240,35 @@ export default {
             .then(() => {
                 this.$store.commit('loaderFalse')
             })
-        if (this.product) {
-            this.name = this.product.name
-        }
         await this.getCities()
         await this.getCategories()
+        if (this.product) {
+            this.name = this.product.name
+            this.category = this.product.category
+            this.price = this.product.price
+            this.price_sale = this.product.price_sale !== 0 ? this.product.price_sale : ''
+            this.description = this.product.description ? this.product.description : ''
+            if(this.product.properties) {
+                this.sizes = this.product.properties.size.join(', ')
+            }
+            this.imgPath = this.product.thumbUrl
+            if(this.product.cities.length > 0) {
+                this.product.cities.forEach(item => {
+                    this.cities.push(item.id)
+                })
+            }
+        }
     }
 }
 </script>
 
 <style scoped>
-
+.imagePreviewWrapper{
+    height: 250px;
+    display: block;
+    cursor: pointer;
+    margin: 0 auto 30px;
+    background-size: cover;
+    background-position: center center;
+}
 </style>

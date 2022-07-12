@@ -130,7 +130,6 @@ export default {
                 data.append('categoryImage', this.img)
             }
             data.append("_method", "put");
-            console.log(this.name)
             axios.post(`/api/v1/admin/categories/${this.category.id}`, data)
                 .then(data => {
                     console.log(data)

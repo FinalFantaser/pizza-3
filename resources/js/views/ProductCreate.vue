@@ -19,8 +19,8 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Изображение продукта</h5>
                         <div class="row">
-                            <div class="col-12">
-                                <img v-if="!image" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/product-page.jpg" alt="product_image">
+                            <div class="col-12 cursor-pointer">
+                                <img v-if="!image" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="@/assets/img/ProductDefault.png" alt="product_image">
 
                                 <div v-else
                                      class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
@@ -31,8 +31,8 @@
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
-                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Edit</button>
-                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button" @click.prevent="previewImage=null,image=null">Remove</button>
+                                    <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Выбрать</button>
+                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button" @click.prevent="previewImage=null,image=null">Удалить</button>
                                 </div>
                             </div>
                         </div>
@@ -174,20 +174,27 @@ export default {
         },
         addProduct() {
             this.$store.commit('loaderTrue')
-            const properties = {size: []}
-            const arr = this.sizes.split(', ')
-            arr.forEach(item => {
-                properties.size.push(item)
-            })
-            axios.post('/api/v1/admin/products', {
-                name: this.name,
-                category_id: this.category,
-                city_id: JSON.stringify(this.cities),
-                price: this.price,
-                price_sale: this.price_sale ? this.price_sale: 0,
-                properties: JSON.stringify(properties),
-                description: this.description,
-            })
+
+            const data = new FormData()
+            data.append('name',this.name)
+            data.append('category_id', this.category)
+            data.append('city_id', JSON.stringify(this.cities))
+            data.append('price', this.price)
+            data.append('price_sale', this.price_sale ? this.price_sale: 0)
+            data.append('description', this.description)
+            if(this.image) {
+                data.append('productImage', this.image)
+            }
+            if (this.sizes) {
+                const properties = {size: []}
+                const arr = this.sizes.split(', ')
+                arr.forEach(item => {
+                    properties.size.push(item)
+                })
+                data.append('properties', JSON.stringify(properties))
+            }
+
+            axios.post('/api/v1/admin/products', data)
                 .then((data) => {
                     console.log(data)
                 })
@@ -202,9 +209,11 @@ export default {
     async created() {
         await this.getCities()
         await this.getCategories()
-        this.stateCities.forEach(item => {
-            this.cities.push(item.id)
-        })
+        if(this.stateCities) {
+            this.stateCities.forEach(item => {
+                this.cities.push(item.id)
+            })
+        }
     }
 }
 
