@@ -21,11 +21,9 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'price_sale' => $this->price_sale,
             'description' => $this->description,
-            // 'cities' => $this->cities,
             'imageUrl' => $this->imageUrl('product'),
             'thumbUrl' => $this->imageUrl('product_thumb_admin'),
             'properties' => $this->properties,
-            // 'category' => $this->category->only(['id', 'name']),
             'category' => $this->category,
             'cities' => $this->cities
         ];
