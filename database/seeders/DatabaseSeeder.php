@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Описание тестового продукта',
                 'meta' => null,
                 'tags' => '["test", "product"]',
-                'properties' => '["weight": 500, "quantity": 1, "structure": "Информация о составе"]'
+                'properties' => '{"weight": 500, "quantity": 1, "structure": "Информация о составе"}'
             ]
         );
 

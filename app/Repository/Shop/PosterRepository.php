@@ -8,11 +8,11 @@
 
     class PosterRepository{
         
-        public function create(string $name, string $description, bool $enabled){
+        public function create(string $name, string $description, bool $enabled, $city = null){
             $poster = Poster::create(['name' => $name, 'description' => $description, 'enabled' => $enabled]);
 
             //Привязка к городам
-            //...
+            $this->attachToCity($poster, $city);
 
             //Загрузка картинки
             $this->updateImage($poster);
@@ -20,15 +20,24 @@
             return $poster;
         } //create
 
-        public function update(Poster $poster, string $name, string $description, bool $enabled){
+        public function update(Poster $poster, string $name, string $description, bool $enabled, $city = null){
             $poster->update(['name' => $name, 'description' => $description, 'enabled' => $enabled]);
+
+            //Привязка к городам
+            $this->clearAllCities($poster);
+            $this->attachToCity($poster, $city);
+
+            //Загрузка картинки
+            $this->updateImage($poster);
+
             return $poster;
         } //update
 
         public function updateImage(Poster $poster){
-            $poster->clearMediaCollection('posters');
-            if(request()->hasFile('posterImage'))
+            if(request()->hasFile('posterImage')){
+                $poster->clearMediaCollection('posters');
                 $poster->addMediaFromRequest('posterImage')->toMediaCollection('posters');
+            }
         } //updateImage
 
         public function enable(Poster $poster){
@@ -56,7 +65,7 @@
                 $ids = json_decode($city);
             
                 if(is_int($ids)){
-                    DB::table('posters_cities')->updateOrInsert(['poster_id' => $poster->id, 'city_id' => $city]);
+                    DB::table('posters_cities')->updateOrInsert(['poster_id' => $poster->id, 'city_id' => $ids]);
                     return;
                 }
 
@@ -72,14 +81,27 @@
                 }, $ids);
                 
                 foreach($data as $item)
-                    DB::table('product_city')->updateOrInsert($item);
+                    DB::table('posters_cities')->updateOrInsert($item);
             }
 
             // DB::table('posters_cities')->updateOrInsert(['poster_id' => $poster->id, 'city_id' => $city->id]);
         } //attachToCity
 
-        public function detachFromCity(Poster $poster, City $city): void{
-            DB::table('posters_cities')->where(['poster_id' => $poster->id, 'city_id' => $city->id])->delete();
+        public function detachFromCity(Poster $poster, null|int|string $city): void{
+            if(is_int($city))
+                DB::table('posters_cities')->where(['poster_id' => $poster->id, 'city_id' => $city])->delete();
+            elseif(is_string($city)){
+                $ids = json_decode($city);
+
+                if(is_int($ids)){
+                    DB::table('posters_cities')->where(['poster_id' => $poster->id, 'city_id' => $ids])->delete();
+                    return;
+                }
+
+                DB::table('posters_cities')->where('poster_id', $poster->id)->whereIn('city_id', $ids)->delete();
+            }
+
+            // DB::table('posters_cities')->where(['poster_id' => $poster->id, 'city_id' => $city->id])->delete();
         } //detachFromCity
 
         public function clearAllCities(Poster $poster){
