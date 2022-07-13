@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Admin\Shop;
+namespace App\Http\Controllers\Api\V1\Admin\Shop\Option;
 
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Api\Admin\Shop\Option\OptionRequest;
 use App\Http\Resources\Option\OptionResource;
 use App\Models\Shop\Option\Option;
-use App\Services\Shop\OptionService;
+use App\Services\Shop\Option\OptionService;
 
 class OptionController extends Controller
 {

@@ -62,7 +62,12 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::post('products.city.detach', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'detachFromCity']);
 
                     //  Опции
-                    Route::apiResource('options', 'OptionController');
+                    Route::namespace('Option')->group(function(){
+                        Route::apiResources([
+                            'option_types' => 'OptionTypeController',
+                            'options' => 'OptionController',
+                        ]);
+                    });
 
                     //  Методы доставки
                     Route::apiResource('delivery-methods', 'DeliveryMethodController');
