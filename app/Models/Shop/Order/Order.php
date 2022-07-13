@@ -9,6 +9,7 @@ use App\Models\Shop\City;
 use App\Models\Shop\DeliveryMethod;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Order\CustomerData;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -18,8 +19,13 @@ class Order extends Model
         'customer_data_id',
         'delivery_method_id', 'delivery_method_name',
         'delivery_method_cost', 'cost', 'note',
-        'current_status', 'cancel_reason'
+        'current_status', 'cancel_reason', 'token'
     ];
+
+    static public function generateToken(): string
+    {
+        return Str::random(60);
+    } //generateToken
 
     public function setDeliveryMethodInfo(int $id, string $name, int $cost): void
     {

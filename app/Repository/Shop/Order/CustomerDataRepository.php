@@ -12,7 +12,7 @@ class CustomerDataRepository
         string $name,
         string $email,
         int $phone,
-        City $city,
+        int $city_id,
         string $address
     ): CustomerData
     {
@@ -20,10 +20,15 @@ class CustomerDataRepository
             'name' => $name,
             'email' => $email,
             'phone' => $phone,
-            'city_id' => $city->id,
+            'city_id' => $city_id,
             'address' => $address
         ]);
 
         return $customerData;
-    }
+    } //create
+
+    public function remove(CustomerData $customerData): void
+    {
+        $customerData->delete();
+    } //remove
 }

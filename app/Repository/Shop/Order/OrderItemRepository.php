@@ -21,5 +21,10 @@ class OrderItemRepository
         ]);
 
         return $orderItem;
-    }
+    } //create
+
+    public function remove(OrderItem $orderItem): void
+    {
+        $orderItem->delete();
+    } //remove
 }
