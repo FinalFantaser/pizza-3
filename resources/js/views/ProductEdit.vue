@@ -52,38 +52,51 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Информация о продукте</h5>
-                        <div class="row mb-sm-3">
-                            <div class="col-12 col-sm-6">
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Название</label>
-                                <input
-                                    v-model="name"
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="Название продукта"
-                                >
+                                <div class="position-relative">
+                                    <input
+                                        :style="v$.name.$error ? 'border-color: tomato;' : ''"
+                                        v-model="name"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Название продукта"
+                                    >
+                                    <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label>Категория</label>
-                                <select
-                                    v-model="category_id"
-                                    class="form-select"
-                                >
-                                    <option
-                                        v-for="category in stateCategories"
-                                        :value="category.id"
-                                    >{{ category.name }}</option>
-                                </select>
+                                <div class="position-relative">
+                                    <select
+                                        :style="v$.category_id.$error ? 'border-color: tomato;' : ''"
+                                        v-model="category_id"
+                                        class="form-select"
+                                    >
+                                        <option
+                                            v-for="category in stateCategories"
+                                            :value="category.id"
+                                        >{{ category.name }}</option>
+                                    </select>
+                                    <p v-if="v$.category_id.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-sm-3">
-                            <div class="col-12 col-sm-6">
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Цена</label>
-                                <input
-                                    placeholder="Введите цену"
-                                    v-model="price"
-                                    class="form-control mb-sm-3"
-                                    type="text"
-                                >
+                                <div class="position-relative mb-3 mb-sm-0">
+                                    <input
+                                        :style="v$.price.$error ? 'border-color: tomato;' : ''"
+                                        placeholder="Введите цену"
+                                        v-model="price"
+                                        class="form-control mb-sm-3"
+                                        type="text"
+                                    >
+                                    <p v-if="v$.price.$dirty && v$.price.required.$invalid" class="invalid-msg">Обязательное поле</p>
+                                    <p v-if="v$.price.numeric.$invalid" class="invalid-msg">Введите число</p>
+                                </div>
                                 <label>Цена со скидкой</label>
                                 <input
                                     placeholder="Введите цену со скидкой"
@@ -104,7 +117,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-sm-6">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Параметры</label>
                                 <input
                                     v-model="sizes"
@@ -136,8 +149,14 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required, numeric } from '@vuelidate/validators'
+
 export default {
     name: "ProductEdit",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             product: null,
@@ -180,7 +199,10 @@ export default {
                 this.img = file[0]
             }
         },
-        editProduct() {
+        async editProduct() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect) return
             this.$store.commit('loaderTrue')
 
             const data = new FormData()
@@ -221,6 +243,13 @@ export default {
         },
         async getProducts() {
             await this.$store.dispatch('serviceProducts/getProducts')
+        }
+    },
+    validations () {
+        return {
+            name: { required },
+            price: { required, numeric },
+            category_id: { required },
         }
     },
     async created() {
@@ -266,5 +295,14 @@ export default {
     margin: 0 auto 30px;
     background-size: cover;
     background-position: center center;
+}
+.invalid-msg {
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
 }
 </style>

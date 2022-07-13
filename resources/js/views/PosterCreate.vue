@@ -20,14 +20,24 @@
                         <h5 class="font-weight-bolder">Изображение постера</h5>
                         <div class="row">
                             <div class="col-12 cursor-pointer">
-                                <img v-if="!image" @click="selectImage" class="w-100 border-radius-lg shadow-lg mt-3" src="@/assets/img/PosterDefault.png" alt="product_image">
+                                <div class="position-relative">
+                                    <img
+                                        :style="v$.image.$error ? 'border: 1px solid tomato;' : ''"
+                                        v-if="!image"
+                                        @click="selectImage"
+                                        class="w-100 border-radius-lg shadow-lg mt-3"
+                                        src="@/assets/img/PosterDefault.png"
+                                        alt="product_image"
+                                    >
 
-                                <div v-else
-                                     class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
-                                     :style="{ 'background-image' : `url(${previewImage})` }"
-                                     @click="selectImage"
-                                ></div>
-                                <input ref="fileInput" type="file" @input="pickFile" style="display: none">
+                                    <div v-else
+                                         class="imagePreviewWrapper w-100 border-radius-lg shadow-lg mt-3"
+                                         :style="{ 'background-image' : `url(${previewImage})` }"
+                                         @click="selectImage"
+                                    ></div>
+                                    <input ref="fileInput" type="file" @input="pickFile" style="display: none">
+                                    <p v-if="v$.image.$error" class="invalid-msg invalid-msg--img">Выберите изображение</p>
+                                </div>
                             </div>
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
@@ -43,15 +53,19 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Информация о постере</h5>
-                        <div class="row mb-sm-3">
-                            <div class="col-12 col-sm-6">
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Название</label>
-                                <input
-                                    v-model="name"
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="Название продукта"
-                                >
+                                <div class="position-relative">
+                                    <input
+                                        :style="v$.name.$error ? 'border-color: tomato;' : ''"
+                                        v-model="name"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Название постера"
+                                    >
+                                    <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                             <div class="col-12 col-sm-6" >
                                 <label>{{ enabled ? 'Включен' : 'Выключен' }}</label>
@@ -64,16 +78,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-sm-3">
+                        <div class="row mb-3">
                             <div class="col-12 col-sm-6">
                                 <label>Описание</label>
-                                <textarea
-                                    placeholder="Опишите продукт"
-                                    v-model="description"
-                                    class="form-control"
-                                    id="exampleFormControlTextarea1"
-                                    rows="5"
-                                ></textarea>
+                                <div class="position-relative">
+                                    <textarea
+                                        :style="v$.description.$error ? 'border-color: tomato;' : ''"
+                                        placeholder="Описание постера"
+                                        v-model="description"
+                                        class="form-control"
+                                        id="exampleFormControlTextarea1"
+                                        rows="5"
+                                    ></textarea>
+                                    <p v-if="v$.description.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -99,8 +117,14 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+
 export default {
     name: "PosterCreate",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             name: '',
@@ -117,7 +141,10 @@ export default {
         }
     },
     methods: {
-        addPoster() {
+        async addPoster() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect) return
             this.$store.commit('loaderTrue')
 
             const data = new FormData()
@@ -160,6 +187,13 @@ export default {
             }
         },
     },
+    validations () {
+        return {
+            name: { required },
+            description: { required },
+            image: { required },
+        }
+    },
     async created() {
         await this.getCities()
         if(this.stateCities) {
@@ -180,5 +214,21 @@ export default {
     margin: 0 auto 30px;
     background-size: cover;
     background-position: center center;
+}
+.invalid-msg {
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
+}
+.invalid-msg--img {
+    text-align: center;
+    bottom: auto;
+    width: 100%;
+    left: 0;
+    top: 5px;
 }
 </style>

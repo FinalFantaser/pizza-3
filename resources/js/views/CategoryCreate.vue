@@ -125,19 +125,24 @@ export default {
             }
 
             axios.post('/api/v1/admin/categories', data)
-                .then((data) => {
-                    window.location.href = '/categories'
-                    console.log(data)
+                .then(res => {
+                    // this.$router.push({name: 'Categories'})
+                    this.$store.commit('loaderFalse')
+                    if (res) {
+                        console.log('hello')
+                    }
+                    console.log(res)
                 })
-                .catch((error) => {
+                .catch(error => {
                     this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
                             type: 'error'
                         } })
+                    this.$store.commit('loaderFalse')
                     console.log(error)
                 })
-                .then(() => {
-                    this.$store.commit('loaderFalse')
-                })
+                // .then(() => {
+                //     this.$store.commit('loaderFalse')
+                // })
         }
     },
     validations () {

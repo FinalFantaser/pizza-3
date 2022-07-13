@@ -55,7 +55,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder text-center">Информация о категории</h5>
-                        <div class="row mb-sm-3">
+                        <div class="row mb-3">
                             <div class="col-12 col-sm-8 m-auto">
                                 <label>Название</label>
                                 <div class="position-relative">

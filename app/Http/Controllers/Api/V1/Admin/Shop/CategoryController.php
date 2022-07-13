@@ -41,7 +41,7 @@ class CategoryController extends Controller
     public function update(UpdateRequest $request, int $category){
         //TODO Разобраться с проблемой привязки моделей
         $category = Category::findOrFail($category);
-        
+
         $this->service->update($request, $category);
         return response()->json(['message' => 'Данные категории обновлены']);
     } //update

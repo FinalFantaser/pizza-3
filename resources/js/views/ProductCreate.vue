@@ -43,11 +43,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Информация о продукте</h5>
-                        <div class="row mb-sm-3">
-                            <div class="col-12 col-sm-6">
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Название</label>
                                 <div class="position-relative">
                                     <input
+                                        :style="v$.name.$error ? 'border-color: tomato;' : ''"
                                         v-model="name"
                                         class="form-control"
                                         type="text"
@@ -58,26 +59,35 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label>Категория</label>
-                                <select
-                                    v-model="category"
-                                    class="form-select"
-                                >
-                                    <option
-                                        v-for="category in stateCategories"
-                                        :value="category.id"
-                                    >{{ category.name }}</option>
-                                </select>
+                                <div class="position-relative">
+                                    <select
+                                        :style="v$.category.$error ? 'border-color: tomato;' : ''"
+                                        v-model="category"
+                                        class="form-select"
+                                    >
+                                        <option
+                                            v-for="category in stateCategories"
+                                            :value="category.id"
+                                        >{{ category.name }}</option>
+                                    </select>
+                                    <p v-if="v$.category.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-sm-3">
-                            <div class="col-12 col-sm-6">
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Цена</label>
-                                <input
-                                    placeholder="Введите цену"
-                                    v-model="price"
-                                    class="form-control mb-sm-3"
-                                    type="text"
-                                >
+                                <div class="position-relative mb-3 mb-sm-0">
+                                    <input
+                                        :style="v$.price.$error ? 'border-color: tomato;' : ''"
+                                        placeholder="Введите цену"
+                                        v-model="price"
+                                        class="form-control mb-sm-3"
+                                        type="text"
+                                    >
+                                    <p v-if="v$.price.$dirty && v$.price.required.$invalid" class="invalid-msg">Обязательное поле</p>
+                                    <p v-if="v$.price.numeric.$invalid" class="invalid-msg">Введите число</p>
+                                </div>
                                 <label>Цена со скидкой</label>
                                 <input
                                     placeholder="Введите цену со скидкой"
@@ -98,7 +108,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-sm-6">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Параметры</label>
                                 <input
                                     v-model="sizes"
@@ -130,7 +140,7 @@
 
 <script>
 import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { required, numeric } from '@vuelidate/validators'
 
 export default {
     name: 'ProductInfo',
@@ -180,7 +190,10 @@ export default {
         async getCategories() {
             await this.$store.dispatch('serviceCategories/getCategories')
         },
-        addProduct() {
+        async addProduct() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect) return
             this.$store.commit('loaderTrue')
 
             const data = new FormData()
@@ -217,7 +230,7 @@ export default {
     validations () {
         return {
             name: { required },
-            price: { required },
+            price: { required, numeric },
             category: { required },
         }
     },
