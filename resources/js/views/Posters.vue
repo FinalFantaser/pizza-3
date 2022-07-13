@@ -81,7 +81,7 @@
                                                 <span class="badge badge-success badge-sm">in Stock</span>
                                             </td>
                                             <td class="text-sm">
-                                                <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
+                                                <a @click="test" href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
                                                     <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
                                                 </a>
                                                 <router-link :to="'/posters/' + poster.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
@@ -128,6 +128,15 @@ export default {
         }
     },
     methods: {
+        test() {
+          this.$store.dispatch('getToast', {
+              msg: 'Hello niga',
+              obj: {
+                  position: 'bottom-right',
+                  type: 'error'
+              }
+          })
+        },
         deletePoster(id) {
             this.$store.commit('loaderTrue')
             axios.delete(`api/v1/admin/posters/${id}`)

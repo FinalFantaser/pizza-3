@@ -6,6 +6,9 @@ import "./assets/css/nucleo-icons.css";
 import "./assets/css/nucleo-svg.css";
 import "./assets/scss/argon-dashboard.scss";
 import ArgonDashboard from "./argon-dashboard";
+//toast
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 // font awesome
 import fontawesome from "./assets/js/fontawesome";
@@ -15,6 +18,10 @@ const appInstance = createApp(App);
 appInstance.use(store);
 appInstance.use(router);
 appInstance.use(ArgonDashboard);
+appInstance.use(Toast, {
+    position: 'bottom-right',
+    timeout: 3000
+});
 appInstance.mount("#app");
 
 fontawesome()
