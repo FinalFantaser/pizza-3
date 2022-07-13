@@ -245,8 +245,7 @@ export default {
             this.price_sale = this.product.price_sale !== 0 ? this.product.price_sale : ''
             this.description = this.product.description ? this.product.description : ''
             if(this.product.properties) {
-                JSON.parse(this.product.properties)
-                this.sizes = JSON.parse(this.product.properties).size.join(', ')
+                this.sizes = this.product.properties.size.join(', ')
             }
             this.imgPath = this.product.thumbUrl
             if(this.product.cities.length > 0) {

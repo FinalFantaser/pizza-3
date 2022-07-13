@@ -14,6 +14,7 @@ use App\Models\Token;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -113,7 +114,8 @@ class DatabaseSeeder extends Seeder
                 'delivery_method_cost' => $delivery_method->cost,
                 'cost' => 1500,
                 'note' => 'Тестовый заказ',
-                'current_status' => 'completed'
+                'current_status' => 'completed',
+                'token' => Str::random(60),
             ]
         );
 
