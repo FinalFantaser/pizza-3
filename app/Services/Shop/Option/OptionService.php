@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Shop;
+namespace App\Services\Shop\Option;
 
 use App\Http\Requests\Api\Admin\Shop\Option\OptionRequest;
 use App\Models\Shop\Option\Option;
