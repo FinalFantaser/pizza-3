@@ -22,9 +22,9 @@ class Order extends Model
         'current_status', 'cancel_reason', 'token'
     ];
 
-    static public function generateToken(): string
+    public function generateToken(): void
     {
-        return Str::random(60);
+        $this->token = Str::random(60);
     } //generateToken
 
     public function setDeliveryMethodInfo(int $id, string $name, int $cost): void

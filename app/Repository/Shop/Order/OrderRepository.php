@@ -5,6 +5,7 @@ namespace App\Repository\Shop\Order;
 use App\Models\Shop\DeliveryMethod;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
+use Illuminate\Support\Str;
 
 class OrderRepository
 {
@@ -58,9 +59,12 @@ class OrderRepository
     {
         $order->cancelByUser($reason);
     } //cancelByUser
+<<<<<<< HEAD
 
     public function remove(Order $order): void
     {
         $order->delete();
     } //remove
+=======
+>>>>>>> d2f9d97ee22dcd8c8dd33d284255f1ef4121de4f
 }
