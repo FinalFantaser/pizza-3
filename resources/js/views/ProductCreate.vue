@@ -188,7 +188,7 @@ export default {
             if (this.sizes) {
 
                 const arr = this.sizes.split(', ')
-                const properties = { size: [ arr ] }
+                const properties = { size:  arr  }
 
                 data.append('properties', JSON.stringify(properties))
             }

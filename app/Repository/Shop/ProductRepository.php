@@ -21,7 +21,7 @@
                     'description' => $description,
                     'meta' => new Meta($seo_title, $seo_description, $seo_keywords),
                     'tags' => $tags,
-                    'properties' => $properties,
+                    'properties' => json_decode($properties),
             ]);
 
             //Назначение категории

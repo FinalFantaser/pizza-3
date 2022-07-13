@@ -25,5 +25,10 @@ class CustomerDataRepository
         ]);
 
         return $customerData;
-    }
+    } //create
+
+    public function remove(CustomerData $customerData): void
+    {
+        $customerData->delete();
+    } //remove
 }
