@@ -14,16 +14,11 @@ class OrderRepository
         $order = Order::create([
             'note' => $note,
             'cost' => $totalPrice,
-            'token'
+            'token' => Order::generateToken()
         ]);
 
         return $order;
     } //create
-
-    public function remove(Order $order): void
-    {
-        $order->delete();
-    } //remove
 
     public function setDeliveryMethodInfo(Order $order, DeliveryMethod $method): void
     {

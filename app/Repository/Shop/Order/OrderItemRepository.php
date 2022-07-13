@@ -25,6 +25,6 @@ class OrderItemRepository
 
     public function remove(OrderItem $orderItem): void
     {
-        $orderItem->remove();
+        $orderItem->delete();
     } //remove
 }

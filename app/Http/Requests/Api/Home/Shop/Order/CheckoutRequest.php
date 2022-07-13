@@ -6,22 +6,25 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CheckoutRequest extends FormRequest
 {
-    public function authorize(): bool
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        return true;
+        return false;
     }
 
-    public function rules(): array
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
     {
         return [
-            'address_id' => 'required|exists:users_address,id',
-            'delivery_cost' => 'required|integer',
-            'note' => 'nullable|string|max:500',
-            'time' => 'required|string|max:255',
-            'date' => 'required|string|max:255',
-            //'delivery' => 'required|integer',
-            //'note' => 'nullable|string|max:500',
-            //'terms' => 'required|accepted'
+            //
         ];
     }
 }
