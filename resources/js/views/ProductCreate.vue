@@ -46,12 +46,15 @@
                         <div class="row mb-sm-3">
                             <div class="col-12 col-sm-6">
                                 <label>Название</label>
-                                <input
-                                    v-model="name"
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="Название продукта"
-                                >
+                                <div class="position-relative">
+                                    <input
+                                        v-model="name"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Название продукта"
+                                    >
+                                    <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label>Категория</label>
@@ -126,13 +129,18 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
     name: 'ProductInfo',
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             name: '',
-            category: 'Выберите категорию',
+            category: '',
             cities: [],
             price: '',
             price_sale: '',
@@ -206,6 +214,13 @@ export default {
                 })
         }
     },
+    validations () {
+        return {
+            name: { required },
+            price: { required },
+            category: { required },
+        }
+    },
     async created() {
         await this.getCities()
         await this.getCategories()
@@ -228,5 +243,14 @@ export default {
     margin: 0 auto 30px;
     background-size: cover;
     background-position: center center;
+}
+.invalid-msg {
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
 }
 </style>

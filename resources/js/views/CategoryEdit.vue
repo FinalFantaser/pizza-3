@@ -58,17 +58,23 @@
                         <div class="row mb-sm-3">
                             <div class="col-12 col-sm-8 m-auto">
                                 <label>Название</label>
-                                <input
-                                    v-model="name"
-                                    class="form-control"
-                                    type="text"
-                                >
+                                <div class="position-relative">
+                                    <input
+                                        :style="v$.name.$error ? 'border-color: tomato;' : ''"
+                                        v-model="name"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Введите название"
+                                    >
+                                    <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-sm-3">
                             <div class="col-12 col-sm-8 m-auto">
                                 <label>Описание</label>
                                 <textarea
+                                    placeholder="Введите описание"
                                     v-model="description"
                                     class="form-control"
                                     id="exampleFormControlTextarea1"
@@ -85,8 +91,14 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+
 export default {
     name: "CategoryEdit",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             name: '',
@@ -122,7 +134,10 @@ export default {
         async getCategories() {
             await this.$store.dispatch('serviceCategories/getCategories')
         },
-        editCategory() {
+        async editCategory() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect) return
             this.$store.commit('loaderTrue')
             const data = new FormData()
             data.append('name', this.name)
@@ -136,11 +151,19 @@ export default {
                     console.log(data)
                 })
                 .catch( (error) => {
+                    this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
+                            type: 'error'
+                        } })
                     console.log(error);
                 })
                 .then(() => {
                     this.$store.commit('loaderFalse')
                 })
+        }
+    },
+    validations () {
+        return {
+            name: { required }
         }
     },
     async created() {
@@ -172,5 +195,14 @@ export default {
     margin: 0 auto 30px;
     background-size: cover;
     background-position: center center;
+}
+.invalid-msg {
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
 }
 </style>

@@ -16,9 +16,9 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="inputGroup">
+                    <div class="position-relative">
                         <input
-                            :style="v$.city.$error ? 'border-color: red;' : ''"
+                            :style="v$.city.$error ? 'border-color: tomato;' : ''"
                             type="text"
                             v-model="city"
                             class="form-control m-0"
@@ -107,9 +107,6 @@ export default {
 <style scoped>
 .dark-version .modal-content {
     background: #111C44;
-}
-.inputGroup {
-    position: relative;
 }
 .invalid-msg {
     position: absolute;
