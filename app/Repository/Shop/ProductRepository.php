@@ -11,7 +11,7 @@
     use Illuminate\Support\Facades\DB;
 
     class ProductRepository{
-        
+
         public function create($name, $price, $priceSale, $description, $tags, $properties, $seo_title, $seo_description, $seo_keywords, $category_id, $city_id): Product{
             $product = Product::create([
                     'name' => $name,
@@ -44,7 +44,7 @@
                 'description' => $description,
                 'meta' => new Meta($seo_title, $seo_description, $seo_keywords),
                 'tags' => $tags,
-                'properties' => $properties,
+                'properties' => json_decode($properties),
             ]);
 
             //Назначение категории
@@ -86,10 +86,10 @@
             $product->delete();
         } //remove
 
-        public function attachToCity(Product $product, null|int|string $city){  
+        public function attachToCity(Product $product, null|int|string $city){
             if(is_string($city)){
                 $ids = json_decode($city);
-            
+
                 if(is_int($ids)){
                     DB::table('product_city')->updateOrInsert(['product_id' => $product->id, 'city_id' => $ids]);
                     return;
@@ -105,7 +105,7 @@
                         'city_id' => $value
                     ];
                 }, $ids);
-                
+
                 foreach($data as $item)
                     DB::table('product_city')->updateOrInsert($item);
             }
