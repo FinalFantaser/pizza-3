@@ -5,6 +5,7 @@ namespace App\Repository\Shop\Order;
 use App\Models\Shop\DeliveryMethod;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
+use Illuminate\Support\Str;
 
 class OrderRepository
 {
@@ -13,53 +14,54 @@ class OrderRepository
         $order = Order::create([
             'note' => $note,
             'cost' => $totalPrice,
+            'token'
         ]);
 
         return $order;
-    }
-
-    public function setDeliveryMethodInfo(Order $order, DeliveryMethod $method): void
-    {
-        $order->setDeliveryMethodInfo($method->id, $method->name, $method->cost);
-    }
-
-    public function setCustomerDataInfo(Order $order, CustomerData $data): void
-    {
-        $order->setCustomerDataInfo($data->id);
-    }
-
-    public function payByAdmin(Order $order): void
-    {
-        $order->pay('Paid by Admin');
-    }
-
-    public function payByCustomer(Order $order, $method): void
-    {
-        $order->pay($method);
-    }
-
-    public function makeSent(Order $order): void
-    {
-        $order->send();
-    }
-
-    public function makeCompleted(Order $order): void
-    {
-        $order->complete();
-    }
-
-    public function cancelByAdmin(Order $order, $reason): void
-    {
-        $order->cancelByAdmin($reason);
-    }
-
-    public function cancelByUser(Order $order, $reason): void
-    {
-        $order->cancelByUser($reason);
-    }
+    } //create
 
     public function remove(Order $order): void
     {
         $order->delete();
-    }
+    } //remove
+
+    public function setDeliveryMethodInfo(Order $order, DeliveryMethod $method): void
+    {
+        $order->setDeliveryMethodInfo($method->id, $method->name, $method->cost);
+    } //setDeliveryMethodInfo
+
+    public function setCustomerDataInfo(Order $order, CustomerData $data): void
+    {
+        $order->setCustomerDataInfo($data->id);
+    } //setCustomerDataInfo
+
+    public function payByAdmin(Order $order): void
+    {
+        $order->pay('Paid by Admin');
+    } //payByAdmin
+
+    public function payByCustomer(Order $order, $method): void
+    {
+        $order->pay($method);
+    } //payByCustomer
+
+    public function makeSent(Order $order): void
+    {
+        $order->send();
+    } //makeSent
+
+    public function makeCompleted(Order $order): void
+    {
+        $order->complete();
+    } //makeCompleted
+
+    public function cancelByAdmin(Order $order, $reason): void
+    {
+        $order->cancelByAdmin($reason);
+    } //cancelByAdmin
+
+    public function cancelByUser(Order $order, $reason): void
+    {
+        $order->cancelByUser($reason);
+    } //cancelByUser
 }
