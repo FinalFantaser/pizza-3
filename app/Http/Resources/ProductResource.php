@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Option\OptionRecordResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -26,7 +27,9 @@ class ProductResource extends JsonResource
             'thumbUrl' => $this->imageUrl('product_thumb_admin'),
             'properties' => $this->properties,
             'category' => $this->whenLoaded('categories', $this->category),
-            'cities' => $this->whenLoaded('cities')
+            'cities' => $this->whenLoaded('cities'),
+            // 'options' => $this->optionRecords,
+            'options' => OptionRecordResource::collection( $this->whenLoaded('optionRecords') ),
         ];
     }
 }

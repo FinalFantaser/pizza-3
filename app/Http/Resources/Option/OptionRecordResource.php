@@ -4,7 +4,7 @@ namespace App\Http\Resources\Option;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OptionResource extends JsonResource
+class OptionRecordResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,14 @@ class OptionResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'type' => new OptionTypeResource($this->type),
+            'product_id' => $this->product_id,
             'items' => $this->items,
+            // 'parent' => new OptionResource($this->option),
+            'parent' => [
+                'id' => $this->option->id,
+                'name' => $this->option->name,
+                'type' => $this->option->type,
+            ],
         ];
     }
 }

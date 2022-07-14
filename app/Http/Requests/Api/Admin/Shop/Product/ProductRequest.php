@@ -45,6 +45,7 @@ class ProductRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             // 'city_id' => 'exists:cities,id',
             'city_id' => ['json', new CitiesExist],
+            'options' => 'json',
         ];
     }
 

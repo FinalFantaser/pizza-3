@@ -12,14 +12,16 @@ class OptionRecord extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
         'option_id',
-        'items'
+        'product_id',
+        'items',
     ];
 
     protected $casts = [
         'items' => 'array',
     ];
 
-
+    public function option(){
+        return $this->belongsTo(Option::class, 'option_id');
+    } //option
 }

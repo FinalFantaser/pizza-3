@@ -7,20 +7,22 @@
     use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
-    use App\Repository\Shop\ProductRepository;
+use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
+use App\Repository\Shop\ProductRepository;
     use App\ReadRepository\Shop\ProductReadRepository;
+use App\Repository\Shop\Option\OptionRecordRepository;
 
     class ProductService{
-        private $repository;
-        private $readRepository;
-
-        public function __construct(ProductRepository $repository, ProductReadRepository $readRepository){
-            $this->repository = $repository;
-            $this->readRepository = $readRepository;
-        } //Конструктор
+        public function __construct(
+            private ProductRepository $productRepository,
+            private ProductReadRepository $productReadRepository,
+            private OptionRecordRepository $optionRecordRepository,
+            private OptionRecordReadRepository $optionRecordReadRepository
+        )
+            {} //Конструктор
 
         public function create(ProductRequest $request){
-            return $this->repository->create(
+            $product = $this->productRepository->create(
                 $request->name, 
                 $request->price,
                 $request->price_sale,
@@ -33,10 +35,14 @@
                 $request->category_id,
                 $request->city_id ?? null
             );
+
+            $this->addOptions($product, $request);
+
+            return $product;
         } //create
 
         public function update(ProductRequest $request, Product $product){
-            return $this->repository->update(
+            $product = $this->productRepository->update(
                 $product,
                 $request->name, 
                 $request->price,
@@ -50,49 +56,84 @@
                 $request->category_id,
                 $request->city_id ?? null
             );
+                $this->addOptions($product, $request);
+
+            return $product;
         } //update
 
         public function remove(Product $product){
-            $this->repository->remove($product);
+            $this->optionRecordRepository->removeByProduct($product); //Удаление опций, связанных с продуктом
+            $this->productRepository->remove($product);
         } //remove
 
+
+        //
+        //  Управление продуктами
+        //
         public function updateCategory(UpdateCategoryRequest $request){
-            $this->repository->updateCategory(
+            $this->productRepository->updateCategory(
                 Product::findOrFail($request->product_id),
                 Category::findOrFail($request->category_id)
             );
         } //updateCategory
 
         public function attachToCity(AttachToCityRequest $request){
-            $this->repository->attachToCity(
+            $this->productRepository->attachToCity(
                 Product::findOrFail($request->product_id),
                 $request->city_id
             );
         } //attachToCity
 
         public function detachFromCity(AttachToCityRequest $request){
-            $this->repository->detachFromCity(
+            $this->productRepository->detachFromCity(
                 Product::findOrFail($request->product_id),
                 $request->city_id
             );
         } //detachFromCity
 
+        public function clearAllOptions(Product $product){ //Удалить все опции у продукта
+            $this->optionRecordRepository->removeByProduct($product);
+        } //clearAllOptions
+
+        public function addOptions(Product $product, ProductRequest $request){
+            $this->clearAllOptions($product); //Удаление старых опций
+            if(!$request->has('options'))
+                return;
+
+            //Создание массива
+            $data = array_map(function($value) use ($product) {
+                return array_merge(
+                    $value, //Добавление идентификатора продукта
+                    [
+                        'product_id' => $product->id,
+                        // 'items' => json_decode($value['items']),
+                    ]);
+            }, json_decode(json: $request->options, associative: true) );
+
+            $this->optionRecordRepository->createBulk(
+                $data
+            );
+        } //addOptions
+
+        //
+        // Поисковые запросы
+        //
         public function getMethods(){
-            return $this->readRepository->getMethods();
+            return $this->productReadRepository->getMethods();
         } //getMethods
 
         public function findById(int $id, string|array $with = null){
-            return $this->readRepository->findById(
+            return $this->productReadRepository->findById(
                 id: $id,
                 with: $with
             );
         } //findById
 
         public function findByCity(City $city){
-            return $this->readRepository->findByCity($city);
+            return $this->productReadRepository->findByCity($city);
         } //findByCity
 
         public function findByCityAndCategory(City $city, Category $category, string|array $with = null){
-            return $this->readRepository->findByCityAndCategory($city, $category, $with);
+            return $this->productReadRepository->findByCityAndCategory($city, $category, $with);
         } //findByCityAndCategory
     }
