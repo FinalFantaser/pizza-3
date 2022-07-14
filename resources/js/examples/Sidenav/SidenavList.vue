@@ -51,28 +51,39 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body p-0">
-                    <div class="nav-item">
-                        <sidenav-item
-                            url="/categories"
-                            :class="getRoute() === '/categories' ? 'active' : ''"
-                            :navText="'Категории'"
-                        >
-                            <template v-slot:icon>
-                                <i class="top-0 fa fa-angle-double-right text-secondary text-sm opacity-10"></i>
-                            </template>
-                        </sidenav-item>
-                    </div>
-                    <div class="nav-item">
-                        <sidenav-item
-                            url="/products"
-                            :class="getRoute() === '/products' ? 'active' : ''"
-                            :navText="'Продукты'"
-                        >
-                            <template v-slot:icon>
-                                <i class="top-0 fa fa-angle-double-right text-secondary text-sm opacity-10"></i>
-                            </template>
-                        </sidenav-item>
-                    </div>
+                        <div class="nav-item">
+                            <sidenav-item
+                                url="/categories"
+                                :class="getRoute() === '/categories' ? 'active' : ''"
+                                :navText="'Категории'"
+                            >
+                                <template v-slot:icon>
+                                    <i class="top-0 fa fa-angle-double-right text-secondary text-sm opacity-10"></i>
+                                </template>
+                            </sidenav-item>
+                        </div>
+                        <div class="nav-item">
+                            <sidenav-item
+                                url="/products"
+                                :class="getRoute() === '/products' ? 'active' : ''"
+                                :navText="'Продукты'"
+                            >
+                                <template v-slot:icon>
+                                    <i class="top-0 fa fa-angle-double-right text-secondary text-sm opacity-10"></i>
+                                </template>
+                            </sidenav-item>
+                        </div>
+                        <div class="nav-item">
+                            <sidenav-item
+                                url="/options"
+                                :class="getRoute() === '/options' ? 'active' : ''"
+                                :navText="'Опции'"
+                            >
+                                <template v-slot:icon>
+                                    <i class="top-0 fa fa-angle-double-right text-secondary text-sm opacity-10"></i>
+                                </template>
+                            </sidenav-item>
+                        </div>
                     </div>
                 </div>
             </div>

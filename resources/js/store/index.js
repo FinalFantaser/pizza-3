@@ -4,6 +4,7 @@ import auth from "./modules/auth";
 import serviceCities from "./service/cities";
 import serviceCategories from "./service/categories";
 import serviceProducts from "./service/products";
+import serviceOptions from "./service/options";
 import servicePosters from "./service/posters";
 import { useToast } from 'vue-toastification'
 
@@ -14,6 +15,7 @@ export default createStore({
         serviceCities,
         serviceCategories,
         serviceProducts,
+        serviceOptions,
         servicePosters,
         argon,
         auth

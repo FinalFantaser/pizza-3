@@ -125,13 +125,10 @@ export default {
             }
 
             axios.post('/api/v1/admin/categories', data)
-                .then(res => {
-                    // this.$router.push({name: 'Categories'})
+                .then(response => {
+                    this.$router.push({name: 'Categories'})
                     this.$store.commit('loaderFalse')
-                    if (res) {
-                        console.log('hello')
-                    }
-                    console.log(res)
+                    console.log(response)
                 })
                 .catch(error => {
                     this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
@@ -140,9 +137,6 @@ export default {
                     this.$store.commit('loaderFalse')
                     console.log(error)
                 })
-                // .then(() => {
-                //     this.$store.commit('loaderFalse')
-                // })
         }
     },
     validations () {

@@ -2,24 +2,23 @@ export default {
     namespaced: true,
     state() {
         return {
-            posters: null,
-            test: 'test'
+            options: null
         }
     },
     getters: {
-        statePosters(state) {
-            return state.posters
+        stateOptions(state) {
+            return state.options
         }
     },
     actions: {
-        async getPosters({state, commit}) {
+        async getOptions({state, commit}) {
             commit('loaderTrue', null, { root: true })
-            await axios.get('/api/v1/admin/posters')
-                .then(data => {
-                    state.posters = data.data.data
+            await axios.get('/api/v1/admin/options')
+                .then((data) => {
                     console.log(data.data.data)
+                    state.options = data.data.data
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error)
                 })
                 .then(() => {
