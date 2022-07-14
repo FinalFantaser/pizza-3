@@ -10,6 +10,7 @@ use App\Models\Shop\City;
 use App\Models\Shop\Category;
 
 use App\Http\Controllers\Meta;
+use App\Models\Shop\Option\OptionRecord;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -145,5 +146,9 @@ class Product extends Model implements HasMedia
         $this
             ->addMediaConversion('product')
             ->withResponsiveImages();
+    }
+
+    public function optionRecords(){
+        return $this->hasMany(OptionRecord::class)->with(['option']);
     }
 }

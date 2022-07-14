@@ -24,14 +24,14 @@ class ProductController extends Controller
     //  REST API-методы
     //
     public function index(){
-        $products = $this->service->getMethods()->with(['cities:id,name', 'categories:id,name'])->get();
+        $products = $this->service->getMethods()->with(['cities:id,name', 'categories:id,name', 'optionRecords'])->get();
         return ProductResource::collection($products);
     } //index
 
     public function show($product){
         $product = $this->service->findById(
             id: $product,
-            with: ['cities:id,name', 'categories:id,name']
+            with: ['cities:id,name', 'categories:id,name', 'optionRecords']
         );
 
         return new ProductResource($product);
