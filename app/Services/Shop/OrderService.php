@@ -6,18 +6,22 @@ use App\Http\Requests\Api\Admin\Shop\Order\CancelRequest;
 use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Models\Shop\City;
 use App\Models\Shop\Order\OrderItem;
+use App\Models\Shop\Product;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\OrderReadRepository;
+use App\ReadRepository\Shop\ProductReadRepository;
 use App\Repository\Shop\Order\CustomerDataRepository;
 use App\Repository\Shop\Order\OrderItemRepository;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class OrderService{
     public function __construct(
         private OrderRepository $orderRepository,
         private OrderReadRepository $readRepository,
-        private CustomerDataRepository $customerDataRepository,
         private OrderItemRepository $orderItemRepository,
+        private CustomerDataRepository $customerDataRepository,
+        private ProductReadRepository $productReadRepository,
     )
     {} //Конструктор
 
@@ -72,13 +76,25 @@ class OrderService{
             );
 
             //Создание пунктов заказа
-            $rawData = json_decode($request->order_items); 
-            $items = array_map(function($value){
-                $product = Product::findOrFail($value->product_id);
+            $rawData = json_decode($request->order_items);
+
+            //Загрузка продуктов
+            $products = $this->productReadRepository->findById(
+                id: Arr::pluck($rawData, 'product_id'),
+                with: 'optionRecords'
+            );
+
+            $items = array_map(function($value) use ($order, $products){
+                //Расчёт цены
+                $product = $products->where('id', $value->product_id);
 
                 return [
-                    'product_id' => $value->product_id,
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'product_name' => $product->name,
+                    'product_price' => $product->price,
                     'product_quantity' => $value->product_quantity,
+                    'total_price' => 0,
                 ];
             }, $rawData);
             

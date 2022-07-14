@@ -23,6 +23,11 @@ class OrderItemRepository
         return $orderItem;
     } //create
 
+    public function createBulk(array $data) //Создать сразу много записей
+    {
+        Order::insert($data);
+    }
+
     public function remove(OrderItem $orderItem): void
     {
         $orderItem->delete();

@@ -4,6 +4,7 @@
     use App\Models\Shop\Product;
     use App\Models\Shop\Category;
     use App\Models\Shop\City;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
     class ProductReadRepository{
         public function getMethods()
@@ -19,15 +20,27 @@
             return $products;
         } //findLatest
 
-        public function findById(int $id, string|array $with = null)
+        public function findById(int|array $id, string|array $with = null)
         {
-            $product = Product::where('id', $id)
+            $product = Product::when(function($query) use ($id){
+                    return is_int($id)
+                        ? $query->where('id', $id)
+                        : $query->whereIn('id', $id);
+                })
                 ->when(function($query) use ($with){
                     return is_null($with)
                         ? $query
                         : $query->with($with);
                 })
-                ->first();
+                ->get();
+
+            //Проверка, найдены ли модели
+            if($product->isEmpty()
+                    || (is_array($id) && $product->count() !== count($id))
+              )
+                throw new ModelNotFoundException;
+                
+
             return $product;
         } //findById
 
