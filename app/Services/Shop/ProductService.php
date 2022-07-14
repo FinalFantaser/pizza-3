@@ -122,7 +122,7 @@ use App\Repository\Shop\Option\OptionRecordRepository;
             return $this->productReadRepository->getMethods();
         } //getMethods
 
-        public function findById(int $id, string|array $with = null){
+        public function findById(int|array $id, string|array $with = null){
             return $this->productReadRepository->findById(
                 id: $id,
                 with: $with

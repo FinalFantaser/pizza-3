@@ -11,7 +11,6 @@ use App\Models\Shop\Product;
 use App\Http\Resources\ProductResource;
 use App\Services\Shop\ProductService;
 
-
 class ProductController extends Controller
 {
     private $service;
