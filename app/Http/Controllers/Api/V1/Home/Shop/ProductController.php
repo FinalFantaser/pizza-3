@@ -22,7 +22,10 @@ class ProductController extends Controller
     ){} //Конструктор
 
     public function index(Request $request, Category $category){
+        $request->validate(['city' => 'required|exists:cities,slug',], ['city.exists' => "В базе нет города $request->city ."]);
+
         $city = $this->cityService->findBySlug($request->city);
+
 
         return ProductResource::collection(
             $this->productService->findByCityAndCategory(

@@ -21,7 +21,7 @@ class CategoryService{
         $this->readRepository = $readRepository;
     } //Конструктор
 
-    public function create(CreateRequest $request){        
+    public function create(CreateRequest $request){
         return
             $this->repository->create($request->name, $request->seo_title, $request->seo_description, $request->seo_keywords);
     } //create
@@ -38,4 +38,8 @@ class CategoryService{
     public function getMethods(){
         return $this->readRepository->getMethods();
     } //getMethods
+
+    public function findAll(){
+        return $this->readRepository->findAll();
+    } //findAll
 }
