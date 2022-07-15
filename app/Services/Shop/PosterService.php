@@ -71,4 +71,10 @@ class PosterService{
     public function getMethods(){
         return $this->readRepository->getMethods();
     } //getMethods
+
+    public function findByCity(City $city){
+        return $this->readRepository->findByCity($city);
+    } //findByCityAndCategory
+
+
 }

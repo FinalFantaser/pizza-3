@@ -15,4 +15,8 @@
         public function findBySlug(string $slug){
             return Category::where('slug', $slug)->first();
         } //findByCity
+
+        public function findAll(){ //Найти ВСЕ записи БЕЗ пагинации
+            return Category::orderBy('sort')->get();
+        } //findAll
     }
