@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 class OrderService{
     public function __construct(
         private OrderRepository $orderRepository,
+        private OrderReadRepository $orderReadRepository,
         private OrderReadRepository $readRepository,
         private OrderItemRepository $orderItemRepository,
         private CustomerDataRepository $customerDataRepository,
