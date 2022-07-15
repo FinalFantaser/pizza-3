@@ -52,15 +52,19 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Информация о постере</h5>
-                        <div class="row mb-sm-3">
-                            <div class="col-12 col-sm-6">
+                        <div class="row mb-3">
+                            <div class="col-12 mb-3 mb-sm-0 col-sm-6">
                                 <label>Название</label>
-                                <input
-                                    v-model="name"
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="Название продукта"
-                                >
+                                <div class="position-relative">
+                                    <input
+                                        :style="v$.name.$error ? 'border-color: tomato;' : ''"
+                                        v-model="name"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Название продукта"
+                                    >
+                                    <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                             <div class="col-12 col-sm-6" >
                                 <label>{{ enabled ? 'Включен' : 'Выключен' }}</label>
@@ -73,16 +77,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-sm-3">
+                        <div class="row mb-3">
                             <div class="col-12 col-sm-6">
                                 <label>Описание</label>
-                                <textarea
-                                    placeholder="Опишите продукт"
-                                    v-model="description"
-                                    class="form-control"
-                                    id="exampleFormControlTextarea1"
-                                    rows="5"
-                                ></textarea>
+                                <div class="position-relative">
+                                    <textarea
+                                        :style="v$.description.$error ? 'border-color: tomato;' : ''"
+                                        placeholder="Опишите продукт"
+                                        v-model="description"
+                                        class="form-control"
+                                        id="exampleFormControlTextarea1"
+                                        rows="5"
+                                    ></textarea>
+                                    <p v-if="v$.description.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -109,8 +117,14 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+
 export default {
     name: "ProductEdit",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             poster: null,
@@ -144,7 +158,10 @@ export default {
                 this.img = file[0]
             }
         },
-        editPoster() {
+        async editPoster() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect) return
             this.$store.commit('loaderTrue')
 
             const data = new FormData()
@@ -170,6 +187,12 @@ export default {
         },
         async getCities() {
             await this.$store.dispatch('serviceCities/getCities')
+        }
+    },
+    validations () {
+        return {
+            name: { required },
+            description: { required },
         }
     },
     async created() {
@@ -209,5 +232,14 @@ export default {
     margin: 0 auto 30px;
     background-size: cover;
     background-position: center center;
+}
+.invalid-msg {
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
 }
 </style>

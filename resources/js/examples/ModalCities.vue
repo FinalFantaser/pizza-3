@@ -16,12 +16,16 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <input
-                        type="text"
-                        v-model="city"
-                        class="form-control m-0"
-                        placeholder="Введите город"
-                    >
+                    <div class="position-relative">
+                        <input
+                            :style="v$.city.$error ? 'border-color: tomato;' : ''"
+                            type="text"
+                            v-model="city"
+                            class="form-control m-0"
+                            placeholder="Введите город"
+                        >
+                        <p v-if="v$.city.$error" class="invalid-msg">Обязательное поле</p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">
@@ -34,9 +38,14 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
     name: "ModalCities",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     components: {
     },
     data() {
@@ -45,7 +54,10 @@ export default {
         }
     },
     methods: {
-        changeOrAddCity() {
+        async changeOrAddCity() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect) return
             this.$refs.close.click()
             this.$store.commit('loaderTrue')
             axios[this.editCity ? 'put' : 'post'](`/api/v1/admin/cities/${this.editCity ? this.stateCity.id : ''}`, {
@@ -54,10 +66,16 @@ export default {
                 .then((response) => {
                     this.$store.commit('loaderFalse')
                     this.$store.dispatch('serviceCities/getCities')
+                    this.$store.dispatch('getToast', { msg: 'Город добавлен!' })
+                    this.v$.$reset()
                     console.log(response);
                 })
                 .catch((error) => {
                     this.$store.commit('loaderFalse')
+                    this.v$.$reset()
+                    this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
+                        type: 'error'
+                    } })
                     console.log(error);
                 })
                 .then(() => {
@@ -77,6 +95,11 @@ export default {
         stateCity() {
             return this.$store.getters['serviceCities/stateCity']
         }
+    },
+    validations () {
+        return {
+            city: { required }
+        }
     }
 }
 </script>
@@ -84,5 +107,13 @@ export default {
 <style scoped>
 .dark-version .modal-content {
     background: #111C44;
+}
+.invalid-msg {
+    position: absolute;
+    left: 0;
+    top: -18px;
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
 }
 </style>

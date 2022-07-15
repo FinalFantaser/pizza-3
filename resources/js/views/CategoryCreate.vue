@@ -45,14 +45,19 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="font-weight-bolder text-center">Информация о категории</h5>
-                        <div class="row mb-sm-3">
+                        <div class="row mb-3">
                             <div class="col-12 col-sm-8 m-auto">
                                 <label>Название</label>
-                                <input
-                                    v-model="name"
-                                    class="form-control"
-                                    type="text"
-                                >
+                                <div class="position-relative">
+                                    <input
+                                        :style="v$.name.$error ? 'border-color: tomato;' : ''"
+                                        v-model="name"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Введите название"
+                                    >
+                                    <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-sm-3">
@@ -63,6 +68,7 @@
                                     class="form-control"
                                     id="exampleFormControlTextarea1"
                                     rows="3"
+                                    placeholder="Введите описание"
                                 ></textarea>
                             </div>
                         </div>
@@ -74,8 +80,14 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+
 export default {
     name: "CategoryInfo",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             name: '',
@@ -100,7 +112,10 @@ export default {
                 this.img = file[0]
             }
         },
-        addCategory() {
+        async addCategory() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect) return
             this.$store.commit('loaderTrue')
 
             const data = new FormData()
@@ -110,16 +125,23 @@ export default {
             }
 
             axios.post('/api/v1/admin/categories', data)
-                .then((data) => {
-                    window.location.href = '/categories'
-                    console.log(data)
+                .then(response => {
+                    this.$router.push({name: 'Categories'})
+                    this.$store.commit('loaderFalse')
+                    console.log(response)
                 })
-                .catch((error) => {
+                .catch(error => {
+                    this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
+                            type: 'error'
+                        } })
+                    this.$store.commit('loaderFalse')
                     console.log(error)
                 })
-                .then(() => {
-                    this.$store.commit('loaderFalse')
-                })
+        }
+    },
+    validations () {
+        return {
+            name: { required }
         }
     }
 }
@@ -133,5 +155,14 @@ export default {
     margin: 0 auto 30px;
     background-size: cover;
     background-position: center center;
+}
+.invalid-msg {
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
 }
 </style>
