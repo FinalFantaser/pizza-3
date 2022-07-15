@@ -21,6 +21,7 @@
             $posters = Poster
                 ::join('posters_cities', 'posters.id', '=', 'posters_cities.poster_id')
                 ->where(['posters_cities.city_id' => $city->id])
+                ->active()
                 ->get();
 
             return $posters;
