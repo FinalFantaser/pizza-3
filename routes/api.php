@@ -104,14 +104,18 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
         //Гостевая страница
         Route::prefix('home')->name('home.')->namespace('Home')->group(function(){
             Route::namespace('Shop')->group(function(){
+                //Заказы
+                Route::name('orders.')->group(function(){
+                    Route::post('orders.checkout', 'OrderController@checkout')->name('checkout');
+                    // Route::get('orders.checkout', 'OrderController@checkout')->name('checkout');
+                });
+
                 Route::get('cities', 'ShowCitiesController')->name('cities');
-                Route::get('categories', 'ShowCategoriesController')->name('cities');
+                Route::get('categories', 'ShowCategoriesController')->name('categories');
                 Route::get('posters', 'ShowPostersController')->name('posters');
 
                 Route::get('{category:slug}', 'ProductController@index')->name('index');
                 Route::get('product/{product:slug}', 'ProductController@show')->name('show');
-
-
             });
         });
 

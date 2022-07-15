@@ -68,12 +68,13 @@ class OrderService{
             );
 
             //Создание данных о клиенте
+            $parsedJson = json_decode($request->customer_data);
             $customerData = $this->customerDataRepository->create(
-                name: $request->input('customer_data.name'),
-                email: $request->input('customer_data.email'),
-                phone: $request->input('customer_data.phone'),
-                city_id: $request->input('customer_data.city_id'),
-                address: $request->input('customer_data.address')
+                name: $parsedJson->name,
+                email: $parsedJson->email,
+                phone:  $parsedJson->phone,
+                city_id: $parsedJson->city_id,
+                address: $parsedJson->address
             );
 
             //Создание пунктов заказа
@@ -116,6 +117,7 @@ class OrderService{
             $order->setCustomerDataInfo($customerData->id);
 
             //Расчет суммы заказа
+            $order->cost = array_sum(Arr::pluck($orderItemsData, 'total_price')) + $deliveryMethod->cost;
 
             $order->save();
         });

@@ -15,7 +15,7 @@ class OrderRepository
             'note' => $note,
             'cost' => $totalPrice,
             'token' => Order::generateToken(),
-            'status' => 'new', //TODO Разобраться со статусами
+            'current_status' => 'new', //TODO Разобраться со статусами
         ]);
 
         return $order;

@@ -13,7 +13,7 @@ class CheckoutRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class CheckoutRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "customer_data" => ['required', 'json', /*Необходим вилидатор*/],
+            "delivery_method_id" => ['required', 'exists:delivery_methods,id'],
+            "order_items" => ['required', 'json', /*Необходим вилидатор*/],
         ];
     }
 }
