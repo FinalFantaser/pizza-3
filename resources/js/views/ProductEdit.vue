@@ -161,7 +161,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-options" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                <product-edit-options></product-edit-options>
+                                <product-edit-options ref="options" :optionsActive="product.options"></product-edit-options>
                             </div>
                         </div>
                     </div>
@@ -232,7 +232,7 @@ export default {
             // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
             if (!isFormCorrect) return
             this.$store.commit('loaderTrue')
-
+            const options = this.$refs.options.readyData()
             const data = new FormData()
             data.append('name',this.name)
             data.append('category_id', this.category_id)
@@ -240,20 +240,23 @@ export default {
             data.append('price', this.price)
             data.append('price_sale', this.price_sale ? this.price_sale: 0)
             data.append('description', this.description)
+            if(options.length > 0) {
+                data.append('options', JSON.stringify(options))
+            }
             if(this.img) {
                 data.append('productImage', this.img)
             }
-            if (this.sizes) {
-
-                const arr = this.sizes.split(', ')
-                const properties = {size: arr }
-
-                data.append('properties', JSON.stringify(properties))
-            }
+            // if (this.sizes) {
+            //
+            //     const arr = this.sizes.split(', ')
+            //     const properties = {size: arr }
+            //
+            //     data.append('properties', JSON.stringify(properties))
+            // }
             data.append("_method", "put");
             axios.post(`/api/v1/admin/products/${this.product.id}`, data)
                 .then((data) => {
-                    window.location.href = '/products'
+                    this.$router.push({name: 'Products'})
                     console.log(data)
                 })
                 .catch((error) => {
@@ -332,5 +335,9 @@ export default {
     margin: 0;
     font-size: 12px;
     color: tomato;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #0d6efd;
 }
 </style>

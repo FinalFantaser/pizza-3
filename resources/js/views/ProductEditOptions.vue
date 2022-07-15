@@ -10,7 +10,7 @@
             <div v-if="option" class="d-flex justify-content-between align-items-center">
                 <p class="m-0 lh-1">{{ option.name }}</p>
                 <button
-                    @click="addOption(option.id)"
+                    @click="addOption(option)"
                     class="btn m-0 btn-success text-lg px-3"
                 >
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -22,7 +22,7 @@
             <hr>
             <div v-for="(option, index) in finishOptions" class="col-12">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="font-weight-bolder">{{ finishOptions[index].name }}</h6>
+                    <h6 class="font-weight-bolder">{{ addedOption[index].name }}</h6>
                     <div @click="deleteOption(index)" class="addItem addItem--plus mt-2">
                         <i class="fa fa-minus-circle text-danger" aria-hidden="true"></i>
                     </div>
@@ -56,13 +56,13 @@
                 <hr>
             </div>
         </div>
-        {{finishOptions}}
     </div>
 </template>
 
 <script>
 export default {
     name: "ProductCreateOptions",
+    props: ['optionsActive'],
     data() {
         return {
             option: '',
@@ -80,15 +80,23 @@ export default {
             const arr = JSON.parse(JSON.stringify(this.finishOptions))
             if(arr.length > 0) {
                 arr.forEach(item => {
-                    item.option_id = item.id
-                    delete item.id
-                    delete item.name
-                    delete item.type
-                    item.items.forEach((item2, index2, array2) => {
-                        if(item2.name == '' || item2.price == '') {
-                            array2.splice(index2,1)
-                        }
-                    })
+                    const arrTest = []
+                    // item.items.forEach((item2, index2, array2) => {
+                    //     if(item2.name !== '' && item2.price !== '') {
+                    //         // array2.splice(index2,1)
+                    //         arrTest.push(item2)
+                    //     }
+                    // })
+                    // console.log(arrTest, 'w')
+
+                    // function filterByID(item) {
+                    //     if (item.name == '') {
+                    //         return true
+                    //     }
+                    //     return false;
+                    // }
+                    // let arrByID = item.items.filter(filterByID)
+                    // console.log(arrByID, 'q')
                 })
                 arr.forEach((item, index, array) => {
                     if(item.items.length == 0) {
@@ -116,28 +124,38 @@ export default {
             this.addedOption.splice(index, 1)
             this.finishOptions.splice(index, 1)
         },
-        addOption(id) {
+        addOption(option) {
+            this.option = ''
+            this.addedOption.push(JSON.parse(JSON.stringify(option)))
+            // const obj = JSON.parse(JSON.stringify(option))
+            const obj = {}
+            obj.items = [{
+                name: '',
+                price: ''
+            }]
+            obj.option_id = option.id
+            this.finishOptions.push(obj)
 
-            this.$store.commit('loaderTrue')
-            axios.get(`/api/v1/admin/options/${id}`)
-                .then(data => {
-                    this.option = ''
-                    this.$store.commit('loaderFalse')
-                    this.addedOption.push(JSON.parse(JSON.stringify(data.data.data)))
-                    data.data.data.items = [{
-                        name: '',
-                        price: ''
-                    }]
-                    this.finishOptions.push(JSON.parse(JSON.stringify(data.data.data)))
-                    console.log(this.addedOption)
-                })
-                .catch(error => {
-                    this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
-                            type: 'error'
-                        } })
-                    this.$store.commit('loaderFalse')
-                    console.log(error)
-                })
+            // this.$store.commit('loaderTrue')
+            // axios.get(`/api/v1/admin/options/${id}`)
+            //     .then(data => {
+            //         this.option = ''
+            //         this.$store.commit('loaderFalse')
+            //         this.addedOption.push(JSON.parse(JSON.stringify(data.data.data)))
+            //         data.data.data.items = [{
+            //             name: '',
+            //             price: ''
+            //         }]
+            //         this.finishOptions.push(JSON.parse(JSON.stringify(data.data.data)))
+            //         console.log(this.addedOption)
+            //     })
+            //     .catch(error => {
+            //         this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
+            //                 type: 'error'
+            //             } })
+            //         this.$store.commit('loaderFalse')
+            //         console.log(error)
+            //     })
         },
         async getOptions() {
             await this.$store.dispatch('serviceOptions/getOptions')
@@ -145,6 +163,28 @@ export default {
     },
     async created() {
         await this.getOptions()
+        if(this.optionsActive.length > 0) {
+            this.optionsActive.forEach(item => {
+                const obj = {}
+                obj.items = [{
+                    name: '',
+                    price: ''
+                }]
+                obj.option_id = item.parent.id
+                obj.items = item.items
+                this.finishOptions.push(obj)
+
+                const obj2 = {}
+                obj2.name = item.parent.name
+                this.stateOptions.forEach(item2 => {
+                    if(item.parent.id == item2.id) {
+                        obj2.items = item2.items
+                    }
+                })
+                this.addedOption.push(obj2)
+            })
+        }
+
     }
 }
 </script>

@@ -10,7 +10,7 @@
             <div v-if="option" class="d-flex justify-content-between align-items-center">
                 <p class="m-0 lh-1">{{ option.name }}</p>
                 <button
-                    @click="addOption(option.id)"
+                    @click="addOption(option)"
                     class="btn m-0 btn-success text-lg px-3"
                 >
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -41,6 +41,7 @@
                             class="form-control"
                             type="number"
                             placeholder="Укажите цену"
+                            min="0"
                         >
                     </div>
                     <div v-if="finishOptions[index].items.length !== 1" @click="deleteItem(index, index2)" class="cursor-pointer">
@@ -56,7 +57,6 @@
                 <hr>
             </div>
         </div>
-        {{finishOptions}}
     </div>
 </template>
 
@@ -80,10 +80,6 @@ export default {
             const arr = JSON.parse(JSON.stringify(this.finishOptions))
             if(arr.length > 0) {
                 arr.forEach(item => {
-                    item.option_id = item.id
-                    delete item.id
-                    delete item.name
-                    delete item.type
                     item.items.forEach((item2, index2, array2) => {
                         if(item2.name == '' || item2.price == '') {
                             array2.splice(index2,1)
@@ -116,28 +112,36 @@ export default {
             this.addedOption.splice(index, 1)
             this.finishOptions.splice(index, 1)
         },
-        addOption(id) {
-
-            this.$store.commit('loaderTrue')
-            axios.get(`/api/v1/admin/options/${id}`)
-                .then(data => {
-                    this.option = ''
-                    this.$store.commit('loaderFalse')
-                    this.addedOption.push(JSON.parse(JSON.stringify(data.data.data)))
-                    data.data.data.items = [{
-                        name: '',
-                        price: ''
-                    }]
-                    this.finishOptions.push(JSON.parse(JSON.stringify(data.data.data)))
-                    console.log(this.addedOption)
-                })
-                .catch(error => {
-                    this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
-                            type: 'error'
-                        } })
-                    this.$store.commit('loaderFalse')
-                    console.log(error)
-                })
+        addOption(option) {
+            this.option = ''
+            this.addedOption.push(JSON.parse(JSON.stringify(option)))
+            const obj = {}
+            obj.items = [{
+                name: '',
+                price: ''
+            }]
+            obj.option_id = option.id
+            this.finishOptions.push(obj)
+            // this.$store.commit('loaderTrue')
+            // axios.get(`/api/v1/admin/options/${id}`)
+            //     .then(data => {
+            //         this.option = ''
+            //         this.$store.commit('loaderFalse')
+            //         this.addedOption.push(JSON.parse(JSON.stringify(data.data.data)))
+            //         data.data.data.items = [{
+            //             name: '',
+            //             price: ''
+            //         }]
+            //         this.finishOptions.push(JSON.parse(JSON.stringify(data.data.data)))
+            //         console.log(this.addedOption)
+            //     })
+            //     .catch(error => {
+            //         this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
+            //                 type: 'error'
+            //             } })
+            //         this.$store.commit('loaderFalse')
+            //         console.log(error)
+            //     })
         },
         async getOptions() {
             await this.$store.dispatch('serviceOptions/getOptions')

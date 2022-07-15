@@ -227,6 +227,7 @@ export default {
             }
             this.$store.commit('loaderTrue')
             const options = this.$refs.options.readyData()
+            console.log(options)
             const data = new FormData()
             data.append('name',this.name)
             data.append('category_id', this.category)
@@ -234,7 +235,6 @@ export default {
             data.append('price', this.price)
             data.append('price_sale', this.price_sale ? this.price_sale: 0)
             data.append('description', this.description)
-            data.append('options', JSON.stringify(options))
             if(options.length > 0) {
                 data.append('options', JSON.stringify(options))
             }
@@ -251,7 +251,7 @@ export default {
 
             axios.post('/api/v1/admin/products', data)
                 .then((data) => {
-                    // this.$router.push({name: 'Products'})
+                    this.$router.push({name: 'Products'})
                     console.log(data)
                 })
                 .catch((error) => {
