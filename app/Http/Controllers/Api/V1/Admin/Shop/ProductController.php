@@ -10,6 +10,7 @@ use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
 use App\Models\Shop\Product;
 use App\Http\Resources\ProductResource;
 use App\Services\Shop\ProductService;
+use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {

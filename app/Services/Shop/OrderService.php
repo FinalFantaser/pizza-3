@@ -7,6 +7,7 @@ use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Models\Shop\City;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Product;
+use App\ReadRepository\Shop\DeliveryMethodReadRepository;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\OrderReadRepository;
 use App\ReadRepository\Shop\ProductReadRepository;
@@ -21,6 +22,7 @@ class OrderService{
         private OrderReadRepository $readRepository,
         private OrderItemRepository $orderItemRepository,
         private CustomerDataRepository $customerDataRepository,
+        private DeliveryMethodReadRepository $deliveryMethodReadRepository,
         private ProductReadRepository $productReadRepository,
     )
     {} //Конструктор
@@ -58,8 +60,7 @@ class OrderService{
     // Методы для клиентов
     //
     public function checkout(CheckoutRequest $request){  //Оформить заказ
-        DB::transaction(function() use ($request){
-            
+        DB::transaction(function() use ($request){            
             //Создание записи о заказе
             $order = $this->orderRepository->create(
                 note: $request->note,
@@ -84,25 +85,35 @@ class OrderService{
                 with: 'optionRecords'
             );
 
-            $items = array_map(function($value) use ($order, $products){
-                //Расчёт цены
-                $product = $products->where('id', $value->product_id);
-
+            $orderItemsData = array_map(function($value) use ($products, $order){
+                $product = $products->where('id', $value->product_id)->first();
+    
+                $additionalPrices = Arr::flatten( //flatten убирает вложенные массивы, которые возвращает pluck
+                    array_map(function($option) use ($product){ //Перебираются опции из запроса
+                        $items = collect( $product->optionRecords->where('id', $option->id)->first()->items ); //Из опации продукта берутся items
+                        return $items->whereIn('name', $option->selected)->pluck('price'); //Из items, где name совпадает с selected, берутся цены
+                    }, $value->options)
+                );
+    
                 return [
                     'order_id' => $order->id,
                     'product_id' => $product->id,
                     'product_name' => $product->name,
                     'product_price' => $product->price,
                     'product_quantity' => $value->product_quantity,
-                    'total_price' => 0,
+                    'total_price' => ($product->price + array_sum($additionalPrices)) * $value->product_quantity,
+                    // 'additional' => $additionalPrices,
                 ];
             }, $rawData);
-            
 
-            
+            $this->orderItemRepository->createBulk($orderItemsData);
+
+            //Загрузка способа доставки
+            $deliveryMethod = $this->deliveryMethodReadRepository->findById($request->delivery_method_id);
 
             //Связывание данных между собой
-            //...
+            $order->setDeliveryMethodInfo($deliveryMethod->id, $deliveryMethod->name, $deliveryMethod->cost);
+            $order->setCustomerDataInfo($customerData->id);
 
             //Расчет суммы заказа
 
