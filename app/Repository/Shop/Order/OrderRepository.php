@@ -14,7 +14,8 @@ class OrderRepository
         $order = Order::create([
             'note' => $note,
             'cost' => $totalPrice,
-            'token' => Order::generateToken()
+            'token' => Order::generateToken(),
+            'current_status' => 'new', //TODO Разобраться со статусами
         ]);
 
         return $order;
