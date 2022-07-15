@@ -39,7 +39,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
                     || (is_array($id) && $product->count() !== count($id))
               )
                 throw new ModelNotFoundException;
-                
+
 
             return $product;
         } //findById

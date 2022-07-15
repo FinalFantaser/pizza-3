@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Intervention\Image\Exception\NotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +49,25 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request,  $exception)
+    {
+        if ($request->is('api/*') || $request->is('api')) {
+
+            $request->headers->set('Accept', 'application/json');
+
+            if ($exception instanceof \Exception) {
+                // return response()->json(['response' => "Project id:{$request->project} Not Found'"], 404);
+                return response()->json(['response' => $exception->getMessage()]);
+            }
+
+            if ($exception instanceof NotFoundHttpException) {
+                return response()->json(['error' => 'Not Found'], 404);
+            }
+
+        }
+
+        return parent::render($request, $exception);
     }
 }
