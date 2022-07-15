@@ -105,12 +105,18 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
         Route::prefix('home')->name('home.')->namespace('Home')->group(function(){
             Route::namespace('Shop')->group(function(){
                 Route::get('cities', 'ShowCitiesController')->name('cities');
+                Route::get('categories', 'ShowCategoriesController')->name('cities');
 
                 Route::get('{category:slug}', 'ProductController@index')->name('index');
                 Route::get('product/{product:slug}', 'ProductController@show')->name('show');
+
             });
         });
 
-        
+
     });
 });
+
+//Route::fallback( function (){
+//    return response()->json(['message' => 'Bad Request, not found this route'], 400);
+//});
