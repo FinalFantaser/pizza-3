@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -14,8 +15,15 @@ class Poster extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
+    const STATUS_DRAFT = 0;
+    const STATUS_ACTIVE = 1;
+
     protected $fillable = ['name', 'description', 'enabled'];
     public $timestamps = false;
+
+    public function scopeActive(Builder $query){
+        return $query->where('enabled', self::STATUS_ACTIVE );
+    }
 
     public function registerMediaConversions(Media $media = null): void{
         $this->addMediaConversion('thumb')
