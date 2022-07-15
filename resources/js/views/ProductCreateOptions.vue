@@ -22,7 +22,7 @@
             <hr>
             <div v-for="(option, index) in finishOptions" class="col-12">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="font-weight-bolder">{{ finishOptions[index].name }}</h6>
+                    <h6 class="font-weight-bolder">{{ addedOption[index].name }}</h6>
                     <div @click="deleteOption(index)" class="addItem addItem--plus mt-2">
                         <i class="fa fa-minus-circle text-danger" aria-hidden="true"></i>
                     </div>
