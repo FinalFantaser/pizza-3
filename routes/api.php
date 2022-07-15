@@ -106,9 +106,11 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
             Route::namespace('Shop')->group(function(){
                 Route::get('cities', 'ShowCitiesController')->name('cities');
                 Route::get('categories', 'ShowCategoriesController')->name('cities');
+                Route::get('posters', 'ShowPostersController')->name('posters');
 
                 Route::get('{category:slug}', 'ProductController@index')->name('index');
                 Route::get('product/{product:slug}', 'ProductController@show')->name('show');
+
 
             });
         });
