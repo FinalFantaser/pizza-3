@@ -17,7 +17,7 @@ class Category extends Model implements HasMedia
 {
     use HasFactory, Sluggable, InteractsWithMedia;
 
-    protected $fillable = ['name','meta'];
+    protected $fillable = ['name', 'sort', 'meta'];
 
     protected $hidden = ['pivot'];
 
