@@ -81,22 +81,12 @@ export default {
             if(arr.length > 0) {
                 arr.forEach(item => {
                     const arrTest = []
-                    // item.items.forEach((item2, index2, array2) => {
-                    //     if(item2.name !== '' && item2.price !== '') {
-                    //         // array2.splice(index2,1)
-                    //         arrTest.push(item2)
-                    //     }
-                    // })
-                    // console.log(arrTest, 'w')
-
-                    // function filterByID(item) {
-                    //     if (item.name == '') {
-                    //         return true
-                    //     }
-                    //     return false;
-                    // }
-                    // let arrByID = item.items.filter(filterByID)
-                    // console.log(arrByID, 'q')
+                    item.items.forEach((item2, index2, array2) => {
+                        if(item2.name !== '' && item2.price !== '') {
+                            arrTest.push(item2)
+                        }
+                    })
+                    item.items = arrTest
                 })
                 arr.forEach((item, index, array) => {
                     if(item.items.length == 0) {
