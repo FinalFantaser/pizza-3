@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-options" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                <product-create-options></product-create-options>
+                                <product-create-options ref="options"></product-create-options>
                             </div>
                         </div>
                     </div>
@@ -226,7 +226,7 @@ export default {
                 return
             }
             this.$store.commit('loaderTrue')
-
+            const options = this.$refs.options.readyData()
             const data = new FormData()
             data.append('name',this.name)
             data.append('category_id', this.category)
@@ -234,6 +234,10 @@ export default {
             data.append('price', this.price)
             data.append('price_sale', this.price_sale ? this.price_sale: 0)
             data.append('description', this.description)
+            data.append('options', JSON.stringify(options))
+            if(options.length > 0) {
+                data.append('options', JSON.stringify(options))
+            }
             if(this.image) {
                 data.append('productImage', this.image)
             }
@@ -247,7 +251,7 @@ export default {
 
             axios.post('/api/v1/admin/products', data)
                 .then((data) => {
-                    window.location.href = '/products'
+                    // this.$router.push({name: 'Products'})
                     console.log(data)
                 })
                 .catch((error) => {

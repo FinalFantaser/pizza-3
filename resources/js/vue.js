@@ -24,4 +24,10 @@ appInstance.use(Toast, {
 });
 appInstance.mount("#app");
 
+appInstance.directive('number', {
+    mounted:(el) => {
+        el.value = el.value.replace(/\D/,'')
+    }
+})
+
 fontawesome()
