@@ -40,8 +40,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
               )
                 throw new ModelNotFoundException;
 
-
-            return $product;
+            return is_int($id) ? $product->first() : $product;
         } //findById
 
         public function findByCity(City $city, int $num = 50){
