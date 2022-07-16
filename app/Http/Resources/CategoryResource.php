@@ -24,6 +24,7 @@ class CategoryResource extends JsonResource
             'SEO_description' => $this->meta['description'] ?? null,
             'imageUrl' => $this->getFirstMediaUrl('categories'),
             'thumbUrl' => $this->imageUrl('thumb'),
+            'sort' => $this->sort
         ];
     }
 }
