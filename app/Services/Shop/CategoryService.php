@@ -23,12 +23,25 @@ class CategoryService{
 
     public function create(CreateRequest $request){
         return
-            $this->repository->create($request->name, $request->seo_title, $request->seo_description, $request->seo_keywords);
+            $this->repository->create(
+               name: $request->name,
+               sort: $request->sort,
+               seo_title: $request->seo_title,
+               seo_description: $request->seo_description,
+               seo_keywords: $request->seo_keywords
+            );
     } //create
 
     public function update(UpdateRequest $request, Category $category){
         return
-            $this->repository->update($category, $request->name, $request->seo_title, $request->seo_description, $request->seo_keywords);
+            $this->repository->update(
+                $category,
+                name: $request->name,
+                sort: $request->sort,
+                seo_title: $request->seo_title,
+                seo_description: $request->seo_description,
+                seo_keywords: $request->seo_keywords
+            );
     } //update
 
     public function remove(Category $category){
