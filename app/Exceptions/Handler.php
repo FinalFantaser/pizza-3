@@ -51,23 +51,23 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request,  $exception)
-    {
-        if ($request->is('api/*') || $request->is('api')) {
-
-            $request->headers->set('Accept', 'application/json');
-
-            if ($exception instanceof \Exception) {
-                // return response()->json(['response' => "Project id:{$request->project} Not Found'"], 404);
-                return response()->json(['response' => $exception->getMessage()]);
-            }
-
-            if ($exception instanceof NotFoundHttpException) {
-                return response()->json(['error' => 'Not Found'], 404);
-            }
-
-        }
-
-        return parent::render($request, $exception);
-    }
+//    public function render($request,  $exception)
+//    {
+//        if ($request->is('api/*') || $request->is('api')) {
+//
+//            $request->headers->set('Accept', 'application/json');
+//
+//            if ($exception instanceof \Exception) {
+//                // return response()->json(['response' => "Project id:{$request->project} Not Found'"], 404);
+//                return response()->json(['response' => $exception->getMessage()."   ".$exception->]);
+//            }
+//
+//            if ($exception instanceof NotFoundHttpException) {
+//                return response()->json(['error' => 'Not Found'], 404);
+//            }
+//
+//        }
+//
+//        return parent::render($request, $exception);
+//    }
 }
