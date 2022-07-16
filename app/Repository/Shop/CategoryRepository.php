@@ -7,9 +7,10 @@
 
     class CategoryRepository{
 
-        public function create($name, $seo_title, $seo_description, $seo_keywords){
+        public function create($name, $sort, $seo_title, $seo_description, $seo_keywords){
             $category = Category::create([
                 'name' => $name,
+                'sort' => $sort,
                 'meta' => new Meta($seo_title, $seo_description, $seo_keywords)
             ]);
 
@@ -18,9 +19,10 @@
             return $category;
         } //create
 
-        public function update(Category $category, $name, $seo_title, $seo_description, $seo_keywords){
+        public function update(Category $category, $name, $sort, $seo_title, $seo_description, $seo_keywords){
             $category->update([
                 'name' => $name,
+                'sort' => $sort,
                 'meta' => new Meta($seo_title, $seo_description, $seo_keywords)
             ]);
 
