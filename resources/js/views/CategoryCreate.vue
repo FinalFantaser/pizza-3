@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder text-center">Информация о категории</h5>
                         <div class="row mb-3">
-                            <div class="col-12 col-sm-8 m-auto">
+                            <div class="col-12 col-sm-8 m-auto mb-3">
                                 <label>Название</label>
                                 <div class="position-relative">
                                     <input
@@ -57,6 +57,20 @@
                                         placeholder="Введите название"
                                     >
                                     <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-8 m-auto">
+                                <label>Порядок сортировки</label>
+                                <div class="position-relative">
+                                    <input
+                                        :style="v$.sort.$error ? 'border-color: tomato;' : ''"
+                                        v-model="sort"
+                                        class="form-control"
+                                        type="number"
+                                        min="0"
+                                        placeholder="Порядок сортировки"
+                                    >
+                                    <p v-if="v$.sort.$error" class="invalid-msg">Обязательное поле</p>
                                 </div>
                             </div>
                         </div>
@@ -91,6 +105,7 @@ export default {
     data() {
         return {
             name: '',
+            sort: '0',
             description: '',
             previewImage: null,
             img: null
@@ -120,6 +135,7 @@ export default {
 
             const data = new FormData()
             data.append('name',this.name)
+            data.append('sort',this.sort)
             if(this.img) {
                 data.append('categoryImage', this.img)
             }
@@ -141,7 +157,8 @@ export default {
     },
     validations () {
         return {
-            name: { required }
+            name: { required },
+            sort: { required }
         }
     }
 }

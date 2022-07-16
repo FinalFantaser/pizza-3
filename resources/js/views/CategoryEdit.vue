@@ -69,6 +69,20 @@
                                     <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
                                 </div>
                             </div>
+                            <div class="col-12 col-sm-8 m-auto">
+                                <label>Порядок сортировки</label>
+                                <div class="position-relative">
+                                    <input
+                                        :style="v$.sort.$error ? 'border-color: tomato;' : ''"
+                                        v-model="sort"
+                                        class="form-control"
+                                        type="number"
+                                        min="0"
+                                        placeholder="Порядок сортировки"
+                                    >
+                                    <p v-if="v$.sort.$error" class="invalid-msg">Обязательное поле</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="row mb-sm-3">
                             <div class="col-12 col-sm-8 m-auto">
@@ -102,6 +116,7 @@ export default {
     data() {
         return {
             name: '',
+            sort: '',
             description: '',
             category: null,
             img: null,
@@ -141,6 +156,7 @@ export default {
             this.$store.commit('loaderTrue')
             const data = new FormData()
             data.append('name', this.name)
+            data.append('sort', this.sort)
             if(this.img) {
                 data.append('categoryImage', this.img)
             }
@@ -163,7 +179,8 @@ export default {
     },
     validations () {
         return {
-            name: { required }
+            name: { required },
+            sort: { required }
         }
     },
     async created() {
@@ -181,6 +198,7 @@ export default {
             })
         if (this.category) {
             this.name = this.category.name
+            this.sort = this.category.sort
             this.imgPath = this.category.thumbUrl
         }
     }
