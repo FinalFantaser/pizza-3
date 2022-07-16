@@ -28,8 +28,8 @@ class ProductResource extends JsonResource
             'properties' => $this->properties,
             'category' => $this->whenLoaded('categories', $this->category),
             'cities' => $this->whenLoaded('cities'),
-            // 'options' => $this->optionRecords,
-            'options' => OptionRecordResource::collection( $this->whenLoaded('optionRecords') ),
+             //'options' => $this->optionRecords,
+            'options' => OptionRecordResource::collection( $this->whenLoaded('optionRecords', $this->optionRecords) ),
         ];
     }
 }
