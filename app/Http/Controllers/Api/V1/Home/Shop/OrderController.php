@@ -14,7 +14,7 @@ class OrderController extends Controller
     ){} //Конструктор
 
     public function checkout(CheckoutRequest $request){
-        $this->orderService->checkout($request);
-        return response()->json(['message' => 'Заказ оформлен', 'api_token' => '...'], 201);
+        $token = $this->orderService->checkout($request);
+        return response()->json(['message' => 'Заказ оформлен', 'api_token' => $token], 201);
     } //checkout
 }

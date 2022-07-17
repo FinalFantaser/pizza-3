@@ -61,7 +61,7 @@ class OrderService{
     // Методы для клиентов
     //
     public function checkout(CheckoutRequest $request){  //Оформить заказ
-        DB::transaction(function() use ($request){            
+        $token = DB::transaction(function() use ($request){            
             //Создание записи о заказе
             $order = $this->orderRepository->create(
                 note: $request->note,
@@ -92,10 +92,13 @@ class OrderService{
     
                 $additionalPrices = Arr::flatten( //flatten убирает вложенные массивы, которые возвращает pluck
                     array_map(function($option) use ($product){ //Перебираются опции из запроса
-                        $items = collect( $product->optionRecords->where('id', $option->id)->first()->items ); //Из опации продукта берутся items
+                        $items = collect( $product->optionRecords->where('id', $option->id)->first()->items ); //Из опции продукта берутся items
                         return $items->whereIn('name', $option->selected)->pluck('price'); //Из items, где name совпадает с selected, берутся цены
                     }, $value->options)
                 );
+
+                //Рассчёт общей стоимости пункта продукта
+                $price = $value->product_quantity * ($product->price + (count($additionalPrices) ? array_sum($additionalPrices) : 0));
     
                 return [
                     'order_id' => $order->id,
@@ -103,7 +106,7 @@ class OrderService{
                     'product_name' => $product->name,
                     'product_price' => $product->price,
                     'product_quantity' => $value->product_quantity,
-                    'total_price' => ($product->price + array_sum($additionalPrices)) * $value->product_quantity,
+                    'total_price' => $price,
                     // 'additional' => $additionalPrices,
                 ];
             }, $rawData);
@@ -118,10 +121,17 @@ class OrderService{
             $order->setCustomerDataInfo($customerData->id);
 
             //Расчет суммы заказа
-            $order->cost = array_sum(Arr::pluck($orderItemsData, 'total_price')) + $deliveryMethod->cost;
+            $order_items_total = array_sum(Arr::pluck($orderItemsData, 'total_price'));
+            $order->cost = $order_items_total >= $deliveryMethod->free_from
+                            ? $order_items_total
+                            : $order_items_total + $deliveryMethod->cost;
 
             $order->save();
+
+            return $order->token;
         });
+        
+        return $token;
     } //checkout
 
     public function payByCustomer(Order $order, $paymentMethod)
