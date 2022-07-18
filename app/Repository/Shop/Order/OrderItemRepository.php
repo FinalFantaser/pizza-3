@@ -8,7 +8,7 @@ use App\Models\Shop\Product;
 
 class OrderItemRepository
 {
-    public function create(Order $order, Product $product, int $quantity
+    public function create(Order $order, Product $product, int $quantity, array $options = []
     ): OrderItem
     {
         $orderItem = OrderItem::create([
@@ -17,6 +17,7 @@ class OrderItemRepository
             'product_name' => $product->name,
             'product_price' => $product->price,
             'product_quantity' => $quantity,
+            'product_options' => $options,
             'total_price' => $product->price * $quantity,
         ]);
 

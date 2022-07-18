@@ -106,6 +106,7 @@ class OrderService{
                     'product_name' => $product->name,
                     'product_price' => $product->price,
                     'product_quantity' => $value->product_quantity,
+                    'product_options' => json_encode($value->options ?? []),
                     'total_price' => $price,
                     // 'additional' => $additionalPrices,
                 ];
@@ -141,7 +142,7 @@ class OrderService{
 
     public function cancelByCustomer(CancelRequest $request, Order $order)
     {
-       $this->orderRepository->cancelByUser($order, $request->reason);
+       $this->orderRepository->cancelByCustomer($order, $request->reason);
     } //cancelByAdmin
 
     //
@@ -154,4 +155,10 @@ class OrderService{
     public function findByCity(City $city){
         return $this->orderReadRepository->findByCity($city);
     } //findByCity
+
+    public function findByToken(string $token, string|array $with = null){
+        return $this->orderReadRepository->findByToken(
+            token: $token,
+            with: $with);
+    } //findByToken
 }

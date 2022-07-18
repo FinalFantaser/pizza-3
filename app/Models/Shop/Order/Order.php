@@ -19,8 +19,16 @@ class Order extends Model
         'customer_data_id',
         'delivery_method_id', 'delivery_method_name',
         'delivery_method_cost', 'cost', 'note',
-        'current_status', 'cancel_reason', 'token'
+        'current_status', 'paid', 'cancel_reason', 'token'
     ];
+
+    //Статусы заказа
+    const STATUS_NEW = 'new'; //Новый
+    const STATUS_SENT = 'sent'; //Отправлено
+    const STATUS_COMPLETED = 'completed'; //Завершен
+    const STATUS_CANCELLED_BY_CUSTOMER = 'cancelled by customer'; //Отменён клиентом
+    const STATUS_CANCELLED_BY_MANAGER = 'cancelled by manager'; //Отменён менеджером
+    const STATUS_CANCELLED_BY_ADMIN = 'cancelled by admin'; //Отменён администратором
 
     static public function generateToken(): string
     {
@@ -54,8 +62,7 @@ class Order extends Model
             throw new DomainException('Order is already paid.');
         }
 
-        // $this->payment_method = $method; //Возможно, это поле не понадобится
-        $this->addStatus('paid');
+        $this->paid = 1;
     }
 
     public function send(): void
@@ -64,7 +71,7 @@ class Order extends Model
             throw new DomainException('Order is already sent.');
         }
 
-        $this->addStatus('sent');
+        $this->addStatus(self::STATUS_SENT);
     }
 
     public function complete(): void
@@ -73,23 +80,29 @@ class Order extends Model
             throw new DomainException('Order is already completed.');
         }
 
-        $this->addStatus('completed');
+        $this->addStatus(self::STATUS_COMPLETED);
     }
 
     public function cancelByAdmin($reason): void
     {
         $this->cancel($reason);
-        $this->addStatus('cancelled');
+        $this->addStatus(self::STATUS_CANCELLED_BY_ADMIN);
     }
 
-    public function cancelByUser($reason): void
+    public function cancelByManager($reason): void
+    {
+        $this->cancel($reason);
+        $this->addStatus(self::STATUS_CANCELLED_BY_MANAGER);
+    }
+
+    public function cancelByCustomer($reason): void
     {
         if (!$this->canBeCanceled()) {
             throw new DomainException('Order cannot be canceled.');
         }
 
         $this->cancel($reason);
-        $this->addStatus('cancelled by customer');
+        $this->addStatus(self::STATUS_CANCELLED_BY_CUSTOMER);
     }
 
     private function cancel($reason): void
@@ -130,38 +143,44 @@ class Order extends Model
 
     public function isNew(): bool
     {
-        return $this->current_status === 'new';
+        return $this->current_status === self::STATUS_NEW;
     }
 
     public function isPaid(): bool
     {
-        return $this->current_status === 'paid';
+        return $this->paid;
     }
 
     public function isSent(): bool
     {
-        return $this->current_status === 'sent';
+        return $this->current_status === self::STATUS_SENT;
     }
 
     public function isCompleted(): bool
     {
-        return $this->current_status === 'completed';
+        return $this->current_status === self::STATUS_COMPLETED;
     }
 
     public function isCancelled(): bool
     {
-        return $this->current_status === 'cancelled'
-            || $this->current_status === 'cancelled by customer';
+        return $this->current_status === self::STATUS_CANCELLED_BY_ADMIN
+            || $this->current_status === self::STATUS_CANCELLED_BY_MANAGER
+            || $this->current_status === self::STATUS_CANCELLED_BY_CUSTOMER;
     }
 
     public function isCancelledByCustomer(): bool
     {
-        return $this->current_status === 'cancelled by customer';
+        return $this->current_status === self::STATUS_CANCELLED_BY_CUSTOMER;
     }
 
     public function isCancelledByAdmin(): bool
     {
-        return $this->current_status === 'cancelled';
+        return $this->current_status === self::STATUS_CANCELLED_BY_ADMIN;
+    }
+
+    public function isCancelledByManager(): bool
+    {
+        return $this->current_status === self::STATUS_CANCELLED_BY_MANAGER;
     }
 
     private function addStatus($value): void
@@ -169,6 +188,11 @@ class Order extends Model
         $this->update([
             'current_status' => $value
         ]);
+    }
+
+    public function statusIs($status)
+    {
+        return $this->current_status === $status;
     }
 
     public function deliveryMethod()

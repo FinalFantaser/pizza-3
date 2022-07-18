@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1\Home\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
+use App\Http\Requests\Api\Home\Shop\Order\ShowRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Shop\Order\Order;
 use App\Services\Shop\OrderService;
 
@@ -17,4 +19,12 @@ class OrderController extends Controller
         $token = $this->orderService->checkout($request);
         return response()->json(['message' => 'Заказ оформлен', 'api_token' => $token], 201);
     } //checkout
+
+    public function show(ShowRequest $request){
+        $order = $this->orderService->findByToken(
+            token: $request->token,
+            with: 'items'
+        );
+        return new OrderResource($order);
+    } //show
 }

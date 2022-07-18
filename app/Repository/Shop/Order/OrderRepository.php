@@ -15,7 +15,8 @@ class OrderRepository
             'note' => $note,
             'cost' => $totalPrice,
             'token' => Order::generateToken(),
-            'current_status' => 'new', //TODO Разобраться со статусами
+            'current_status' => Order::STATUS_NEW,
+            'paid' => 0,
         ]);
 
         return $order;
@@ -56,8 +57,13 @@ class OrderRepository
         $order->cancelByAdmin($reason);
     } //cancelByAdmin
 
-    public function cancelByUser(Order $order, $reason): void
+    public function cancelByManager(Order $order, $reason): void
     {
-        $order->cancelByUser($reason);
+        $order->cancelByManager($reason);
+    } //cancelByAdmin
+
+    public function cancelByCustomer(Order $order, $reason): void
+    {
+        $order->cancelByCustomer($reason);
     } //cancelByUser
 }

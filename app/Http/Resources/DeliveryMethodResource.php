@@ -14,12 +14,6 @@ class DeliveryMethodResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'name' => $this->name,
-            'cost' => $this->cost,
-            'free_from' => $this->free_from,
-            'min_weight' => $this->min_weight,
-            'max_weight' => $this->max_weight,
-        ];
+        return parent::toArray($request);
     }
 }

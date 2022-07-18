@@ -107,7 +107,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                 //Заказы
                 Route::name('orders.')->group(function(){
                     Route::post('orders.checkout', 'OrderController@checkout')->name('checkout');
-                    // Route::get('orders.checkout', 'OrderController@checkout')->name('checkout');
+                    Route::get('orders.show', 'OrderController@show')->name('show');
                 });
 
                 Route::get('cities', 'ShowCitiesController')->name('cities');

@@ -14,7 +14,11 @@ class OrderItem extends Model
     public $timestamps = false;
     protected $fillable = [
         'order_id', 'product_id', 'product_name',
-        'product_price', 'product_quantity', 'total_price'
+        'product_price', 'product_quantity', 'product_options', 'total_price'
+    ];
+
+    protected $casts = [
+        'product_options' => 'array',
     ];
 
     public function getCost(): int
