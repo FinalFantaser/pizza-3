@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests\Api\Home\Shop\Order;
 
+use App\Rules\Order\CustomerDataValidation;
+use App\Rules\Order\OptionsValidation;
+use App\Rules\Order\OrderItemsValidation;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class CheckoutRequest extends FormRequest
 {
@@ -24,9 +29,15 @@ class CheckoutRequest extends FormRequest
     public function rules()
     {
         return [
-            "customer_data" => ['required', 'json', /*Необходим вилидатор*/],
+            "customer_data" => ['required', 'json', new CustomerDataValidation],
             "delivery_method_id" => ['required', 'exists:delivery_methods,id'],
-            "order_items" => ['required', 'json', /*Необходим вилидатор*/],
+            "order_items" => ['required', 'json', new OrderItemsValidation, new OptionsValidation],
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }

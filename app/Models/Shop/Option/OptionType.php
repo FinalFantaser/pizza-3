@@ -12,4 +12,9 @@ class OptionType extends Model
     public $timestamps = false;
 
     protected $fillable = ['name'];
+
+    //Типы опций
+    const TYPE_LIST = 1;
+    const TYPE_RADIO = 2;
+    const TYPE_CHECKBOX = 3;
 }

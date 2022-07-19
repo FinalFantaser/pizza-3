@@ -24,4 +24,8 @@ class OptionRecord extends Model
     public function option(){
         return $this->belongsTo(Option::class, 'option_id');
     } //option
+
+    public function typeIs(int $type): bool{
+        return $this->option->type->id === $type;
+    } //typeIs
 }
