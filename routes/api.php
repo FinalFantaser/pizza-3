@@ -72,6 +72,13 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     //  Методы доставки
                     Route::apiResource('delivery-methods', 'DeliveryMethodController');
 
+                    //Методы оплаты
+                    Route::namespace('Payment')->prefix('payment')->group(function(){
+                        Route::apiResources([
+                            'payment_methods' => 'PaymentMethodController',
+                        ]);
+                    });
+
                     //  Управление заказами
                     Route::apiResource('orders', 'OrderController')->only(['index', 'show', 'destroy']);
                     Route::post('orders.cancel/{order}', 'OrderController@cancel')->name('order.cancel');

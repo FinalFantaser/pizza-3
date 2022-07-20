@@ -34,7 +34,7 @@ class OptionsValidation implements Rule
     {
         $data = json_decode(json: $value, associative: true);
 
-        foreach($data as $orderItem){
+        foreach($data as $orderItem){ //Проверка опций в каждой единице заказа
             if(!Arr::has($orderItem, 'options')) //Если опций нет, ничего не проверять
                 continue;
 
