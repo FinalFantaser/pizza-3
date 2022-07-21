@@ -40,6 +40,17 @@
             </sidenav-item>
         </li>
         <li class="nav-item">
+            <sidenav-item
+                url="/delivery"
+                :class="getRoute() === '/delivery' ? 'active' : ''"
+                :navText="'Доставка'"
+            >
+                <template v-slot:icon>
+                    <i class="ni ni-user-run text-success text-sm opacity-10"></i>
+                </template>
+            </sidenav-item>
+        </li>
+        <li class="nav-item">
             <div class="accordion-item mx-2">
                 <h2 class="p-3 accordion-header d-flex align-items-center" id="headingOne">
                     <div class="p-3 icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">

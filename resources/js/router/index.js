@@ -3,6 +3,8 @@ import Dashboard from "../views/Dashboard.vue";
 import Users from "../views/Users.vue";
 import UserInfo from "../views/UserInfo.vue";
 import Cities from "../views/Cities.vue";
+import Delivery from "../views/Delivery.vue";
+import PickupPointEdit from "../views/PickupPointEdit.vue";
 import Categories from "../views/Categories.vue";
 import CategoryCreate from "../views/CategoryCreate.vue";
 import CategoryEdit from "../views/CategoryEdit.vue";
@@ -46,6 +48,16 @@ const routes = [
         path: "/cities",
         name: "Cities",
         component: Cities,
+    },
+    {
+        path: "/delivery",
+        name: "Delivery",
+        component: Delivery,
+    },
+    {
+        path: "/delivery/pickup_point/:id/edit",
+        name: "delivery.pickup_point.edit",
+        component: PickupPointEdit,
     },
     {
         path: "/categories",
