@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Shop\City;
-use App\Models\Shop\DeliveryMethod;
+use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Order\CustomerData;
 use Illuminate\Support\Str;

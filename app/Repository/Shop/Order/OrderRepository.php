@@ -2,7 +2,7 @@
 
 namespace App\Repository\Shop\Order;
 
-use App\Models\Shop\DeliveryMethod;
+use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
 use Illuminate\Support\Str;

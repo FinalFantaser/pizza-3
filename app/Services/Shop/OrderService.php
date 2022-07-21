@@ -7,7 +7,7 @@ use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Models\Shop\City;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Product;
-use App\ReadRepository\Shop\DeliveryMethodReadRepository;
+use App\ReadRepository\Shop\Delivery\DeliveryMethodReadRepository;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\OrderReadRepository;
 use App\ReadRepository\Shop\ProductReadRepository;

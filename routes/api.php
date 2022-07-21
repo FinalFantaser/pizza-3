@@ -70,7 +70,14 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     });
 
                     //  Методы доставки
-                    Route::apiResource('delivery-methods', 'DeliveryMethodController');
+                    // Route::apiResource('delivery-methods', 'DeliveryMethodController');
+                    Route::prefix('delivery')->namespace('Delivery')->group(function(){
+                        Route::apiResources([
+                            'methods' => 'DeliveryMethodController',
+                            'pickup_points' => 'PickupPointController',
+                        ]);
+                        Route::get('pickup_points/city/{city_id}', 'PickupPointController@listByCity')->name('pickup_point.by_city');
+                    });
 
                     //  Управление заказами
                     Route::apiResource('orders', 'OrderController')->only(['index', 'show', 'destroy']);

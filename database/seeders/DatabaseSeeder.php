@@ -4,7 +4,7 @@ use App\Models\MediaLibrary;
 use App\Models\Role;
 use App\Models\Shop\Category;
 use App\Models\Shop\City;
-use App\Models\Shop\DeliveryMethod;
+use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
 use App\Models\Shop\Order\OrderItem;

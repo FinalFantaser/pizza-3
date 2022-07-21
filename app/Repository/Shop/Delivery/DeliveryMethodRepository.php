@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Repository\Shop;
+namespace App\Repository\Shop\Delivery;
 
-use App\Models\Shop\DeliveryMethod;
+use App\Models\Shop\Delivery\DeliveryMethod;
 
 class DeliveryMethodRepository
 {
     public function create(
-        string $name, int $cost, $freeFrom,
-        int $minWeight, int $maxWeight,
+        string $name, string $type, int $cost, $freeFrom,
+        int $minWeight, int $maxWeight
     ): DeliveryMethod
     {
         $method = DeliveryMethod::create([
             'name' => $name,
+            'type' => $type,
             'cost' => $cost,
             'free_from' => $freeFrom,
             'min_weight' => $minWeight,
@@ -24,12 +25,13 @@ class DeliveryMethodRepository
 
     public function update(
         DeliveryMethod $deliveryMethod,
-        string $name, int $cost, $freeFrom,
+        string $name, string $type, int $cost, $freeFrom,
         int $minWeight, int $maxWeight,
     ): void
     {
         $deliveryMethod->update([
             'name' => $name,
+            'type' => $type,
             'cost' => $cost,
             'free_from' => $freeFrom,
             'min_weight' => $minWeight,

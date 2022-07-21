@@ -1,8 +1,8 @@
 <?php
 
-namespace App\ReadRepository\Shop;
+namespace App\ReadRepository\Shop\Delivery;
 
-use App\Models\Shop\DeliveryMethod;
+use App\Models\Shop\Delivery\DeliveryMethod;
 
 class DeliveryMethodReadRepository
 {
