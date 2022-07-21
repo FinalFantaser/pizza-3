@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Shop\City;
 use App\Models\Shop\Delivery\DeliveryMethod;
+use App\Models\Shop\Delivery\PickupPoint;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Order\CustomerData;
 use Illuminate\Support\Str;
@@ -18,7 +19,9 @@ class Order extends Model
     protected $fillable = [
         'customer_data_id',
         'delivery_method_id', 'delivery_method_name',
-        'delivery_method_cost', 'cost', 'note',
+        'delivery_method_cost',
+        'pickup_point_id', 'pickup_point_address',
+        'cost', 'note',
         'current_status', 'paid', 'cancel_reason', 'token'
     ];
 
@@ -41,6 +44,14 @@ class Order extends Model
             'delivery_method_id' => $id,
             'delivery_method_name' => $name,
             'delivery_method_cost' => $cost,
+        ]);
+    }
+
+    public function setPickupPointInfo(int $id, string $address): void
+    {
+        $this->update([
+            'pickup_point_id' => $id,
+            'pickup_point_address' => $address,
         ]);
     }
 
@@ -190,7 +201,7 @@ class Order extends Model
         ]);
     }
 
-    public function statusIs($status)
+    public function statusIs($status): bool
     {
         return $this->current_status === $status;
     }
@@ -203,6 +214,11 @@ class Order extends Model
     public function customerData()
     {
         return $this->belongsTo(CustomerData::class, 'customer_data_id', 'id');
+    }
+
+    public function pickupPoint()
+    {
+        return $this->belongsTo(PickupPoint::class, 'pickup_point_id', 'id');
     }
 
     public function items()

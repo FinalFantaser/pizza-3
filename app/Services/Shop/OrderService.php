@@ -8,6 +8,7 @@ use App\Models\Shop\City;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Product;
 use App\ReadRepository\Shop\Delivery\DeliveryMethodReadRepository;
+use App\ReadRepository\Shop\Delivery\PickupPointReadRepository;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\OrderReadRepository;
 use App\ReadRepository\Shop\ProductReadRepository;
@@ -24,6 +25,7 @@ class OrderService{
         private OrderItemRepository $orderItemRepository,
         private CustomerDataRepository $customerDataRepository,
         private DeliveryMethodReadRepository $deliveryMethodReadRepository,
+        private PickupPointReadRepository $pickupPointReadRepository,
         private ProductReadRepository $productReadRepository,
     )
     {} //Конструктор
@@ -120,6 +122,10 @@ class OrderService{
             //Связывание данных между собой
             $order->setDeliveryMethodInfo($deliveryMethod->id, $deliveryMethod->name, $deliveryMethod->cost);
             $order->setCustomerDataInfo($customerData->id);
+            if($request->has('pickup_point_id')){
+                $pickupPoint = $this->pickupPointReadRepository->findById($request->pickup_point_id);
+                $order->setPickupPointInfo(id: $pickupPoint->id, address: $pickupPoint->address);
+            }
 
             //Расчет суммы заказа
             $order_items_total = array_sum(Arr::pluck($orderItemsData, 'total_price'));
