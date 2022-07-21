@@ -19,7 +19,7 @@ class PickupPointReadRepository{
         return $city;
     } //findById
 
-    public function findByCity(int $city_id)
+    public function findByCity(int|string $city_id)
     {
         $cities = PickupPoint::where('city_id', $city_id)->with('city:id,name')->get();
         if($cities->isEmpty())

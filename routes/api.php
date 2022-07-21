@@ -117,6 +117,12 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::get('orders.show', 'OrderController@show')->name('show');
                 });
 
+                //Доставка
+                Route::name('delivery.')->prefix('delivery')->namespace('Delivery')->group(function(){
+                    Route::get('methods', 'ShowDeliveryMethodsController')->name('methods');
+                    Route::get('pickup_points', 'ShowPickupPointsController')->name('pickup_points');
+                });
+
                 Route::get('cities', 'ShowCitiesController')->name('cities');
                 Route::get('categories', 'ShowCategoriesController')->name('categories');
                 Route::get('posters', 'ShowPostersController')->name('posters');

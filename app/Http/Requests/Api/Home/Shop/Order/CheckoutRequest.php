@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests\Api\Home\Shop\Order;
 
+use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Rules\Order\CustomerDataValidation;
 use App\Rules\Order\OptionsValidation;
 use App\Rules\Order\OrderItemsValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class CheckoutRequest extends FormRequest
@@ -31,6 +33,7 @@ class CheckoutRequest extends FormRequest
         return [
             "customer_data" => ['required', 'json', new CustomerDataValidation],
             "delivery_method_id" => ['required', 'exists:delivery_methods,id'],
+            "pickup_point_id" => [Rule::requiredIf(DeliveryMethod::findOrFail($this->delivery_method_id)->type === DeliveryMethod::TYPE_PICKUP), 'exists:pickup_points,id'],
             "order_items" => ['required', 'json', new OrderItemsValidation, new OptionsValidation],
         ];
     }

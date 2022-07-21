@@ -40,7 +40,6 @@ class DeliveryMethodController extends Controller
 
     public function destroy(DeliveryMethod $method){
         $this->service->remove($method);
-
         return response('Метод доставки удалён из базы данных', 204);
     } //destroy
 }
