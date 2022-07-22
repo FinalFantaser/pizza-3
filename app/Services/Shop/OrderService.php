@@ -74,7 +74,7 @@ class OrderService{
             $parsedJson = json_decode($request->customer_data);
             $customerData = $this->customerDataRepository->create(
                 name: $parsedJson->name,
-                email: $parsedJson->email,
+                email: $parsedJson->email ?? null,
                 phone:  $parsedJson->phone,
                 city_id: $parsedJson->city_id,
                 address: $parsedJson->address

@@ -10,7 +10,7 @@ class CustomerDataRepository
 {
     public function create(
         string $name,
-        string $email,
+        string|null $email,
         int $phone,
         int $city_id,
         string $address
