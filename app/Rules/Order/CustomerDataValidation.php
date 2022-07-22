@@ -13,7 +13,11 @@ class CustomerDataValidation implements Rule
 {
     //Обязательные поля
     private $required = [
-        'name', 'email', 'phone', 'city_id', 'address'
+        'name',
+        // 'email',
+        'phone',
+        'city_id',
+        'address'
     ];
 
 
@@ -42,7 +46,7 @@ class CustomerDataValidation implements Rule
             $this->hasRequired($data)
             && $this->notEmpty($data)
             && $this->cityExists($data['city_id'])
-            && $this->validateEmail($data['email'])
+            && in_array(needle: 'email', haystack: $data) ? $this->validateEmail($data['email']) : true //Если email не указан, то указывается true, как если бы проверка была пройдена
             && $this->validatePhone($data['phone'])
             ;
     }
