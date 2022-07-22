@@ -133,7 +133,6 @@ export default {
                 .then(response => {
                     this.address = ''
                     this.$store.commit('loaderFalse')
-                    console.log(response)
                 })
                 .catch(error => {
                     this.$store.commit('loaderFalse')
@@ -150,7 +149,6 @@ export default {
                         this.cityAddresses = response.data.data
                     }
                     this.$store.commit('loaderFalse')
-                    console.log(response.data.data)
                 })
                 .catch(error => {
                     this.$store.commit('loaderFalse')
@@ -161,7 +159,7 @@ export default {
     async created() {
         await this.getCities()
         if (this.stateCities) {
-            this.city = this.stateCities[0].id
+            this.city = this.$route.params.cityId ? this.$route.params.cityId : this.stateCities[0].id
             await this.getPointsCity()
         }
     }
