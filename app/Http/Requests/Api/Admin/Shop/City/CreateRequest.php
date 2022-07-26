@@ -25,6 +25,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:cities|string|max:255',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
         ];
     }
 }
