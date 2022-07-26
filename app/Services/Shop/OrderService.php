@@ -55,6 +55,8 @@ class OrderService{
 
     public function remove(Order $order)
     {
+        $this->customerDataRepository->removeByOrder($order);
+        $this->orderItemRepository->removeByOrder($order);
         $this->orderRepository->remove($order);
     } //remove
 
@@ -67,12 +69,14 @@ class OrderService{
             //Создание записи о заказе
             $order = $this->orderRepository->create(
                 note: $request->note,
-                totalPrice: 0 //Пока что сумма нулевая, она будет посчитана после создания orderItems
+                totalPrice: 0, //Пока что сумма нулевая, она будет посчитана после создания orderItems
+                time: $request->time
             );
 
             //Создание данных о клиенте
             $parsedJson = json_decode($request->customer_data);
             $customerData = $this->customerDataRepository->create(
+                order: $order,
                 name: $parsedJson->name,
                 email: $parsedJson->email ?? null,
                 phone:  $parsedJson->phone,

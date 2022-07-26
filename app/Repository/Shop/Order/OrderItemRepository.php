@@ -33,4 +33,9 @@ class OrderItemRepository
     {
         $orderItem->delete();
     } //remove
+
+    public function removeByOrder(Order $order): void //Удалить данные по id заказа
+    {
+        OrderItem::where('order_id', $order->id)->delete();
+    } //removeByOrder
 }

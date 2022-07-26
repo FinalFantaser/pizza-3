@@ -18,11 +18,18 @@ class Order extends Model
 
     protected $fillable = [
         'customer_data_id',
-        'delivery_method_id', 'delivery_method_name',
+        'delivery_method_id',
+        'delivery_method_name',
         'delivery_method_cost',
-        'pickup_point_id', 'pickup_point_address',
-        'cost', 'note',
-        'current_status', 'paid', 'cancel_reason', 'token'
+        'time',
+        'pickup_point_id',
+        'pickup_point_address',
+        'cost',
+        'note',
+        'current_status',
+        'paid',
+        'cancel_reason',
+        'token',
     ];
 
     //Статусы заказа

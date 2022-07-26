@@ -15,7 +15,7 @@ class CustomerData extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'email', 'phone', 'city_id', 'address'
+        'order_id', 'name', 'email', 'phone', 'city_id', 'address'
     ];
 
     public function city(){

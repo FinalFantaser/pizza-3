@@ -5,10 +5,12 @@ namespace App\Repository\Shop\Order;
 use App\Models\Shop\Order\CustomerData;
 
 use App\Models\Shop\City;
+use App\Models\Shop\Order\Order;
 
 class CustomerDataRepository
 {
     public function create(
+        Order $order,
         string $name,
         string|null $email,
         int $phone,
@@ -17,6 +19,7 @@ class CustomerDataRepository
     ): CustomerData
     {
         $customerData = CustomerData::create([
+            'order_id' => $order->id,
             'name' => $name,
             'email' => $email,
             'phone' => $phone,
@@ -31,4 +34,9 @@ class CustomerDataRepository
     {
         $customerData->delete();
     } //remove
+
+    public function removeByOrder(Order $order): void //Удалить данные по id заказа
+    {
+        CustomerData::where('order_id', $order->id)->delete();
+    } //removeByOrder
 }

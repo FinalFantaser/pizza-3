@@ -5,11 +5,12 @@ namespace App\Repository\Shop\Order;
 use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
+use App\Models\Shop\Order\OrderItem;
 use Illuminate\Support\Str;
 
 class OrderRepository
 {
-    public function create($note, $totalPrice): Order
+    public function create(string $note, int $totalPrice, string $time = null): Order
     {
         $order = Order::create([
             'note' => $note,
@@ -17,10 +18,16 @@ class OrderRepository
             'token' => Order::generateToken(),
             'current_status' => Order::STATUS_NEW,
             'paid' => 0,
+            'time' => $time,
         ]);
 
         return $order;
     } //create
+
+    public function remove(Order $order): void
+    {
+        $order->delete();
+    } //remove
 
     public function setDeliveryMethodInfo(Order $order, DeliveryMethod $method): void
     {

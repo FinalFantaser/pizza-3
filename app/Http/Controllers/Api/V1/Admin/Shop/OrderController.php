@@ -27,11 +27,11 @@ class OrderController extends Controller
     } //index
 
     public function show(Order $order){
-        return new OrderResource($order->load('items'));
+        return new OrderResource($order->load(['deliveryMethod', 'customerData', 'pickupPoint', 'items']));
     } //show
 
     public function destroy(Order $order){
-        $this->service->delete($order);
+        $this->service->remove($order);
         return response()->json(['message' => 'Заказ удалён']);
     } //destroy
 

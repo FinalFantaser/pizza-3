@@ -14,11 +14,20 @@ class OrderReadRepository
         return $orders;
     }
 
-    public function findById(int $id): ?Order
+    public function findById(int $id, string|array $with = null): ?Order
     {
-        $order = Order::findOrFail($id);
+        $order = Order::where('id', $id)
+                ->when(function($query) use ($with){
+                    return is_null($with) ? $query : $query->with($with);
+                })
+                ->first();
+
+        //Если модель не найдена
+        if(!$order->exists())
+            throw new ModelNotFoundException;
+
         return $order;
-    }
+    } //findById
 
     public function findByCity(City $city, string|array $with = null){
         $orders = Order::join('order_customer_data', 'orders.id', '=', 'order_customer_data.id')
@@ -43,7 +52,7 @@ class OrderReadRepository
                     })
                     ->first();
 
-        //Если модели не найдены
+        //Если модель не найдена
         if(!$order->exists())
             throw new ModelNotFoundException;
 

@@ -24,7 +24,7 @@ class OrderController extends Controller
     public function show(ShowRequest $request){
         $order = $this->orderService->findByToken(
             token: $request->token,
-            with: 'items'
+            with: ['deliveryMethod', 'customerData', 'pickupPoint', 'items']
         );
         return new OrderResource($order);
     } //show
