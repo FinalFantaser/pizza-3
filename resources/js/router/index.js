@@ -18,6 +18,7 @@ import Posters from "../views/Posters.vue";
 import PosterCreate from "../views/PosterCreate.vue";
 import PosterEdit from "../views/PosterEdit.vue";
 import Orders from "../views/Orders.vue";
+import OrderShow from "../views/OrderShow.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
@@ -123,6 +124,11 @@ const routes = [
     path: "/orders",
     name: "Orders",
     component: Orders,
+  },
+  {
+    path: "/orders/:id/show",
+    name: "orders.show",
+    component: OrderShow,
   },
   {
     path: "/profile",

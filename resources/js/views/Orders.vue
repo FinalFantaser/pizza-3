@@ -7,41 +7,14 @@
                     <div class="card-header pb-0">
                         <div class="d-lg-flex">
                             <div>
-                                <h5 class="mb-0">Все опции</h5>
+                                <h5 class="mb-0">Все заказы</h5>
                                 <p class="text-sm mb-0">
-                                    A lightweight, extendable, dependency-free javascript HTML table plugin.
+                                    Ниже представлен список всех имеющихся заказов.
                                 </p>
                             </div>
                             <div class="ms-auto my-auto mt-lg-0 mt-4">
                                 <div class="ms-auto my-auto">
-                                    <router-link to="/options/create" class="btn bg-gradient-primary btn-sm mb-0">Добавить опцию</router-link>
-                                    <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
-                                        Import
-                                    </button>
-                                    <div class="modal fade" id="import" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog mt-lg-10">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="ModalLabel">Import CSV</h5>
-                                                    <i class="fas fa-upload ms-3" aria-hidden="true"></i>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>You can browse your computer for a file.</p>
-                                                    <input type="text" placeholder="Browse file..." class="form-control mb-3" onfocus="focused(this)" onfocusout="defocused(this)">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="importCheck" checked="">
-                                                        <label class="custom-control-label" for="importCheck">I accept the terms and conditions</label>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn bg-gradient-primary btn-sm">Upload</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button>
+                                    <router-link to="#" class="btn bg-gradient-primary btn-sm mb-0">Создать заказ</router-link>
                                 </div>
                             </div>
                         </div>
@@ -63,49 +36,49 @@
                                         </label>
                                     </div>
                                     <div class="dataTable-search">
-                                        <input class="dataTable-input" placeholder="Search..." type="text">
+                                        <input class="dataTable-input" placeholder="Поиск..." type="text">
                                     </div>
                                 </div>
                                 <div class="dataTable-container">
                                     <table class="table table-flush dataTable-table" id="products-list">
                                         <thead class="thead-light">
                                         <tr>
-                                            <th data-sortable="" style="width: 31.7521%;"><a href="#" class="dataTable-sorter">Product</a></th>
-                                            <th data-sortable="" style="width: 12.3972%;" class=""><a href="#" class="dataTable-sorter">Category</a></th>
-                                            <th data-sortable="" style="width: 9.55092%;" class=""><a href="#" class="dataTable-sorter">Price</a></th>
-                                            <th data-sortable="" style="width: 12.5237%;" class=""><a href="#" class="dataTable-sorter">SKU</a></th>
-                                            <th data-sortable="" style="width: 10.3099%;" class=""><a href="#" class="dataTable-sorter">Quantity</a></th>
-                                            <th data-sortable="" style="width: 14.5478%;" class=""><a href="#" class="dataTable-sorter">Status</a></th>
-                                            <th data-sortable="" style="width: 8.91841%;" class="desc"><a href="#" class="dataTable-sorter">Action</a></th>
+                                            <th class="p-2"></th>
+                                            <th><a href="#" class="dataTable-sorter">№ заказа</a></th>
+                                            <th><a href="#" class="dataTable-sorter">Клиент</a></th>
+                                            <th><a href="#" class="dataTable-sorter">Сумма</a></th>
+                                            <th><a href="#" class="dataTable-sorter">Дата добавления</a></th>
+                                            <th><a href="#" class="dataTable-sorter">Дата изменения</a></th>
+                                            <th><a href="#" class="dataTable-sorter">Статус</a></th>
+                                            <th><a href="#" class="dataTable-sorter">Действия</a></th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="order in stateOrders">
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="form-check my-auto">
-                                                        <input class="form-check-input" type="checkbox" id="customCheck5">
-                                                    </div>
-                                                    <h6 class="ms-3 my-auto">{{ order.created_at_format }}</h6>
+                                        <tr v-for="(order, index) in stateOrders">
+                                            <td class="p-2">
+                                                <div class="form-check my-auto">
+                                                    <input class="form-check-input" type="checkbox" id="customCheck5">
                                                 </div>
                                             </td>
-                                            <td class="text-sm">Clothing</td>
-                                            <td class="text-sm">{{ order.cost }}</td>
-                                            <td class="text-sm">634729</td>
-                                            <td class="text-sm">725</td>
+                                            <td>
+
+                                                    <span class="text-sm">{{ order.id }}</span>
+                                            </td>
+                                            <td class="text-sm">Имя клиента</td>
+                                            <td class="text-sm">{{ order.cost }} ₽</td>
+                                            <td class="text-sm">{{ order.created_at_format }}</td>
+                                            <td class="text-sm">{{ order.updated_at_format }}</td>
                                             <td>
                                                 <span class="badge badge-success badge-sm">in Stock</span>
                                             </td>
                                             <td class="text-sm">
-                                                <a href="javascript:;" data-bs-toggle="tooltip" data-bs-original-title="Preview product">
+                                                <router-link :to="'/orders/' + order.id + '/show'" class="p-1">
                                                     <i class="fas fa-eye text-secondary" aria-hidden="true"></i>
-                                                </a>
-                                                <router-link :to="'/options/' + order.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                                                    <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
                                                 </router-link>
                                                 <a
+                                                    class="p-1"
                                                     href="javascript:;"
-                                                    @click="deleteOption(option.id)"
+                                                    @click="deleteOrder(order.id)"
                                                 >
                                                     <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
                                                 </a>
@@ -150,6 +123,20 @@ export default {
       }
     },
     methods: {
+      deleteOrder(id) {
+          this.$store.commit('loaderTrue')
+          axios.delete(`api/v1/admin/orders/${id}`)
+              .then((data) => {
+                  console.log(data)
+                  this.$store.dispatch('serviceOrders/getOrders')
+              })
+              .catch((error) => {
+                  console.log(error)
+              })
+              .then(() => {
+                  this.$store.commit('loaderFalse')
+              })
+      },
       async getOrders() {
           await this.$store.dispatch('serviceOrders/getOrders')
       }

@@ -1,3 +1,5 @@
+import dateFormat from "../.././assets/js/dateFormat.js";
+
 export default {
     namespaced: true,
     state() {
@@ -17,19 +19,8 @@ export default {
                 .then(data => {
                     if(data.data.data.length > 0) {
                         data.data.data.forEach(item => {
-                            var date = new Date(item.created_at);
-                            var options = {
-                                // era: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                // weekday: 'long',
-                                timezone: 'UTC',
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                second: 'numeric'
-                            };
-                            item.created_at_format = date.toLocaleString("ru", options)
+                            item.created_at_format = dateFormat(item.created_at)
+                            item.updated_at_format = dateFormat(item.updated_at)
                         })
                     }
                     state.orders = data.data.data
