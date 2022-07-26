@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'city_id' => 'required|exists:cities,id',
-            'address' => 'required|string|max:128|unique:pickup_points,address'
+            'address' => 'required|string|max:128'
         ];
     }
 
