@@ -10,7 +10,7 @@ use App\Models\Shop\Product;
 use App\ReadRepository\Shop\Delivery\DeliveryMethodReadRepository;
 use App\ReadRepository\Shop\Delivery\PickupPointReadRepository;
 use App\Repository\Shop\Order\OrderRepository;
-use App\ReadRepository\Shop\OrderReadRepository;
+use App\ReadRepository\Shop\Order\OrderReadRepository;
 use App\ReadRepository\Shop\ProductReadRepository;
 use App\Repository\Shop\Order\CustomerDataRepository;
 use App\Repository\Shop\Order\OrderItemRepository;
@@ -21,7 +21,6 @@ class OrderService{
     public function __construct(
         private OrderRepository $orderRepository,
         private OrderReadRepository $orderReadRepository,
-        private OrderReadRepository $readRepository,
         private OrderItemRepository $orderItemRepository,
         private CustomerDataRepository $customerDataRepository,
         private DeliveryMethodReadRepository $deliveryMethodReadRepository,

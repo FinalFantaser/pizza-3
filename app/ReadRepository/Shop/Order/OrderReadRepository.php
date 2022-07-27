@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ReadRepository\Shop;
+namespace App\ReadRepository\Shop\Order;
 
 use App\Models\Shop\Order\Order;
 use App\Models\Shop\City;

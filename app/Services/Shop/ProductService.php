@@ -8,6 +8,7 @@
     use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
 use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
+use App\ReadRepository\Shop\Order\OrderItemReadRepository;
 use App\Repository\Shop\ProductRepository;
     use App\ReadRepository\Shop\ProductReadRepository;
 use App\Repository\Shop\Option\OptionRecordRepository;
@@ -17,9 +18,10 @@ use App\Repository\Shop\Option\OptionRecordRepository;
             private ProductRepository $productRepository,
             private ProductReadRepository $productReadRepository,
             private OptionRecordRepository $optionRecordRepository,
-            private OptionRecordReadRepository $optionRecordReadRepository
+            private OptionRecordReadRepository $optionRecordReadRepository,
+            private OrderItemReadRepository $orderItemReadRepository
         )
-            {} //Конструктор
+        {} //Конструктор
 
         public function create(ProductRequest $request){
             $product = $this->productRepository->create(
@@ -136,4 +138,8 @@ use App\Repository\Shop\Option\OptionRecordRepository;
         public function findByCityAndCategory(City $city, Category $category, string|array $with = null){
             return $this->productReadRepository->findByCityAndCategory($city, $category, $with);
         } //findByCityAndCategory
+
+        public function findPopular(int $limit = 8){
+            return $this->orderItemReadRepository->popular(limit: $limit)->pluck('product');
+        } //findPopular
     }
