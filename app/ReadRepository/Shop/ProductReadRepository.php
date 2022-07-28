@@ -4,7 +4,8 @@
     use App\Models\Shop\Product;
     use App\Models\Shop\Category;
     use App\Models\Shop\City;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+    use Illuminate\Database\Eloquent\ModelNotFoundException;
+    use Illuminate\Support\Facades\DB;
 
     class ProductReadRepository{
         public function getMethods()
@@ -50,6 +51,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
         public function findBySlug(string $slug){
             return Product::where('slug', $slug)->first();
         } //findBySlug
+
+        public function findRecommended()
+        {
+            return Product::join('products_recommended', 'products.id', '=', 'products_recommended.product_id')->with(['cities', 'optionRecords'])->get();
+        } //findRecommended
 
         public function findByCityAndCategory(City $city, Category $category, string|array $with = null){
             $products = Product

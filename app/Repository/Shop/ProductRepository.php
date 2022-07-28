@@ -142,13 +142,21 @@
             $product->draft();
         } //draft
 
-        public function reduceQuantity(Product $product): void
+        public function addToRecommended(int $product_id, int $sort = 0): void //Добавить продукт в список "Часто заказывают"
         {
-            $product->reduceQuantity();
-        } //reduceQuantity
+            DB::table('products_recommended')->updateOrInsert(
+                ['product_id' => $product_id],
+                ['sort' => $sort]
+            );
+        } //addToRecommended
 
-        public function recountRating(Product $product): void
+        public function removeFromRecommended(int $product_id): void //Удалить продукт из списка "Часто заказывают"
         {
-            $product->recountRating();
-        } //recountRating
+            DB::table('products_recommended')->where('product_id', $product_id)->delete();
+        } //removeFromRecommended
+
+        public function clearRecommended(): void //Удалить все записи из списка "Часто заказывают"
+        {
+            DB::table('products_recommended')->truncate();
+        } //clearRecommended
     }
