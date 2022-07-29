@@ -137,6 +137,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
             });
         });
 
+        Route::get('token', function (){ return response()->json([ 'token' => csrf_token()], 200); });
 
     });
 });
