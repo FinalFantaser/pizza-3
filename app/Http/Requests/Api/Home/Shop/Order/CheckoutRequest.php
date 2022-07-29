@@ -36,6 +36,7 @@ class CheckoutRequest extends FormRequest
             "time" => ['nullable', 'string', 'max:255'],
             "pickup_point_id" => [Rule::requiredIf(DeliveryMethod::findOrFail($this->delivery_method_id)->type === DeliveryMethod::TYPE_PICKUP), 'exists:pickup_points,id'],
             "order_items" => ['required', 'json', new OrderItemsValidation, new OptionsValidation],
+            "note" => 'nullable|string|max:255',
         ];
     }
 

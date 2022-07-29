@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class OrderRepository
 {
-    public function create(string $note, int $totalPrice, string $time = null): Order
+    public function create(?string $note, int $totalPrice, string $time = null): Order
     {
         $order = Order::create([
             'note' => $note,
