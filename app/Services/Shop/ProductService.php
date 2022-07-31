@@ -117,6 +117,14 @@ use App\Repository\Shop\Option\OptionRecordRepository;
             );
         } //addOptions
 
+        public function activate(Product $product){
+            $this->productRepository->activate($product);
+        } //activate
+
+        public function draft(Product $product){
+            $this->productRepository->draft($product);
+        } //draft
+
         //
         // Поисковые запросы
         //
@@ -135,8 +143,8 @@ use App\Repository\Shop\Option\OptionRecordRepository;
             return $this->productReadRepository->findByCity($city);
         } //findByCity
 
-        public function findByCityAndCategory(City $city, Category $category, string|array $with = null){
-            return $this->productReadRepository->findByCityAndCategory($city, $category, $with);
+        public function findByCityAndCategory(City $city, Category $category, string|array $with = null, string $status = null){
+            return $this->productReadRepository->findByCityAndCategory($city, $category, $with, $status);
         } //findByCityAndCategory
 
         public function findPopular(int $limit = 8){

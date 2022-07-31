@@ -39,25 +39,15 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request){
         $this->service->create($request);
-        return response()->json(['message' => 'Продукт добавлен в базу данных']);
+        return response('Продукт добавлен в базу данных');
     } //store
 
     public function update(ProductRequest $request, $product){
-        // $data = array_map(function($value) use ($product) {
-        //     return [
-        //         'product_id' => intval($product),
-        //         'city_id' => $value
-        //     ];
-        // }, json_decode($request->city_id));
-        
-        
-        // return response()->json($data);
-
         //TODO Разобраться с привязкой моделей
         $product = Product::findOrFail($product);
 
         $this->service->update($request, $product);
-        return response()->json(['message' => 'Данные продукта обновлены']);
+        return response('Данные продукта обновлены');
     } //update
 
     public function destroy($product){
@@ -65,7 +55,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($product);
 
         $this->service->remove($product);
-        return response()->json(['message' => 'Продукт удален']);
+        return response('Продукт удален', 204);
     } //destroy
 
     //
@@ -73,16 +63,32 @@ class ProductController extends Controller
     //
     public function attachToCity(AttachToCityRequest $request){
         $this->service->attachToCity($request);
-        return response()->json(['message' => 'Продукт прикреплен к городу']);
+        return response('Продукт прикреплен к городу');
     } //attachToCity
 
     public function detachFromCity(AttachToCityRequest $request){
         $this->service->detachFromCity($request);
-        return response()->json(['message' => 'Продукт откреплён от города']);
+        return response('Продукт откреплён от города');
     } //attachToCity
 
     public function updateCategory(UpdateCategoryRequest $request){
         $this->service->updateCategory($request);
-        return response()->json(['message' => 'Продукт назначен на категорию']);
+        return response('Продукт назначен на категорию');
     } //updateCategory
+
+    //
+    //      Управление продуктами
+    //
+    public function activate($product){
+        $product = Product::findOrFail($product);
+        $this->service->activate($product);
+        return response('Продукт включён');
+    } //activate
+
+    public function draft($product){
+        $product = Product::findOrFail($product);
+        $this->service->draft($product);
+        return response('Продукт отключён');
+    } //draft
+
 }

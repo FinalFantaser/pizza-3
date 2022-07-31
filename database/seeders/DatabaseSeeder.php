@@ -5,6 +5,7 @@ use App\Models\Role;
 use App\Models\Shop\Category;
 use App\Models\Shop\City;
 use App\Models\Shop\Delivery\DeliveryMethod;
+use App\Models\Shop\Delivery\PickupPoint;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
 use App\Models\Shop\Order\OrderItem;
@@ -27,8 +28,8 @@ class DatabaseSeeder extends Seeder
         MediaLibrary::firstOrCreate([]);
 
         //Города
-        $city_aprelevka = City::firstOrCreate(['name' => 'Апрелевка']);
-        $city_balabanovka = City::firstOrCreate(['name' => 'Балабаново']);
+        $city_aprelevka = City::firstOrCreate(['name' => 'Апрелевка'], ['phone' => '+7 000 000 00 01']);
+        $city_balabanovka = City::firstOrCreate(['name' => 'Балабаново'], ['phone' => '+7 000 000 00 02']);
 
         // Пользователи
         $user = User::firstOrCreate( //Главный админ
@@ -86,13 +87,31 @@ class DatabaseSeeder extends Seeder
 
         //Способы доставки
         $delivery_method = DeliveryMethod::firstOrCreate(
-            ['name' => 'Тестовый способ доставки'],
+            ['name' => 'Доставка курьером'],
             [
+                'type' => DeliveryMethod::TYPE_COURIER,
                 'cost' => 100,
                 'free_from' => 600,
                 'min_weight' => 100,
                 'max_weight' => 500,
             ]
+        );
+
+        $delivery_method2 = DeliveryMethod::firstOrCreate(
+            ['name' => 'Самовывоз'],
+            [
+                'type' => DeliveryMethod::TYPE_PICKUP,
+                'cost' => 0,
+                'free_from' => 1,
+                'min_weight' => 100,
+                'max_weight' => 500,
+            ]
+        );
+
+        //Пункты самовывоза
+        $pickup_point = PickupPoint::firstOrCreate(
+            ['city_id' => $city_aprelevka->id],
+            ['address' => 'Тестовый пункт выдачи']
         );
 
         //Заказы
@@ -102,7 +121,8 @@ class DatabaseSeeder extends Seeder
                 'email' => 'test@mail.ru',
                 'phone' => '80001112233',
                 'city_id' => $city_balabanovka->id,
-                'address' => 'Адрес доставки заказа тестовому клиенту'
+                'address' => 'Адрес доставки заказа тестовому клиенту',
+                'order_id' => 1,
             ]
         );
 

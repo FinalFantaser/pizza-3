@@ -26,11 +26,8 @@ class Poster extends Model implements HasMedia
     }
 
     public function registerMediaConversions(Media $media = null): void{
-        $this->addMediaConversion('thumb')
-            ->crop('crop-top-left', 700, 380);
-
-        $this->addMediaConversion('thumb_admin') //Миниатюра для списка в админке
-            ->crop('crop-top-left', 100, 65);
+        $this->addMediaConversion('size450')
+            ->width(450);
     } //registerMediaConversions
 
     public function cities(){
