@@ -6,6 +6,8 @@ use App\Models\Shop\Category;
 use App\Models\Shop\City;
 use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Delivery\PickupPoint;
+use App\Models\Shop\Option\Option;
+use App\Models\Shop\Option\OptionType;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
 use App\Models\Shop\Order\OrderItem;
@@ -75,6 +77,23 @@ class DatabaseSeeder extends Seeder
                 'properties' => '{"weight": 500, "quantity": 1, "structure": "Информация о составе"}'
             ]
         );
+
+        //Типы опций
+        $option_list = OptionType::firstOrCreate(
+            ['name' => 'Список']
+        );
+
+        $option_radio = OptionType::firstOrCreate(
+            ['name' => 'Переключатель']
+        );
+
+        $option_checkbox = OptionType::firstOrCreate(
+            ['name' => 'Чекбокс']
+        );
+
+        //Опции
+        //...
+        //...
 
         //Постеры
         $poster = Poster::firstOrCreate(
