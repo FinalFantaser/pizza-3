@@ -133,7 +133,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                 //Продукты
                 Route::name('product.')->prefix('product')->group(function(){
-                    Route::get('popular', 'ProductController@popular')->name('popular');
+                    // Route::get('popular', 'ProductController@popular')->name('popular');
                     Route::get('{product:slug}', 'ProductController@show')->name('show');
                 });
             });

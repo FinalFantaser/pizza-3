@@ -44,10 +44,4 @@ class ProductController extends Controller
             $product->load('categories:slug,name', 'cities:slug,name')
         );
     } //show
-
-    public function popular(){
-        return ProductResource::collection(
-            $this->productService->findPopular()
-        );
-    } //popular
 }

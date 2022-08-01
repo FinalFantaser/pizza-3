@@ -91,4 +91,10 @@ class ProductController extends Controller
         return response('Продукт отключён');
     } //draft
 
+    public function popular(){ //Посчитать по заказам, какие продукты приходят чаще всего
+        return ProductResource::collection(
+            $this->productService->findPopular()
+        );
+    } //popular
+
 }
