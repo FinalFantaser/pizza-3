@@ -6,12 +6,13 @@
     use App\Models\Shop\Product;
     use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
+    use App\Http\Requests\Api\Admin\Shop\Product\RecommendRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
-use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
-use App\ReadRepository\Shop\Order\OrderItemReadRepository;
-use App\Repository\Shop\ProductRepository;
+    use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
+    use App\ReadRepository\Shop\Order\OrderItemReadRepository;
+    use App\Repository\Shop\ProductRepository;
     use App\ReadRepository\Shop\ProductReadRepository;
-use App\Repository\Shop\Option\OptionRecordRepository;
+    use App\Repository\Shop\Option\OptionRecordRepository;
 
     class ProductService{
         public function __construct(
@@ -117,13 +118,20 @@ use App\Repository\Shop\Option\OptionRecordRepository;
             );
         } //addOptions
 
-        public function activate(Product $product){
-            $this->productRepository->activate($product);
-        } //activate
+        public function addToRecommended(RecommendRequest $request): void
+        {
+            $this->productRepository->addToRecommended(product_id: $request->product_id, sort: $request->sort ?? 0);
+        } //addToRecommended
 
-        public function draft(Product $product){
-            $this->productRepository->draft($product);
-        } //draft
+        public function removeFromRecommended(RecommendRequest $request): void
+        {
+            $this->productRepository->removeFromRecommended($request->product_id);
+        } //removeFromRecommended
+
+        public function clearRecommended(): void
+        {
+            $this->productRepository->clearRecommended();
+        } //clearRecommended
 
         //
         // Поисковые запросы
@@ -147,7 +155,11 @@ use App\Repository\Shop\Option\OptionRecordRepository;
             return $this->productReadRepository->findByCityAndCategory($city, $category, $with, $status);
         } //findByCityAndCategory
 
-        public function findPopular(int $limit = 8){
+        public function findPopular(int $limit = 8){ //Посчитать наиболее часто заказываемые продукты по статистике заказов
             return $this->orderItemReadRepository->popular(limit: $limit)->pluck('product');
         } //findPopular
+        
+        public function findRecommended(){ //Показать продукты из таблицы "Часто заказывают"
+            return $this->productReadRepository->findRecommended();
+        } //findRecommended
     }

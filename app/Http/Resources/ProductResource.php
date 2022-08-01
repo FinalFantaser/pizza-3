@@ -27,7 +27,7 @@ class ProductResource extends JsonResource
             'thumbUrl' => $this->imageUrl('product_thumb_admin'),
             'properties' => $this->properties,
             'category' => $this->whenLoaded('categories', $this->category),
-            'cities' => $this->whenLoaded('cities'),
+            'cities' => CityResource::collection($this->whenLoaded('cities')),
              //'options' => $this->optionRecords,
             'options' => OptionRecordResource::collection( $this->whenLoaded('optionRecords', $this->optionRecords) ),
         ];

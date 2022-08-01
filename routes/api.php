@@ -60,8 +60,16 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::post('products.category.update', 'ProductController@updateCategory')->name('products.update.category');
                     Route::post('products.city.attach', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'attachToCity']);
                     Route::post('products.city.detach', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'detachFromCity']);
+
                     Route::post('products.activate/{product}', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'activate']);
                     Route::post('products.draft/{product}', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'draft']);
+
+                    Route::get('products.popular', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'popular']);
+                    
+                    Route::get('products.recommended.index', 'ProductController@showRecommended')->name('recommended.index');
+                    Route::post('products.recommended.add', 'ProductController@addToRecommended')->name('recommended.add');
+                    Route::post('products.recommended.remove', 'ProductController@removeFromRecommeded')->name('recommended.remove');
+                    Route::post('products.recommended.clear', 'ProductController@clearRecommended')->name('recommended.clear');
 
                     //  Опции
                     Route::namespace('Option')->group(function(){

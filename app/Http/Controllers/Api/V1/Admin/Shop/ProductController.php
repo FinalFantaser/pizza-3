@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
 use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
+use App\Http\Requests\Api\Admin\Shop\Product\RecommendRequest;
 use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
 use App\Models\Shop\Product;
 use App\Http\Resources\ProductResource;
@@ -77,24 +78,32 @@ class ProductController extends Controller
     } //updateCategory
 
     //
-    //      Управление продуктами
+    //      Список "Часто заказывают"
     //
-    public function activate($product){
-        $product = Product::findOrFail($product);
-        $this->service->activate($product);
-        return response('Продукт включён');
-    } //activate
-
-    public function draft($product){
-        $product = Product::findOrFail($product);
-        $this->service->draft($product);
-        return response('Продукт отключён');
-    } //draft
-
-    public function popular(){ //Посчитать по заказам, какие продукты приходят чаще всего
+    public function popular(){
         return ProductResource::collection(
-            $this->productService->findPopular()
+            $this->service->findPopular()
         );
     } //popular
 
+    public function showRecommended(){
+        return ProductResource::collection(
+            $this->service->findRecommended()
+        );
+    } //showRecommended
+
+    public function addToRecommended(RecommendRequest $request){
+        $this->service->addToRecommended($request);
+        return response('Продукт добавлен в список часто заказываемых', 201);
+    } //addToRecommended
+
+    public function removeFromRecommeded(RecommendRequest $request){
+        $this->service->removeFromRecommended($request);
+        return response('Продукт удалён из списка часто заказываемых', 204);
+    } //removeFromRecommeded
+
+    public function clearRecommended(){
+        $this->service->clearRecommended();
+        return response('Список часто заказываемых очищен', 201);
+    } //clearRecommended
 }
