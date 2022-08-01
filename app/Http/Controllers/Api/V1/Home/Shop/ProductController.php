@@ -24,8 +24,6 @@ class ProductController extends Controller
     public function index(Request $request, Category $category){
         // $user = \App\Models\User::find(1);
         // return response($user->createToken('token-name')->plainTextToken);
-        //1|u8PXZDtIFVxlkEj2m6R3CWyUqb3j5W396pMvomXF
-        //1|lkA0dgA2JpBGLnlJcUGT4LBXL22VdIQTcy1ydlco
 
         $request->validate(['city' => 'required|exists:cities,slug',], ['city.exists' => "В базе нет города $request->city ."]);
 
@@ -47,4 +45,10 @@ class ProductController extends Controller
             $product->load('categories:slug,name', 'cities:slug,name')
         );
     } //show
+
+    public function recommended(){
+        return ProductResource::collection(
+            $this->productService->findRecommended()
+        );
+    } //recommended
 }
