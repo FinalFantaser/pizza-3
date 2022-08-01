@@ -80,6 +80,12 @@ class ProductController extends Controller
     //
     //      Список "Часто заказывают"
     //
+    public function popular(){
+        return ProductResource::collection(
+            $this->service->findPopular()
+        );
+    } //popular
+
     public function showRecommended(){
         return ProductResource::collection(
             $this->service->findRecommended()
