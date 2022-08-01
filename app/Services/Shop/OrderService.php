@@ -95,12 +95,15 @@ class OrderService{
             $orderItemsData = array_map(function($value) use ($products, $order){
                 $product = $products->where('id', $value->product_id)->first();
     
-                $additionalPrices = Arr::flatten( //flatten убирает вложенные массивы, которые возвращает pluck
-                    array_map(function($option) use ($product){ //Перебираются опции из запроса
-                        $items = collect( $product->optionRecords->where('id', $option->id)->first()->items ); //Из опции продукта берутся items
-                        return $items->whereIn('name', $option->selected)->pluck('price'); //Из items, где name совпадает с selected, берутся цены
-                    }, $value->options)
-                );
+                $additionalPrices = [];
+                if(property_exists($value, 'options')){
+                    $additionalPrices = Arr::flatten( //flatten убирает вложенные массивы, которые возвращает pluck
+                        array_map(function($option) use ($product){ //Перебираются опции из запроса
+                            $items = collect( $product->optionRecords->where('id', $option->id)->first()->items ); //Из опции продукта берутся items
+                            return $items->whereIn('name', $option->selected)->pluck('price'); //Из items, где name совпадает с selected, берутся цены
+                        }, $value->options)
+                    );
+                }
 
                 //Рассчёт общей стоимости пункта продукта
                 $price = $value->product_quantity * ($product->price + (count($additionalPrices) ? array_sum($additionalPrices) : 0));

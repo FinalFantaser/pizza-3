@@ -134,12 +134,14 @@
 
         public function activate(Product $product): void
         {
-            $product->activate();
+            if($product->isDraft())
+                $product->activate();
         } //activate
 
         public function draft(Product $product): void
         {
-            $product->draft();
+            if($product->isActive())
+                $product->draft();
         } //draft
 
         public function addToRecommended(int $product_id, int $sort = 0): void //Добавить продукт в список "Часто заказывают"

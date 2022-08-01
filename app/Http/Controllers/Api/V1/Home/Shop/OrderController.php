@@ -26,6 +26,7 @@ class OrderController extends Controller
             token: $request->token,
             with: ['deliveryMethod', 'customerData', 'pickupPoint', 'items']
         );
+        
         return new OrderResource($order);
     } //show
 }

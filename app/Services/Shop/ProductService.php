@@ -6,13 +6,13 @@
     use App\Models\Shop\Product;
     use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
-use App\Http\Requests\Api\Admin\Shop\Product\RecommendRequest;
-use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
-use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
-use App\ReadRepository\Shop\Order\OrderItemReadRepository;
-use App\Repository\Shop\ProductRepository;
+    use App\Http\Requests\Api\Admin\Shop\Product\RecommendRequest;
+    use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
+    use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
+    use App\ReadRepository\Shop\Order\OrderItemReadRepository;
+    use App\Repository\Shop\ProductRepository;
     use App\ReadRepository\Shop\ProductReadRepository;
-use App\Repository\Shop\Option\OptionRecordRepository;
+    use App\Repository\Shop\Option\OptionRecordRepository;
 
     class ProductService{
         public function __construct(
@@ -151,8 +151,8 @@ use App\Repository\Shop\Option\OptionRecordRepository;
             return $this->productReadRepository->findByCity($city);
         } //findByCity
 
-        public function findByCityAndCategory(City $city, Category $category, string|array $with = null){
-            return $this->productReadRepository->findByCityAndCategory($city, $category, $with);
+        public function findByCityAndCategory(City $city, Category $category, string|array $with = null, string $status = null){
+            return $this->productReadRepository->findByCityAndCategory($city, $category, $with, $status);
         } //findByCityAndCategory
 
         public function findPopular(int $limit = 8){ //Посчитать наиболее часто заказываемые продукты по статистике заказов

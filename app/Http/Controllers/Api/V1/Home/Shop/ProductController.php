@@ -22,6 +22,8 @@ class ProductController extends Controller
     ){} //Конструктор
 
     public function index(Request $request, Category $category){
+        //1|u8PXZDtIFVxlkEj2m6R3CWyUqb3j5W396pMvomXF
+
         $request->validate(['city' => 'required|exists:cities,slug',], ['city.exists' => "В базе нет города $request->city ."]);
 
         $city = $this->cityService->findBySlug($request->city);
@@ -31,7 +33,8 @@ class ProductController extends Controller
             $this->productService->findByCityAndCategory(
                 city: $city,
                 category: $category,
-                with: ['categories:id,name']
+                with: ['categories:id,name'],
+                status: Product::STATUS_ACTIVE
             )
         );
     } //index
@@ -41,10 +44,4 @@ class ProductController extends Controller
             $product->load('categories:slug,name', 'cities:slug,name')
         );
     } //show
-
-    public function popular(){
-        return ProductResource::collection(
-            $this->productService->findPopular()
-        );
-    } //popular
 }

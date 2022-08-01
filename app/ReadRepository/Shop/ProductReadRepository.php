@@ -57,7 +57,7 @@
             return Product::join('products_recommended', 'products.id', '=', 'products_recommended.product_id')->with(['cities', 'optionRecords'])->get();
         } //findRecommended
 
-        public function findByCityAndCategory(City $city, Category $category, string|array $with = null){
+        public function findByCityAndCategory(City $city, Category $category, string|array $with = null, string $status = null){
             $products = Product
                 ::join('product_city', 'products.id', '=', 'product_city.product_id')
                 // ->join('cities', 'cities.id', '=', 'product_city.city_id')
@@ -68,6 +68,16 @@
                         return $query;
                     else
                         return $query->with($with);
+                })
+                ->when(function($query) use ($status){
+                    if(is_null($status))
+                        return $query;
+                    else{
+                        if($status === Product::STATUS_ACTIVE)
+                            return $query->where('status', Product::STATUS_ACTIVE);
+                        elseif($status === Product::STATUS_DRAFT)
+                            return $query->where('status', Product::STATUS_DRAFT);
+                    }
                 })
                 ->get();
 
