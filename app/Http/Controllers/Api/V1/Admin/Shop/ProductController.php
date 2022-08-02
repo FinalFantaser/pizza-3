@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
 use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
-use App\Http\Requests\Api\Admin\Shop\Product\RecommendRequest;
+use App\Http\Requests\Api\Admin\Shop\Product\Recommended\AddRequest;
+use App\Http\Requests\Api\Admin\Shop\Product\Recommended\RemoveRequest;
 use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
 use App\Models\Shop\Product;
 use App\Http\Resources\ProductResource;
@@ -92,12 +93,12 @@ class ProductController extends Controller
         );
     } //showRecommended
 
-    public function addToRecommended(RecommendRequest $request){
+    public function addToRecommended(AddRequest $request){
         $this->service->addToRecommended($request);
         return response('Продукт добавлен в список часто заказываемых', 201);
     } //addToRecommended
 
-    public function removeFromRecommeded(RecommendRequest $request){
+    public function removeFromRecommeded(RemoveRequest $request){
         $this->service->removeFromRecommended($request);
         return response('Продукт удалён из списка часто заказываемых', 204);
     } //removeFromRecommeded

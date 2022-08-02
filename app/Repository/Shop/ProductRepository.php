@@ -144,11 +144,12 @@
                 $product->draft();
         } //draft
 
-        public function addToRecommended(int $product_id, int $sort = 0): void //Добавить продукт в список "Часто заказывают"
+        public function addToRecommended(array $data): void //Добавить продукт в список "Часто заказывают"
         {
-            DB::table('products_recommended')->updateOrInsert(
-                ['product_id' => $product_id],
-                ['sort' => $sort]
+            DB::table('products_recommended')->upsert(
+                values: $data,
+                uniqueBy: ['product_id'],
+                update: ['sort']
             );
         } //addToRecommended
 

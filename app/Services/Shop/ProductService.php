@@ -6,7 +6,8 @@
     use App\Models\Shop\Product;
     use App\Http\Requests\Api\Admin\Shop\Product\ProductRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\AttachToCityRequest;
-    use App\Http\Requests\Api\Admin\Shop\Product\RecommendRequest;
+    use App\Http\Requests\Api\Admin\Shop\Product\Recommended\AddRequest;
+    use App\Http\Requests\Api\Admin\Shop\Product\Recommended\RemoveRequest;
     use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
     use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
     use App\ReadRepository\Shop\Order\OrderItemReadRepository;
@@ -118,12 +119,13 @@
             );
         } //addOptions
 
-        public function addToRecommended(RecommendRequest $request): void
+        public function addToRecommended(AddRequest $request): void
         {
-            $this->productRepository->addToRecommended(product_id: $request->product_id, sort: $request->sort ?? 0);
+            // $this->productRepository->addToRecommended(product_id: $request->product_id, sort: $request->sort ?? 0);
+            $this->productRepository->addToRecommended($request->data);
         } //addToRecommended
 
-        public function removeFromRecommended(RecommendRequest $request): void
+        public function removeFromRecommended(RemoveRequest $request): void
         {
             $this->productRepository->removeFromRecommended($request->product_id);
         } //removeFromRecommended

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\Admin\Shop\Product;
+namespace App\Http\Requests\Api\Admin\Shop\Product\Recommended;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RecommendRequest extends FormRequest
+class RemoveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class RecommendRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'sort' => 'nullable|integer|gte:0',
         ];
     }
 }
