@@ -18,6 +18,7 @@ class PosterResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'anchor' => $this->anchor,
             'enabled' => $this->enabled,
             'cities' => $this->whenLoaded('cities'),
             'imageUrl' => $this->getFirstMediaUrl('posters'),

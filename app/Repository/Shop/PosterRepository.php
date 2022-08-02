@@ -8,8 +8,8 @@
 
     class PosterRepository{
 
-        public function create(string $name, string $description, bool $enabled, $city = null){
-            $poster = Poster::create(['name' => $name, 'description' => $description, 'enabled' => $enabled]);
+        public function create(string $name, string $description, ?string $anchor = null, bool $enabled = true, $city = null){
+            $poster = Poster::create(['name' => $name, 'description' => $description, 'anchor' => $anchor, 'enabled' => $enabled]);
 
             //Привязка к городам
             $this->attachToCity($poster, $city);
@@ -20,8 +20,8 @@
             return $poster;
         } //create
 
-        public function update(Poster $poster, string $name, string $description, bool $enabled, $city = null){
-            $poster->update(['name' => $name, 'description' => $description, 'enabled' => $enabled]);
+        public function update(Poster $poster, string $name, string $description, ?string $anchor = null, bool $enabled = true, $city = null){
+            $poster->update(['name' => $name, 'description' => $description, 'anchor' => $anchor, 'enabled' => $enabled]);
 
             //Привязка к городам
             $this->clearAllCities($poster);

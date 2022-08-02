@@ -18,7 +18,7 @@ class Poster extends Model implements HasMedia
     const STATUS_DRAFT = 0;
     const STATUS_ACTIVE = 1;
 
-    protected $fillable = ['name', 'description', 'enabled'];
+    protected $fillable = ['name', 'description', 'anchor', 'enabled'];
     public $timestamps = false;
 
     public function scopeActive(Builder $query){

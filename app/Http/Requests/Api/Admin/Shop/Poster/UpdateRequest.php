@@ -31,6 +31,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', Rule::unique('posters')->ignore($this->poster->id)],
             'description' => 'required|string|max:512',
+            'anchor' => 'nullable|string|max:1024',
             'enabled' => 'required|in:true,false',
             'posterImage' => 'mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
             'city_id' => ['json', new CitiesExist],
