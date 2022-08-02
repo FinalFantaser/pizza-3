@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('products_recommended', function (Blueprint $table) {
-            $table->unique('product_id');
+            // $table->unique('product_id');
             $table->unique('sort');
         });
     }
@@ -27,13 +27,13 @@ return new class extends Migration
     public function down()
     {
         Schema::table('products_recommended', function (Blueprint $table) {
-            $table->dropForeign(['product_id']);
-            $table->dropUnique(['product_id']);
+            // $table->dropForeign(['product_id']);
+            // $table->dropUnique(['product_id']);
             $table->dropUnique(['sort']);
         });
 
-        Schema::table('products_recommended', function (Blueprint $table) {
-            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
-        });
+        // Schema::table('products_recommended', function (Blueprint $table) {
+        //     $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
+        // });
     }
 };
