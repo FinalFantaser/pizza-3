@@ -54,7 +54,13 @@
 
         public function findRecommended()
         {
-            return Product::join('products_recommended', 'products.id', '=', 'products_recommended.product_id')->with(['cities', 'optionRecords'])->orderBy('sort')->get();
+            $products = Product::join('products_recommended', 'products.id', '=', 'products_recommended.product_id')->with(['cities', 'optionRecords'])->orderBy('sort')->get();
+            
+            $products->each(function($item, $key){
+                $item->id = $item->product_id;
+            });
+
+            return $products;
         } //findRecommended
 
         public function findByCityAndCategory(City $city, Category $category, string|array $with = null, string $status = null){
