@@ -121,7 +121,7 @@
 
         public function addToRecommended(AddRequest $request): void
         {
-            // $this->productRepository->addToRecommended(product_id: $request->product_id, sort: $request->sort ?? 0);
+            $this->productRepository->clearRecommended();
             $this->productRepository->addToRecommended($request->data);
         } //addToRecommended
 
