@@ -1,9 +1,9 @@
 <template>
-    <div class="container-fluid py-4">
-        <div class="row">
+    <div class="container-fluid py-2 p-sm-4">
+        <div class="row m-2 mb-sm-3">
             <div class="col-lg-6">
                 <h4 class="text-white">Создание постера</h4>
-                <p class="text-white opacity-8">Заполните поля ниже, что бы создать постер.</p>
+                <p class="text-white opacity-8 m-0">Заполните поля ниже, что бы создать постер.</p>
             </div>
             <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
                 <button
@@ -13,8 +13,8 @@
                 >Создать</button>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col-lg-4">
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="font-weight-bolder">Изображение постера</h5>
@@ -39,7 +39,7 @@
                                     <p v-if="v$.image.$error" class="invalid-msg invalid-msg--img">Выберите изображение</p>
                                 </div>
                             </div>
-                            <div class="col-12 mt-5">
+                            <div class="col-12 mt-3">
                                 <div class="d-flex">
                                     <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Выбрать</button>
                                 </div>
@@ -50,7 +50,7 @@
             </div>
             <div class="col-lg-8 mt-lg-0 mt-4">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <h5 class="font-weight-bolder">Информация о постере</h5>
                         <div class="row mb-3">
                             <div class="col-12 mb-3 mb-sm-0 col-sm-6">
@@ -175,7 +175,7 @@ export default {
             console.log(data)
             axios.post('/api/v1/admin/posters', data)
                 .then((data) => {
-                    // this.$router.push({name: "Posters"})
+                    this.$router.push({name: "posters"})
                     console.log(data)
                 })
                 .catch((error) => {
