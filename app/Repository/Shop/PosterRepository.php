@@ -5,6 +5,7 @@
 
     use App\Models\Shop\City;
     use App\Models\Shop\Poster;
+use Exception;
 
     class PosterRepository{
 
