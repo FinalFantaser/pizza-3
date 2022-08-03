@@ -22,23 +22,25 @@ class PosterService{
     public function create(CreateRequest $request){
         return
             $this->repository->create(
-                $request->name,
-                $request->description,
-//                $request->enabled,
-                filter_var( $request->enabled, FILTER_VALIDATE_BOOLEAN ),
-                $request->has('city_id') ? $request->city_id : null
+                name: $request->name,
+                description: $request->description,
+                anchor: $request->anchor,
+                //$request->enabled,
+                enabled: filter_var( $request->enabled, FILTER_VALIDATE_BOOLEAN ),
+                city: $request->city_id
             );
     } //create
 
     public function update(UpdateRequest $request, Poster $poster){
         return
             $this->repository->update(
-                $poster,
-                $request->name,
-                $request->description,
-//                $request->enabled,
-                filter_var( $request->enabled, FILTER_VALIDATE_BOOLEAN ),
-                $request->has('city_id') ? $request->city_id : null
+                poster: $poster,
+                name: $request->name,
+                description: $request->description,
+                anchor: $request->anchor,
+                //$request->enabled,
+                enabled: filter_var( $request->enabled, FILTER_VALIDATE_BOOLEAN ),
+                city: $request->has('city_id') ? $request->city_id : null
             );
     } //update
 
