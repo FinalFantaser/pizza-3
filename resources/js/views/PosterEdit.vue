@@ -36,12 +36,6 @@
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
                                     <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Выбрать</button>
-                                    <!--                                    <button-->
-                                    <!--                                        class="btn btn-outline-dark btn-sm mb-0"-->
-                                    <!--                                        type="button"-->
-                                    <!--                                        name="button"-->
-                                    <!--                                        @click.prevent="imgPath=null, previewImage=null, img=null"-->
-                                    <!--                                    >Удалить</button>-->
                                 </div>
                             </div>
                         </div>
@@ -74,6 +68,19 @@
                                         type="checkbox"
                                         v-model="enabled"
                                     />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 col-sm-6">
+                                <label>Ссылка</label>
+                                <div class="position-relative">
+                                    <input
+                                        v-model="anchor"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Ссылка"
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -130,6 +137,7 @@ export default {
             poster: null,
             name: '',
             enabled: null,
+            anchor: '',
             cities: [],
             description: '',
             imgPath: null,
@@ -166,9 +174,10 @@ export default {
 
             const data = new FormData()
             data.append('name',this.name)
+            data.append('enabled', this.enabled)
+            data.append('anchor', this.anchor)
             data.append('city_id', JSON.stringify(this.cities))
             data.append('description', this.description)
-            data.append('enabled', this.enabled)
             if(this.img) {
                 data.append('productImage', this.img)
             }
@@ -211,14 +220,11 @@ export default {
         await this.getCities()
         if (this.poster) {
             this.name = this.poster.name
+            this.enabled = this.poster.enabled == 1
+            this.anchor = this.poster.anchor ? this.poster.anchor : ''
             this.description = this.poster.description
             this.imgPath = this.poster.imageUrl
-            this.enabled = this.poster.enabled == 1
-            if(this.poster.cities.length > 0) {
-                this.poster.cities.forEach(item => {
-                    this.cities.push(item.id)
-                })
-            }
+            this.cities = this.poster.cities.map(item => item.id)
         }
     }
 }

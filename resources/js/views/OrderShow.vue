@@ -33,7 +33,7 @@
                     </table>
                 </div>
             </div>
-            <div class="mx-auto col-12 col-lg-9 col-xl-8">
+            <div class="mx-auto col-12 col-lg-9 col-xl-8 mb-3">
                 <div class="card p-2 p-sm-4">
                     <table class="table caption-top">
                         <caption>

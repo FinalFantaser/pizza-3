@@ -34,6 +34,7 @@ class PosterController extends Controller
 
     public function store(CreateRequest $request){
 //        dd($request->enabled);
+//        dd($request);
         $this->service->create($request);
         return response()->json(['message' => 'Постер добавлен в базу данных'], 201);
     } //store

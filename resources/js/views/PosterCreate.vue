@@ -10,7 +10,7 @@
                     @click="addPoster()"
                     type="button"
                     class="btn btn-outline-white mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2"
-                >Добавить</button>
+                >Создать</button>
             </div>
         </div>
         <div class="row mt-4">
@@ -42,7 +42,6 @@
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
                                     <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Выбрать</button>
-                                    <!--                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button" @click.prevent="previewImage=null,image=null">Удалить</button>-->
                                 </div>
                             </div>
                         </div>
@@ -80,6 +79,19 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6">
+                                <label>Ссылка</label>
+                                <div class="position-relative">
+                                    <input
+                                        v-model="anchor"
+                                        class="form-control"
+                                        type="text"
+                                        placeholder="Ссылка"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 col-sm-6">
                                 <label>Описание</label>
                                 <div class="position-relative">
                                     <textarea
@@ -102,8 +114,12 @@
                                         :id="'city ' + (index + 1)"
                                         v-model="cities"
                                         :value="city.id"
-                                        class="form-check-input" type="checkbox" id="flexCheckChecked">
-                                    <label class="form-check-label" :for="'city ' + (index + 1)">
+                                        class="form-check-input"
+                                        type="checkbox"
+                                    >
+                                    <label
+                                        :for="'city ' + (index + 1)"
+                                        class="form-check-label">
                                         {{ city.name }}
                                     </label>
                                 </div>
@@ -119,6 +135,7 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+import router from "../router";
 
 export default {
     name: "PosterCreate",
@@ -129,6 +146,7 @@ export default {
         return {
             name: '',
             enabled: true,
+            anchor: '',
             description: '',
             cities: [],
             previewImage: null,
@@ -151,14 +169,13 @@ export default {
             data.append('name',this.name)
             data.append('city_id', JSON.stringify(this.cities))
             data.append('enabled', this.enabled)
+            data.append('anchor', this.anchor)
             data.append('description', this.description)
-            if(this.image) {
-                data.append('posterImage', this.image)
-            }
-            console.log(JSON.parse(data.get('enabled')))
+            data.append('posterImage', this.image)
+            console.log(data)
             axios.post('/api/v1/admin/posters', data)
                 .then((data) => {
-                    window.location.href = '/posters'
+                    // this.$router.push({name: "Posters"})
                     console.log(data)
                 })
                 .catch((error) => {

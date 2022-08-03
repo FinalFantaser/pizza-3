@@ -13,7 +13,7 @@
                             </div>
                             <div class="ms-auto my-auto mt-lg-0 mt-4">
                                 <div class="ms-auto my-auto">
-                                    <router-link to="/posters/create" class="btn bg-gradient-primary btn-sm mb-0">Добавить постер</router-link>
+                                    <router-link to="/posters/create" class="btn bg-gradient-primary btn-sm mb-0">Создать постер</router-link>
                                 </div>
                             </div>
                         </div>
