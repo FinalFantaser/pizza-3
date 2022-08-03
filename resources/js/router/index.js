@@ -11,6 +11,8 @@ import CategoryEdit from "../views/CategoryEdit.vue";
 import Products from "../views/Products.vue";
 import ProductCreate from "../views/ProductCreate.vue";
 import ProductEdit from "../views/ProductEdit.vue";
+import Popular from "../views/Popular.vue";
+import Recommended from "../views/Recommended.vue";
 import Options from "../views/Options.vue";
 import OptionCreate from "../views/OptionCreate.vue";
 import OptionEdit from "../views/OptionEdit.vue";
@@ -90,6 +92,16 @@ const routes = [
     name: "products.edit",
     component: ProductEdit,
   },
+    {
+        path: "/popular",
+        name: "Popular",
+        component: Popular,
+    },
+    {
+        path: "/recommended",
+        name: "Recommended",
+        component: Recommended,
+    },
   {
     path: "/options",
     name: "Options",

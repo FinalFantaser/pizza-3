@@ -86,6 +86,17 @@
                         </div>
                         <div class="nav-item">
                             <sidenav-item
+                                url="/popular"
+                                :class="getRoute() === '/popular' ? 'active' : ''"
+                                :navText="'Популярные товары'"
+                            >
+                                <template v-slot:icon>
+                                    <i class="top-0 fa fa-angle-double-right text-secondary text-sm opacity-10"></i>
+                                </template>
+                            </sidenav-item>
+                        </div>
+                        <div class="nav-item">
+                            <sidenav-item
                                 url="/options"
                                 :class="getRoute() === '/options' ? 'active' : ''"
                                 :navText="'Опции'"

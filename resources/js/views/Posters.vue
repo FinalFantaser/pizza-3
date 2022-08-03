@@ -59,9 +59,9 @@
                                                         <input class="form-check-input" type="checkbox" id="customCheck5">
                                                     </div>
                                                     <img
-                                                        v-if="poster.thumbUrl"
+                                                        v-if="poster.imageUrl"
                                                         class="w-10 ms-3"
-                                                        :src="poster.thumbUrl"
+                                                        :src="poster.imageUrl"
                                                         alt="category"
                                                     >
                                                     <img

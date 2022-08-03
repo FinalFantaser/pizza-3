@@ -212,7 +212,7 @@ export default {
         if (this.poster) {
             this.name = this.poster.name
             this.description = this.poster.description
-            this.imgPath = this.poster.thumbUrl
+            this.imgPath = this.poster.imageUrl
             this.enabled = this.poster.enabled == 1
             if(this.poster.cities.length > 0) {
                 this.poster.cities.forEach(item => {

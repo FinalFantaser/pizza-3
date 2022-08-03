@@ -46,16 +46,16 @@
                         </caption>
                         <tbody>
                         <tr>
+                            <th scope="row">Город</th>
+                            <th scope="row" class="text-end">{{ order.customer_data.city.name }}</th>
+                        </tr>
+                        <tr>
                             <th scope="row">Номер заказа</th>
                             <th scope="row" class="text-end">#{{ order.id }}</th>
                         </tr>
                         <tr>
                             <th scope="row">Статус заказа</th>
                             <th scope="row" class="text-end">{{ order.current_status }}</th>
-                        </tr>
-                        <tr>
-                            <th scope="row">Город</th>
-                            <th scope="row" class="text-end">город</th>
                         </tr>
                         <tr>
                             <th scope="row">Дата</th>
