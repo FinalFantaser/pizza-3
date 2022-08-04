@@ -23,11 +23,20 @@ class CityService{
     // CRUD-методы
     //
     public function create(CreateRequest $request){        
-        return $this->repository->create($request->name);
+        return $this->repository->create(
+            name: $request->name,
+            address: $request->address,
+            phone:  $request->phone
+        );
     } //create
 
     public function update(UpdateRequest $request, City $city){
-        return $this->repository->update($city, $request->name);
+        return $this->repository->update(
+            city: $city,
+            name: $request->name,
+            address: $request->address,
+            phone:  $request->phone
+        );
     } //update
 
     public function remove(City $city){
