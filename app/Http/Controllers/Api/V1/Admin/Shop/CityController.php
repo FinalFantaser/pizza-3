@@ -24,6 +24,10 @@ class CityController extends Controller
         return CityResource::collection($query->get());
     } //index
 
+    public function show(City $city){
+        return new CityResource($city);
+    } //show
+
     public function store(CreateRequest $request){
         $this->service->create($request);
         return response()->json(['message' => 'Город добавлен']);
