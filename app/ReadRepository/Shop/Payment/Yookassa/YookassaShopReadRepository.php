@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ReadRepository\Shop\Payment\Yookasssa;
+namespace App\ReadRepository\Shop\Payment\Yookassa;
 
 use App\Models\Shop\Payment\Yookassa\YookassaShop;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

@@ -6,7 +6,7 @@ use App\Models\Shop\Payment\Yookassa\YookassaShop;
 use Illuminate\Support\Facades\DB;
 
 class YookassaShopRepository{
-    public function create(?string $name = null, string $shop_id, string $api_token, array $city_ids = []): YookassaShop
+    public function create(string $shop_id, string $api_token, ?string $name = null, array $city_ids = []): YookassaShop
     {
         $shop = YookassaShop::create([
             'name' => $name,
@@ -19,7 +19,7 @@ class YookassaShopRepository{
         return $shop;
     } //create
 
-    public function update(YookassaShop $shop, ?string $name = null, string $shop_id, string $api_token, array $city_ids = []): YookassaShop
+    public function update(YookassaShop $shop, string $shop_id, string $api_token, ?string $name = null, array $city_ids = []): YookassaShop
     {
         $shop->update([
             'name' => $name,
@@ -41,6 +41,12 @@ class YookassaShopRepository{
 
     public function attachToCity(int $shop_id, array $city_ids): void //Привязать магазин к городам
     {
+        if(count($city_ids) < 1)
+            return;
+
+        //Если к этому городу были привязаны другие магазины, отвязать их
+        DB::table('cities_yookassa_shops')->whereIn('city_id', $city_ids)->delete();
+
         $data = array_map(function($city_id) use ($shop_id){
             return [
                 'shop_id' => $shop_id,

@@ -5,7 +5,7 @@ namespace App\Services\Shop\Payment;
 use App\Http\Requests\Api\Admin\Shop\Payment\Yookassa\CreateRequest;
 use App\Http\Requests\Api\Admin\Shop\Payment\Yookassa\UpdateRequest;
 use App\Models\Shop\Payment\Yookassa\YookassaShop;
-use App\ReadRepository\Shop\Payment\Yookasssa\YookassaShopReadRepository;
+use App\ReadRepository\Shop\Payment\Yookassa\YookassaShopReadRepository;
 use App\Repository\Shop\Payment\Yookassa\YookassaShopRepository;
 
 class YookassaShopService{
@@ -47,6 +47,11 @@ class YookassaShopService{
     //
     //      Поиск в базе данных
     //
+    public function getMethods(string|array $with = null)
+    {
+        return $this->readRepository->getMethods($with);
+    } //getMethods
+
     public function findById(int $id, string|array $with = null): YookassaShop
     {
         return $this->readRepository->findById(id: $id, with: $with);
