@@ -27,8 +27,9 @@ class YookassaShopReadRepository{
     {
         return $this
             ->getMethods($with)
-            ->join('cities_yookassa_shops', 'yookassa_shops.id', '=', 'cities_yookassa_shops.shop_id')
-            ->where('cities_yookassa_shops.city_id', $city_id)
+            ->whereHas('cities', function($query) use ($city_id){
+                $query->where('city_id', $city_id);
+            })
             ->first();
     } //findByCity
 };

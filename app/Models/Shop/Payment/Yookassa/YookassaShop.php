@@ -28,6 +28,10 @@ class YookassaShop extends Model
         );
     } //cities
 
+    public function city(){  //Обёртка для удобства получения города
+        return $this->cities->first();
+    } //city
+
     public function returnUrl(string $order_token){ //Генерирует URL, на который пользвателя возвращают после оплаты
         return route(
             name: 'api.home.payment.yookassa', //TODO В будущем заменить на более подходящий для редиректа URL (не API)

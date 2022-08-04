@@ -7,9 +7,14 @@ use App\Http\Requests\Api\Home\Shop\Payment\YookassaPaymentRequest;
 use App\Models\Shop\Payment\Yookassa\YookassaShop;
 use App\Services\Shop\OrderService;
 use App\Services\Shop\Payment\YookassaShopService;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Promise\Utils;
+use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Mockery\Generator\StringManipulation\Pass\Pass;
+use Illuminate\Http\Client\Response;
 
 class YookassaController extends Controller
 {
@@ -31,12 +36,12 @@ class YookassaController extends Controller
 
         $shop = $this->yookassaShopService->findByCity($order->customerData->city_id);
 
-        return response()->json($shop);
+        // return response()->json($shop);
 
         //Отправка запроса
-        $response = Http::
-            // async()
-            withHeaders(['Idempotence-Key' => Str::random(64), 'Content-Type' => 'application/json']) //TODO Разобраться с Idempotence-Key, он необходим
+        $promise = Http::
+            async()
+            ->withHeaders(['Idempotence-Key' => Str::random(64), 'Content-Type' => 'application/json']) //TODO Разобраться с Idempotence-Key, он необходим
             ->withBasicAuth($shop->shop_id, $shop->api_token)
             ->post(YookassaShop::PAYMENT_URL, [
                 'amount' => [
@@ -50,9 +55,12 @@ class YookassaController extends Controller
                 ],
                 'description' => "Оплата за заказ №".$order->id
             ]);
-            // ->then(function ($obtainedResponse){
-            //     return $obtainedResponse;
-            // });
-        return $response->json();
+        
+        $response = $promise->wait();
+
+        if($response->failed())
+            return $response->json();
+        elseif($response->successful())
+            return response($response['confirmation']['confirmation_url']);
     }
 }
