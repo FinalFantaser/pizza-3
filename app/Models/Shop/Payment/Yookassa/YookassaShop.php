@@ -17,6 +17,8 @@ class YookassaShop extends Model
         'api_token'
     ];
 
+    public const URL = 'https://api.yookassa.ru/v3/payments'; //URL, на который отправляется запрос на создание платежа
+
     public function cities(){
         return $this->belongsToMany(
             related: \App\Models\Shop\City::class,
