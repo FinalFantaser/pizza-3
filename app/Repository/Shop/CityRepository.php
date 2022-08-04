@@ -5,12 +5,20 @@
     
     class CityRepository{
         
-        public function create(string $name): City{
-            return City::create(['name' => $name]);
+        public function create(string $name, ?string $address = null, ?string $phone = null): City{
+            return City::create([
+                'name' => $name,
+                'address' => $address,
+                'phone' => $phone
+            ]);
         } //create
 
-        public function update(City $city, string $name): void{
-            $city->update(['name' => $name]);
+        public function update(City $city, string $name, ?string $address = null, ?string $phone = null): void{
+            $city->update([
+                'name' => $name,
+                'address' => $address,
+                'phone' => $phone
+            ]);
         } //update
 
         public function remove(City $city): void{

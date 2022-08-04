@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Api\Admin\Shop\City;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class UpdateRequest extends FormRequest
 {
@@ -24,9 +26,15 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:cities|string|max:255',
+            'name' => 'required|unique:cities,name,'.$this->city->id.'|string|max:255',
             'address' => 'nullable|string',
             'phone' => 'nullable|string',
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }
