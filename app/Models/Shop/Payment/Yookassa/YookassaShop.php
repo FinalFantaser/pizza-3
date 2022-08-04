@@ -17,7 +17,7 @@ class YookassaShop extends Model
         'api_token'
     ];
 
-    public const URL = 'https://api.yookassa.ru/v3/payments'; //URL, на который отправляется запрос на создание платежа
+    public const PAYMENT_URL = 'https://api.yookassa.ru/v3/payments'; //URL, на который отправляется запрос на создание платежа
 
     public function cities(){
         return $this->belongsToMany(
@@ -27,4 +27,11 @@ class YookassaShop extends Model
             relatedPivotKey: 'city_id'
         );
     } //cities
+
+    public function returnUrl(string $order_token){ //Генерирует URL, на который пользвателя возвращают после оплаты
+        return route(
+            name: 'api.home.payment.yookassa', //TODO В будущем заменить на более подходящий для редиректа URL (не API)
+            parameters: ['token' => $order_token]
+        );
+    } //returnURL
 }

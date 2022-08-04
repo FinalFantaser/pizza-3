@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class YookassaShopReadRepository{
     public function getMethods(string|array $with = null)
     {
-        return YookassaShop::orderBy('id')->when(function($query) use ($with){
+        return YookassaShop::when(function($query) use ($with){
             return is_null($with) ? $query : $query->with($with);
         });
     } //getMethods
@@ -25,6 +25,10 @@ class YookassaShopReadRepository{
 
     public function findByCity(int $city_id, string|array $with = null): YookassaShop
     {
-        return $this->getMethods($with)->where('city_id', $city_id)->first();
+        return $this
+            ->getMethods($with)
+            ->join('cities_yookassa_shops', 'yookassa_shops.id', '=', 'cities_yookassa_shops.shop_id')
+            ->where('cities_yookassa_shops.city_id', $city_id)
+            ->first();
     } //findByCity
 };
