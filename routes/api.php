@@ -49,7 +49,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
 
                     //  Города
-                    Route::apiResource('cities', \App\Http\Controllers\Api\V1\Admin\Shop\CityController::class)->only(['index', 'store', 'update', 'destroy']);
+                    Route::apiResource('cities', \App\Http\Controllers\Api\V1\Admin\Shop\CityController::class);
 
 
                     //  Категории
