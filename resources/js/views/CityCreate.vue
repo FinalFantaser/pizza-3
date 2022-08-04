@@ -54,11 +54,8 @@
                                 type="button"
                                 class="btn btn-primary col-12"
                             >
-                                Добавить
+                                Создать
                             </button>
-                            <p>{{name}}</p>
-                            <p>{{address}}</p>
-                            <p>{{phone}}</p>
                         </div>
                     </div>
                 </div>
