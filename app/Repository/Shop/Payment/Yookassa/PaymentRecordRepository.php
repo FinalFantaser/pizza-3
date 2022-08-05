@@ -5,17 +5,19 @@ namespace App\Repository\Shop\Payment\Yookassa;
 use App\Models\Shop\Payment\Yookassa\PaymentRecord;
 
 use Illuminate\Support\Str;
+use \Illuminate\Http\Client\Response;
 
 class PaymentRecordRepository{
-    public function register(int $order_id): PaymentRecord //Зарегистрировать попытку платежа в базе данных приложения
+    public function register(int $order_id, int $shop_id): PaymentRecord //Зарегистрировать попытку платежа в базе данных приложения
     {
         return PaymentRecord::create([
             'idempotence_key' => Str::random(64),
             'order_id' => $order_id,
+            'shop_id' => $shop_id,
         ]);
     } //initiate
 
-    public function fill(PaymentRecord $record, array $response): PaymentRecord //Заполнить запись о попытке платежа из полученного ответа
+    public function fill(PaymentRecord $record, Response $response): PaymentRecord //Заполнить запись о попытке платежа из полученного ответа
     {
         $record->update([
             'response_received' => true,

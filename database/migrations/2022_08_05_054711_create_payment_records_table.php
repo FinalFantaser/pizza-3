@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('yookassa_payment_records', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id')->references('id')->on('orders');
+            $table->foreignId('shop_id')->constrained('yookassa_shops');
             $table->boolean('response_received')->default(false); //Указывает, был ли получен ответ от ЮKassa, позволяющий заполнить данные
             $table->string('idempotence_key'); //Ключ идемпотентности, который генерирует приложение (во избежание повторения платежа)
             $table->string('payment_id')->nullable(); //Идентификатор платежа, который присваивает ЮKassa
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->boolean('paid')->default(false);
             $table->unsignedInteger('amount')->nullable(); //Сумма платежа вместе с коммисией
             $table->json('cancellation_details')->nullable();
+            $table->string('expires_at')->nullable();
             $table->timestamps();
         });
     }
