@@ -12,9 +12,9 @@ class PaymentRecordReadRepository{
         return PaymentRecord::orderBy('id');
     } //getMethods
 
-    public function findByOrder(int $order_id): PaymentRecord
+    public function findByOrder(int $order_id): Collection
     {
-        return PaymentRecord::where('order_id', $order_id)->paginate();
+        return PaymentRecord::where('order_id', $order_id)->get();
     } //findByOrder
 
     public function findCompleted(int $order_id): Collection //Поиск успешных платежей по заказу
@@ -27,11 +27,10 @@ class PaymentRecordReadRepository{
         return $this->findCompleted($order_id)->count() > 0;
     } //orderisPaid
 
-    public function findLatestPending(int $order_id): PaymentRecord //Найти последний незавершённый платёж
+    public function findLatestPending(int $order_id): ?PaymentRecord //Найти последний незавершённый платёж
     {
         return PaymentRecord::where('order_id', $order_id)
             ->where('response_received', true)
-            ->whereDate('expires_at', '>', now())
             ->where('status', PaymentRecord::STATUS_PENDING)
             ->latest()
             ->first();

@@ -4,57 +4,34 @@ namespace App\Http\Controllers\Api\V1\Home\Shop\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Home\Shop\Payment\YookassaPaymentRequest;
+use App\Models\Shop\Order\Order;
+use App\Models\Shop\Payment\Yookassa\PaymentRecord;
 use App\Models\Shop\Payment\Yookassa\YookassaShop;
 use App\Services\Shop\OrderService;
+use App\Services\Shop\Payment\Yookassa\PaymentRecordService;
 use App\Services\Shop\Payment\Yookassa\YookassaShopService;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 
 class YookassaController extends Controller
 {
     public function __construct(
+        private YookassaShop $shop,
+        private Order $order,
         private YookassaShopService $yookassaShopService,
-        private OrderService $orderService
+        private OrderService $orderService,
+        private PaymentRecordService $paymentRecordService
     )
-    {} //Конструктор
-
-    public function __invoke(YookassaPaymentRequest $request)
     {
         //Загрузка данных
-        $order = $this->orderService->findByToken(
-            token: $request->order_token,
-            with: ['customerData']
-        );
-        if($order->paid)
-            return response('Заказ уже оплачен');
+        $request = request();
+        $this->order = $this->orderService->findByToken(
+                    token: $request->order_token,
+                    with: 'customerData'
+                );
+        $this->shop = $this->yookassaShopService->findByCity($this->order->customerData->city_id);
+    } //Конструктор
 
-        $shop = $this->yookassaShopService->findByCity($order->customerData->city_id);
-
-        // return response()->json($shop);
-
-        //Отправка запроса
-        $promise = Http::
-            async()
-            ->withHeaders(['Idempotence-Key' => Str::random(64), 'Content-Type' => 'application/json']) //TODO Разобраться с Idempotence-Key, он необходим
-            ->withBasicAuth($shop->shop_id, $shop->api_token)
-            ->post(YookassaShop::PAYMENT_URL, [
-                'amount' => [
-                    'value' => $order->cost,
-                    'currency' => 'RUB'
-                ],
-                'capture' => false,
-                'confirmation' => [
-                    'type' => 'redirect',
-                    'return_url' => $shop->returnUrl($order->token),
-                ],
-                'description' => "Оплата за заказ №".$order->id
-            ]);
-        
-        $response = $promise->wait();
-
-        if($response->failed())
-            return $response->json();
-        elseif($response->successful())
-            return response($response['confirmation']['confirmation_url']);
+    public function __invoke(YookassaPaymentRequest $request){
+        $link = $this->paymentRecordService->create(order: $this->order, shop: $this->shop);
+        return response($link, 200);
     }
 }

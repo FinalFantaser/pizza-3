@@ -23,7 +23,7 @@ class YookassaShopReadRepository{
         return $shop;
     } //findById
 
-    public function findByCity(int $city_id, string|array $with = null): YookassaShop
+    public function findByCity(int $city_id, string|array $with = null): ?YookassaShop
     {
         return $this
             ->getMethods($with)

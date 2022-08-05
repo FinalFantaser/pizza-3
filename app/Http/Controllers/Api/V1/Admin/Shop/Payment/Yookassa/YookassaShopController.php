@@ -7,7 +7,7 @@ use App\Http\Requests\Api\Admin\Shop\Payment\Yookassa\CreateRequest;
 use App\Http\Requests\Api\Admin\Shop\Payment\Yookassa\UpdateRequest;
 use App\Http\Resources\Payment\Yookassa\YookassaShopResource;
 use App\Models\Shop\Payment\Yookassa\YookassaShop;
-use App\Services\Shop\Payment\YookassaShopService;
+use App\Services\Shop\Payment\Yookassa\YookassaShopService;
 
 class YookassaShopController extends Controller
 {

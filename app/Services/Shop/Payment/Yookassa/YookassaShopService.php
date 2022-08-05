@@ -57,7 +57,7 @@ class YookassaShopService{
         return $this->readRepository->findById(id: $id, with: $with);
     } //findById
 
-    public function findByCity(int $city_id, string|array $with = null): YookassaShop
+    public function findByCity(int $city_id, string|array $with = null): ?YookassaShop
     {
         return $this->readRepository->findByCity(city_id: $city_id, with: $with);
     } //findByCity

@@ -24,7 +24,6 @@ return new class extends Migration
             $table->boolean('paid')->default(false);
             $table->unsignedInteger('amount')->nullable(); //Сумма платежа вместе с коммисией
             $table->json('cancellation_details')->nullable();
-            $table->string('expires_at')->nullable();
             $table->timestamps();
         });
     }

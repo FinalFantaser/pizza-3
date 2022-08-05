@@ -24,8 +24,8 @@ class PaymentRecordRepository{
             'payment_id' => $response['id'],
             'status' => $response['status'],
             'paid' => $response['paid'],
-            'amount' => $response['amount'],
-            'cancellation_details' => $response['cancellation_details'],
+            'amount' => $response['amount']['value'],
+            'cancellation_details' => $response['cancellation_details'] ?? null,
         ]);
 
         return $record;

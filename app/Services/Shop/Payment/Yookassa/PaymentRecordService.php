@@ -8,6 +8,7 @@ use App\Models\Shop\Payment\Yookassa\YookassaShop;
 use App\ReadRepository\Shop\Payment\Yookassa\PaymentRecordReadRepository;
 use App\Repository\Shop\Payment\Yookassa\PaymentRecordRepository;
 use DomainException;
+use Exception;
 use Illuminate\Support\Facades\Http;
 use \Illuminate\Http\Client\Response;
 
@@ -18,7 +19,7 @@ class PaymentRecordService{
     )
     {} //Конструктор
 
-    private function checkPreviousPayments(Order $order): PaymentRecord //Проверка предыдущих платежей по заказу. Если заказ не был оплачен, и предыдущая запись не истекла, возвращает её
+    private function checkPreviousPayments(Order $order): ?PaymentRecord //Проверка предыдущих платежей по заказу. Если заказ не был оплачен, и предыдущая запись не истекла, возвращает её
     {
         //Отмечен ли сам заказ как оплаченный?
         if($order->isPaid())
@@ -64,9 +65,7 @@ class PaymentRecordService{
             ->retry(3, 500)
             ->withHeaders(['Content-Type' => 'application/json'])
             ->withBasicAuth($record->shop->shop_id, $record->shop->api_token)
-            ->get(PaymentRecord::CHECK_STATUS_URL, [
-                'payment_id' => $record->payment_id,
-            ]);
+            ->get(PaymentRecord::CHECK_STATUS_URL . $record->payment_id);
 
             $response->throw(); //Выбросить исключение, если запрос не удался
 
@@ -78,11 +77,11 @@ class PaymentRecordService{
     {
         //Валидация оплаты по заказу
         $record = $this->checkPreviousPayments($order);
+            // throw new Exception(message: "record после checkPreviousPayments: " . json_encode($record));
         
         //Регистрация попытки платежа
         if(is_null($record)) //Если предыдущих попыток платежа нет, или они истекли, зарегистрировать новую
-            $record = $this->repository->register(order_id: $order->id, shop_id: $shop->id); 
-
+            $record = $this->repository->register(order_id: $order->id, shop_id: $shop->id);
 
         //Запрос на ЮKassa
         $response = $this->requestPayment(

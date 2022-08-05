@@ -15,6 +15,7 @@ class PaymentRecord extends Model
     protected $table = 'yookassa_payment_records';
     protected $fillable = [
         'order_id',
+        'shop_id',
         'response_received',
         'idempotence_key',
         'payment_id',
@@ -22,7 +23,6 @@ class PaymentRecord extends Model
         'paid',
         'amount',
         'cancellation_details',
-        'expires_at',
     ];
 
     protected $casts = [
@@ -32,12 +32,8 @@ class PaymentRecord extends Model
         'cancellation_details' => 'array',
     ];
 
-    protected $dates = [
-        'expires_at'
-    ];
-
     //URL, с которого запрашивается статус платежа
-    public const CHECK_STATUS_URL = 'https://api.yookassa.ru/v3/payments';
+    public const CHECK_STATUS_URL = 'https://api.yookassa.ru/v3/payments/';
 
     //Возможные статусы заказа
     public const STATUS_PENDING  = 'pending';
@@ -66,11 +62,6 @@ class PaymentRecord extends Model
         return $this->paid;
     } //isPaid
 
-    public function isExpired(): bool
-    {
-        return Carbon::now()->greaterThan($this->expires_at);
-    } //isExpired
-
     public function isCancelled(): bool
     {
         return $this->status === self::STATUS_CANCELLED;
@@ -83,8 +74,8 @@ class PaymentRecord extends Model
 
     public function validate(): void //Проверяет, что запись о платеже является пригодной для оплаты
     {
-        if($this->isExpired())
-            throw new DomainException(message: 'У платежа истёк срок действия. Попробуйте ещё раз');
+        // if($this->isExpired())
+        //     throw new DomainException(message: 'У платежа истёк срок действия. Попробуйте ещё раз');
         if($this->isPaid())
             throw new DomainException(message: 'Заказ №'.$this->order_id.' уже оплачен');
         if($this->isCancelled())
