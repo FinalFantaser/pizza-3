@@ -33,7 +33,7 @@
                     </table>
                 </div>
             </div>
-            <div class="mx-auto col-12 col-lg-9 col-xl-8">
+            <div class="mx-auto col-12 col-lg-9 col-xl-8 mb-3">
                 <div class="card p-2 p-sm-4">
                     <table class="table caption-top">
                         <caption>
@@ -46,16 +46,16 @@
                         </caption>
                         <tbody>
                         <tr>
+                            <th scope="row">Город</th>
+                            <th scope="row" class="text-end">{{ order.customer_data.city.name }}</th>
+                        </tr>
+                        <tr>
                             <th scope="row">Номер заказа</th>
                             <th scope="row" class="text-end">#{{ order.id }}</th>
                         </tr>
                         <tr>
                             <th scope="row">Статус заказа</th>
                             <th scope="row" class="text-end">{{ order.current_status }}</th>
-                        </tr>
-                        <tr>
-                            <th scope="row">Город</th>
-                            <th scope="row" class="text-end">город</th>
                         </tr>
                         <tr>
                             <th scope="row">Дата</th>

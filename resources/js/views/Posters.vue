@@ -13,7 +13,7 @@
                             </div>
                             <div class="ms-auto my-auto mt-lg-0 mt-4">
                                 <div class="ms-auto my-auto">
-                                    <router-link to="/posters/create" class="btn bg-gradient-primary btn-sm mb-0">Добавить постер</router-link>
+                                    <router-link to="/posters/create" class="btn bg-gradient-primary btn-sm mb-0">Создать постер</router-link>
                                 </div>
                             </div>
                         </div>
@@ -59,9 +59,9 @@
                                                         <input class="form-check-input" type="checkbox" id="customCheck5">
                                                     </div>
                                                     <img
-                                                        v-if="poster.thumbUrl"
+                                                        v-if="poster.imageUrl"
                                                         class="w-10 ms-3"
-                                                        :src="poster.thumbUrl"
+                                                        :src="poster.imageUrl"
                                                         alt="category"
                                                     >
                                                     <img
