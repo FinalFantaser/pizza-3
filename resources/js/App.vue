@@ -39,11 +39,9 @@ Coded by www.creative-tim.com
     <router-view />
     <app-footer v-show="this.$store.state.argon.showFooter" />
   </main>
-    <modal-cities></modal-cities>
     <loader v-if="this.stateLoader"></loader>
 </template>
 <script>
-import ModalCities from './examples/ModalCities.vue'
 import Loader from "./examples/Loader.vue"
 import Sidenav from "./examples/Sidenav/index.vue";
 import Navbar from "@/examples/Navbars/Navbar.vue";
@@ -57,7 +55,6 @@ export default {
     Navbar,
     AppFooter,
     Loader,
-      ModalCities
   },
   methods: {
     ...mapMutations(["toggleConfigurator", "navbarMinimize"])

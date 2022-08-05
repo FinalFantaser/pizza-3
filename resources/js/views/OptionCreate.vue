@@ -96,7 +96,7 @@ export default {
                 items: JSON.stringify(this.items)
             })
                 .then(response => {
-                    //this.$router.push({name: 'Options'})
+                    this.$router.push({name: 'Options'})
                     this.$store.commit('loaderFalse')
                     console.log(response)
                 })
