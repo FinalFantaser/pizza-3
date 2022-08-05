@@ -45,7 +45,7 @@ class PaymentRecordService{
                     'value' => $order->cost,
                     'currency' => 'RUB'
                 ],
-                'capture' => false,
+                'capture' => true,
                 'confirmation' => [
                     'type' => 'redirect',
                     'return_url' => $shop->returnUrl($order->token),

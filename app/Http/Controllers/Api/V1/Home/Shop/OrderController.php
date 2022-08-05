@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Http\Requests\Api\Home\Shop\Order\ShowRequest;
 use App\Http\Resources\OrderResource;
-use App\Models\Shop\Order\Order;
 use App\Services\Shop\OrderService;
 use App\Services\Shop\Payment\Yookassa\PaymentRecordService;
-use Illuminate\Support\Arr;
 
 class OrderController extends Controller
 {
@@ -29,8 +27,8 @@ class OrderController extends Controller
             with: ['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items']
         );
 
-        if(!$order->isPaid())
-            $this->paymentRecordService->check($order);
+        // if(!$order->isPaid())
+        //     $this->paymentRecordService->check($order);
 
         
         return new OrderResource($order);

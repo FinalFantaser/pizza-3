@@ -139,6 +139,8 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                 //Оплата
                 Route::prefix('payment')->namespace('Payment')->name('payment.')->group(function(){
                     Route::post('yookassa', \App\Http\Controllers\Api\V1\Home\Shop\Payment\YookassaController::class)->name('yookassa');
+                    Route::post('yookassa.webhook', \App\Http\Controllers\Api\V1\Home\Shop\Payment\YookassaWebhookController::class)->name('yookassa.webhook');
+
                 });
 
                 //Доставка
