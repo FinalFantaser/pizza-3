@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Shop\Payment;
+namespace App\Services\Shop\Payment\Yookassa;
 
 use App\Http\Requests\Api\Admin\Shop\Payment\Yookassa\CreateRequest;
 use App\Http\Requests\Api\Admin\Shop\Payment\Yookassa\UpdateRequest;
