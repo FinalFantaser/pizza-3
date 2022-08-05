@@ -1,14 +1,9 @@
 <template>
   <nav
-    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
-    :class="
-      this.$store.state.argon.isRTL ? 'top-0 position-sticky z-index-sticky' : ''
-    "
-    v-bind="$attrs"
+    class="navbar navbar-main navbar-expand-lg px-0 mx-0 mx-sm-4 shadow-none"
     id="navbarBlur"
-    data-scroll="true"
   >
-    <div class="px-3 py-1 container-fluid">
+    <div class="container-fluid p-0">
       <breadcrumbs :currentPage="currentRouteName" textWhite="text-white" />
         <div class="d-flex">
           <h6 class="mb-0 text-white me-2">
@@ -37,9 +32,7 @@
             <input
               type="text"
               class="form-control"
-              :placeholder="
-                this.$store.state.argon.isRTL ? 'أكتب هنا...' : 'Type here...'
-              "
+              placeholder="Поиск"
             />
           </div>
         </div>

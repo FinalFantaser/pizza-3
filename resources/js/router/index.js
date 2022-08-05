@@ -3,6 +3,8 @@ import Dashboard from "../views/Dashboard.vue";
 import Users from "../views/Users.vue";
 import UserInfo from "../views/UserInfo.vue";
 import Cities from "../views/Cities.vue";
+import CityCreate from "../views/CityCreate.vue";
+import CityEdit from "../views/CityEdit.vue";
 import Delivery from "../views/Delivery.vue";
 import PickupPointEdit from "../views/PickupPointEdit.vue";
 import Categories from "../views/Categories.vue";
@@ -11,6 +13,8 @@ import CategoryEdit from "../views/CategoryEdit.vue";
 import Products from "../views/Products.vue";
 import ProductCreate from "../views/ProductCreate.vue";
 import ProductEdit from "../views/ProductEdit.vue";
+import Popular from "../views/Popular.vue";
+import Recommended from "../views/Recommended.vue";
 import Options from "../views/Options.vue";
 import OptionCreate from "../views/OptionCreate.vue";
 import OptionEdit from "../views/OptionEdit.vue";
@@ -49,6 +53,16 @@ const routes = [
         path: "/cities",
         name: "Cities",
         component: Cities,
+    },
+    {
+        path: "/cities/create",
+        name: "cities.create",
+        component: CityCreate,
+    },
+    {
+        path: "/cities/:id/edit",
+        name: "cities.edit",
+        component: CityEdit,
     },
     {
         path: "/delivery",
@@ -90,6 +104,16 @@ const routes = [
     name: "products.edit",
     component: ProductEdit,
   },
+    {
+        path: "/popular",
+        name: "Popular",
+        component: Popular,
+    },
+    {
+        path: "/recommended",
+        name: "Recommended",
+        component: Recommended,
+    },
   {
     path: "/options",
     name: "Options",
