@@ -43,7 +43,7 @@ class YookassaShopController extends Controller
 
     public function destroy(YookassaShop $yookassaShop)
     {
-        $this->service->remove($yookassa_shop);
+        $this->service->remove($yookassaShop);
         return response('Магазин Yookassa удалён', 204);
     }
 }
