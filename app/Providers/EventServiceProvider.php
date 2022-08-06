@@ -13,7 +13,6 @@ use App\Events\Order\OrderPaid;
 
 //События, которые будут сгенерированы с помощью event:generate
 use App\Listeners\Jupiter\Order\MakeOrderXml;
-use App\Listeners\Jupiter\Order\UpdateOrderXml;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -32,7 +31,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         OrderPaid::class => [
-            UpdateOrderXml::class,
+            MakeOrderXml::class,
         ],
     ];
 
