@@ -95,6 +95,15 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::post('orders.pay/{order}', 'OrderController@pay')->name('order.pay');
                     Route::post('orders.send/{order}', 'OrderController@send')->name('order.send');
                     Route::post('orders.complete/{order}', 'OrderController@complete')->name('order.complete');
+
+                    //Оплата
+                    Route::prefix('payment')->namespace('Payment')->name('payment.')->group(function(){
+                        Route::namespace('Yookassa')->group(function(){
+                            Route::apiResources([
+                                'yookassa_shop' => \App\Http\Controllers\Api\V1\Admin\Shop\Payment\Yookassa\YookassaShopController::class,
+                            ]);
+                        });
+                    });
                 });
             });
 
@@ -125,6 +134,13 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                 Route::name('orders.')->group(function(){
                     Route::post('orders.checkout', 'OrderController@checkout')->name('checkout');
                     Route::get('orders.show', 'OrderController@show')->name('show');
+                });
+
+                //Оплата
+                Route::prefix('payment')->namespace('Payment')->name('payment.')->group(function(){
+                    Route::post('yookassa', \App\Http\Controllers\Api\V1\Home\Shop\Payment\YookassaController::class)->name('yookassa');
+                    Route::post('yookassa.webhook', \App\Http\Controllers\Api\V1\Home\Shop\Payment\YookassaWebhookController::class)->name('yookassa.webhook');
+
                 });
 
                 //Доставка
