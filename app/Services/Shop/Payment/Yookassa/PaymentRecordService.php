@@ -120,12 +120,16 @@ class PaymentRecordService{
             response: $response
         );
 
-        //Проверить статус
-        // if($record->isPaid() || $record->isSucceeded())
-        //     $order->update(['paid' => true]);
-
         $order->update([
             'paid' => ($record->isPaid() || $record->isSucceeded()) ? true : false
         ]);
     } //check
+
+    //
+    //  Запросы для поиска
+    //
+    public function findByPaymentId(string $payment_id): ?PaymentRecord
+    {
+        return $this->readRepository->findByPaymentId($payment_id);
+    } //findByPaymentId
 };

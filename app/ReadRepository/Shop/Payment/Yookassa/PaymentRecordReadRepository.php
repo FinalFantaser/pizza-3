@@ -17,6 +17,11 @@ class PaymentRecordReadRepository{
         return PaymentRecord::where('order_id', $order_id)->get();
     } //findByOrder
 
+    public function findByPaymentId(string $payment_id): ?PaymentRecord
+    {
+        return PaymentRecord::where('payment_id', $payment_id)->first();
+    }
+
     public function findCompleted(int $order_id): Collection //Поиск успешных платежей по заказу
     {
         return PaymentRecord::where('order_id', $order_id)->where('response_received', true)->where('paid', true)->get();
