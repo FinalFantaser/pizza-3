@@ -6,14 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Http\Requests\Api\Home\Shop\Order\ShowRequest;
 use App\Http\Resources\OrderResource;
+use App\Models\Shop\Order\Order;
 use App\Services\Shop\OrderService;
-use App\Services\Shop\Payment\Yookassa\PaymentRecordService;
-
 class OrderController extends Controller
 {
     public function __construct(
-        private OrderService $orderService,
-        private PaymentRecordService $paymentRecordService
+        private OrderService $orderService
     ){} //Конструктор
 
     public function checkout(CheckoutRequest $request){
@@ -27,10 +25,6 @@ class OrderController extends Controller
             with: ['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items']
         );
 
-        // if(!$order->isPaid())
-        //     $this->paymentRecordService->check($order);
-
-        
         return new OrderResource($order);
     } //show
 }
