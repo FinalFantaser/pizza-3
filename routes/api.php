@@ -80,7 +80,6 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     });
 
                     //  Методы доставки
-                    // Route::apiResource('delivery-methods', 'DeliveryMethodController');
                     Route::prefix('delivery')->namespace('Delivery')->group(function(){
                         Route::apiResources([
                             'methods' => 'DeliveryMethodController',
@@ -98,6 +97,8 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                     //Оплата
                     Route::prefix('payment')->namespace('Payment')->name('payment.')->group(function(){
+                        Route::apiResource('method', \App\Http\Controllers\Api\V1\Admin\Shop\Payment\PaymentMethodController::class)->only(['index', 'show', 'store', 'destroy']);
+
                         Route::namespace('Yookassa')->group(function(){
                             Route::apiResources([
                                 'yookassa_shop' => \App\Http\Controllers\Api\V1\Admin\Shop\Payment\Yookassa\YookassaShopController::class,
@@ -138,9 +139,9 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
                 //Оплата
                 Route::prefix('payment')->namespace('Payment')->name('payment.')->group(function(){
+                    Route::get('methods', \App\Http\Controllers\Api\V1\Home\Shop\Payment\ShowMethodsController::class)->name('methods');
                     Route::post('yookassa', \App\Http\Controllers\Api\V1\Home\Shop\Payment\YookassaController::class)->name('yookassa');
                     Route::post('yookassa.webhook', \App\Http\Controllers\Api\V1\Home\Shop\Payment\YookassaWebhookController::class)->name('yookassa.webhook');
-
                 });
 
                 //Доставка
