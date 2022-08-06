@@ -7,6 +7,14 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+//События, которые будут сгенерированы с помощью event:generate
+use App\Events\Order\OrderPlaced;
+use App\Events\Order\OrderPaid;
+
+//События, которые будут сгенерированы с помощью event:generate
+use App\Listeners\Jupiter\Order\MakeOrderXml;
+use App\Listeners\Jupiter\Order\UpdateOrderXml;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -15,8 +23,16 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        // Registered::class => [
+        //     SendEmailVerificationNotification::class,
+        // ],
+
+        OrderPlaced::class => [
+            MakeOrderXml::class,
+        ],
+
+        OrderPaid::class => [
+            UpdateOrderXml::class,
         ],
     ];
 
