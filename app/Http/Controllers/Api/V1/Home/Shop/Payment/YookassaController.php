@@ -23,6 +23,9 @@ class YookassaController extends Controller
     {
         //Загрузка данных
         $request = request();
+        if( !$request->has('order_token') )
+            return;
+
         $this->order = $this->orderService->findByToken(
                     token: $request->order_token,
                     with: 'customerData'

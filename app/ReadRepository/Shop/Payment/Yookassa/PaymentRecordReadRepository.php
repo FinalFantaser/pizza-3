@@ -17,6 +17,11 @@ class PaymentRecordReadRepository{
         return PaymentRecord::where('order_id', $order_id)->get();
     } //findByOrder
 
+    public function findByPaymentId(string $payment_id): ?PaymentRecord
+    {
+        return PaymentRecord::where('payment_id', $payment_id)->first();
+    }
+
     public function findCompleted(int $order_id): Collection //Поиск успешных платежей по заказу
     {
         return PaymentRecord::where('order_id', $order_id)->where('response_received', true)->where('paid', true)->get();
@@ -36,7 +41,7 @@ class PaymentRecordReadRepository{
             ->first();
     } //findLatestPending
 
-    public function findLatestRecord(int $order_id, string|array $with = null): PaymentRecord //Найти последнюю запись о платеже по заказу
+    public function findLatestRecord(int $order_id, string|array $with = null): ?PaymentRecord //Найти последнюю запись о платеже по заказу
     {
         $record = PaymentRecord::where('order_id', $order_id)
             ->where('response_received', true)
@@ -46,8 +51,8 @@ class PaymentRecordReadRepository{
             })
             ->first();
 
-        if(is_null($record))
-            throw new ModelNotFoundException();
+        // if(is_null($record))
+        //     throw new ModelNotFoundException();
         
         return $record;
     } //findLatestRecord

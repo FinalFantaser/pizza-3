@@ -164,6 +164,11 @@ class OrderService{
         return $this->orderReadRepository->getMethods();    
     } //getMethods
 
+    public function findById(int $id): Order
+    {
+        return $this->orderReadRepository->findById($id);
+    } //findById
+
     public function findByCity(City $city){
         return $this->orderReadRepository->findByCity($city);
     } //findByCity

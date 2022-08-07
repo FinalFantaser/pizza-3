@@ -45,7 +45,7 @@ class PaymentRecordService{
                     'value' => $order->cost,
                     'currency' => 'RUB'
                 ],
-                'capture' => false,
+                'capture' => true,
                 'confirmation' => [
                     'type' => 'redirect',
                     'return_url' => $shop->returnUrl($order->token),
@@ -108,6 +108,9 @@ class PaymentRecordService{
         //Загрузить последнюю запись о платеже по заказу
         $record = $this->readRepository->findLatestRecord(order_id: $order->id, with: 'shop');
         
+        if(is_null($record))
+            return;
+        
         //Отправить запрос по идентификатору платежа
         $response = $this->requestStatus($record);
 
@@ -117,8 +120,16 @@ class PaymentRecordService{
             response: $response
         );
 
-        //Проверить статус
-        if($record->isPaid() || $record->isSucceeded())
-            $order->update(['paid' => true]);
+        $order->update([
+            'paid' => ($record->isPaid() || $record->isSucceeded()) ? true : false
+        ]);
     } //check
+
+    //
+    //  Запросы для поиска
+    //
+    public function findByPaymentId(string $payment_id): ?PaymentRecord
+    {
+        return $this->readRepository->findByPaymentId($payment_id);
+    } //findByPaymentId
 };
