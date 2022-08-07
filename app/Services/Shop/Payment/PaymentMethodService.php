@@ -58,4 +58,19 @@ class PaymentMethodService{
     {
         return $this->paymentMethodReadRepository->findByCode($name);
     } //findByName
+
+    public function findCash(): PaymentMethod //Найти способ оплаты наличными
+    { 
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_CASH );
+    } //findCash
+
+    public function findCard(): PaymentMethod //Найти способ оплаты картой
+    { 
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_CARD );
+    } //findCard
+
+    public function findOnline(): PaymentMethod //Найти способ оплаты онлайн
+    { 
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_ONLINE );
+    } //findOnline
 };

@@ -26,11 +26,11 @@
     <restaurant_zone_id>210</restaurant_zone_id> <!--Код зоны доставки, зона доставки определяется сайтом (Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)-->
   </order>
   <payment> <!--Параметры оплаты заказа-->
-    <payment_id></payment_id> <!--Код вида оплаты. Коды видов оплат обговариваются отдельно-->
-    <payment_title></payment_title>
-    <payment_status></payment_status> <!--Статус оплаты (1 - Не проведена, 2 - Проведена)-->
-    <payment_sum></payment_sum> <!--Сумма оплаты-->
-    <change_sum></change_sum> <!--Сумма с которой нужна сдача-->
+    <payment_id>{{$order->payment?->method_id ?? ''}}</payment_id> <!--Код вида оплаты. Коды видов оплат обговариваются отдельно-->
+    <payment_title>{{$order->payment?->title ?? ''}}</payment_title>
+    <payment_status>{{$order->paid ? 2 : 1}}</payment_status> <!--Статус оплаты (1 - Не проведена, 2 - Проведена)-->
+    <payment_sum>{{$order->payment?->sum ?? ''}}</payment_sum> <!--Сумма оплаты-->
+    <change_sum>{{$order->payment?->change_sum ?? ''}}</change_sum> <!--Сумма с которой нужна сдача-->
   </payment>
   <items> <!--Товарная часть заказа. В этом разделе перечисляются товарные строки заказа.-->
     @foreach ($order->items as $item)

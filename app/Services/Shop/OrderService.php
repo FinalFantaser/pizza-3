@@ -6,14 +6,18 @@ use App\Http\Requests\Api\Admin\Shop\Order\CancelRequest;
 use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Models\Shop\City;
 use App\Models\Shop\Order\OrderItem;
+use App\Models\Shop\Payment\PaymentMethod;
+use App\Models\Shop\Payments\Record;
 use App\Models\Shop\Product;
 use App\ReadRepository\Shop\Delivery\DeliveryMethodReadRepository;
 use App\ReadRepository\Shop\Delivery\PickupPointReadRepository;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\Order\OrderReadRepository;
+use App\ReadRepository\Shop\Payment\RecordReadRepository;
 use App\ReadRepository\Shop\ProductReadRepository;
 use App\Repository\Shop\Order\CustomerDataRepository;
 use App\Repository\Shop\Order\OrderItemRepository;
+use App\Repository\Shop\Payment\RecordRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -26,15 +30,23 @@ class OrderService{
         private DeliveryMethodReadRepository $deliveryMethodReadRepository,
         private PickupPointReadRepository $pickupPointReadRepository,
         private ProductReadRepository $productReadRepository,
+        private RecordRepository $paymentRecordRepository,
+        private RecordReadRepository $paymentRecordReadRepository,
     )
     {} //Конструктор
 
     //
     // Методы для администраторов
     //
-    public function payByAdmin(Order $order)
+    public function payByAdmin(Order $order, PaymentMethod $paymentMethod, int $changeSum = 0)
     {
-        $this->orderRepository->payByAdmin($order);
+        $this->orderRepository->pay($order);
+        $this->paymentRecordRepository->create(
+            order: $order,
+            method: $paymentMethod,
+            payer: Record::PAYER_ADMIN,
+            changeSum: $changeSum
+        );
     } //payByAdmin
 
     public function makeSent(Order $order)
@@ -147,9 +159,15 @@ class OrderService{
         return $token;
     } //checkout
 
-    public function payByCustomer(Order $order, $paymentMethod)
+    public function payByCustomer(Order $order, PaymentMethod $paymentMethod, int $changeSum = 0)
     {
-        $this->orderRepository->payByCustomer($order, $paymentMethod);
+        $this->orderRepository->pay($order);
+        $this->paymentRecordRepository->create(
+            order: $order,
+            method: $paymentMethod,
+            payer: Record::PAYER_CUSTOMER,
+            changeSum: $changeSum
+        );
     } //payByCustomer
 
     public function cancelByCustomer(CancelRequest $request, Order $order)

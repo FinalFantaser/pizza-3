@@ -39,15 +39,11 @@ class OrderRepository
         $order->setCustomerDataInfo($data->id);
     } //setCustomerDataInfo
 
-    public function payByAdmin(Order $order): void
+    public function pay(Order $order): void
     {
-        $order->pay('Paid by Admin');
-    } //payByAdmin
+        $order->pay();
+    } //pay
 
-    public function payByCustomer(Order $order, $method): void
-    {
-        $order->pay($method);
-    } //payByCustomer
 
     public function makeSent(Order $order): void
     {

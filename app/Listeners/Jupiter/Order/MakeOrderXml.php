@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Jupiter\Order;
 
+use App\Events\Order\OrderPaid;
 use App\Events\Order\OrderPlaced;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,16 +17,16 @@ class MakeOrderXml
         //
     }
 
-    public function handle(OrderPlaced $event)
+    public function handle(OrderPlaced|OrderPaid $event)
     {
         //Загрузка данных
-        $event->order->load(['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items']);
+        $event->order->load(['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment']);
 
         //Генерация XML-файла
         $document = View::make('jupiter.order', ['order' => $event->order]);
 
         //Сохранение файла на FTP Юпитера
-        Storage::disk('jupiter_ftp')->put('ORDER_'.$event->order->id.'.xml', $document);
+        Storage::disk('jupiter_ftp')->put( env('TO_JUPITER_FOLDER') . '/ORDER_'.$event->order->id.'.xml', $document);
     } //handle
 
     public function failed(OrderPlaced $event, $exception)

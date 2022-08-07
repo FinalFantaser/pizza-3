@@ -10,6 +10,8 @@ use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Delivery\PickupPoint;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Order\CustomerData;
+use App\Models\Shop\Payments\Record;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Order extends Model
@@ -74,13 +76,13 @@ class Order extends Model
         return $this->belongsTo(City::class);
     }
     
-    public function pay($method)
+    public function pay()
     {
         if ($this->isPaid()) {
             throw new DomainException('Order is already paid.');
         }
 
-        $this->paid = 1;
+        $this->update(['paid', true]);
     }
 
     public function send(): void
@@ -231,5 +233,10 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class, 'order_id', 'id');
+    }
+
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Record::class, 'order_id');
     }
 }

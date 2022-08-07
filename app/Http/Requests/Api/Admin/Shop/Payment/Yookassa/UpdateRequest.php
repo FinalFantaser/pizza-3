@@ -29,8 +29,8 @@ class UpdateRequest extends FormRequest
             'name' => 'nullable|string|max:255|unique:yookassa_shops,name,'.$this->yookassa_shop->id,
             'shop_id' => 'required|string|max:255|unique:yookassa_shops,shop_id,'.$this->yookassa_shop->id,
             'api_token' => 'required|string',
-            'cities' => 'array',
-            'cities.*' => 'exists:cities,id',
+            'city_ids' => 'array',
+            'city_ids.*' => 'exists:cities,id',
         ];
     }
 
