@@ -103,6 +103,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                             Route::apiResources([
                                 'yookassa_shop' => \App\Http\Controllers\Api\V1\Admin\Shop\Payment\Yookassa\YookassaShopController::class,
                             ]);
+                            Route::get('yookassa_shop.free_cities', [\App\Http\Controllers\Api\V1\Admin\Shop\Payment\Yookassa\YookassaShopController::class, 'freeCities'])->name('yookassa_shop.free_cities');
                         });
                     });
                 });
