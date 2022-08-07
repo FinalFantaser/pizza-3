@@ -51,12 +51,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-12 col-sm-8 m-auto">
+                            <div class="col-12 col-sm-8 m-auto position-relative">
                                 <label>Города</label>
                                 <div v-for="(city, index) in shop.cities" class="form-check">
                                     <input
                                         :id="'city ' + (index + 1)"
-                                        v-model="cities"
+                                        v-model="city_ids"
                                         :value="city.id"
                                         class="form-check-input"
                                         type="checkbox"
@@ -67,16 +67,17 @@
                                         {{ city.name }}
                                     </label>
                                 </div>
+                                <p v-if="city_ids.length === 0" class="invalid-msg invalid-msg--cities">Выберите хотя бы один город</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-sm-8 m-auto">
                                 <button
-                                    @click="addShop"
+                                    @click="editShop"
                                     type="button"
                                     class="btn btn-success m-0"
                                 >
-                                    Создать
+                                    Сохранить
                                 </button>
                             </div>
                         </div>
@@ -103,12 +104,42 @@ export default {
             name: '',
             shop_id: '',
             api_token: '',
-            cities: []
+            city_ids: []
         }
     },
     computed: {
         stateCities() {
             return this.$store.getters['serviceCities/stateCities']
+        }
+    },
+    methods: {
+        async editShop() {
+            const isFormCorrect = await this.v$.$validate()
+            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+            if (!isFormCorrect || this.city_ids.length === 0) return
+            this.$store.commit('loaderTrue')
+
+            axios.put(`/api/v1/admin/payment/yookassa_shop/${this.shop.id}`, {
+                name: this.name,
+                shop_id: this.shop_id,
+                api_token: this.api_token,
+                city_ids: this.city_ids
+            })
+                .then(response => {
+                    this.$store.dispatch('getToast', {
+                        msg: 'Данные обновлены!'
+                    })
+                    this.$router.push({name: 'yookassa'})
+                    this.$store.commit('loaderFalse')
+                    console.log(response)
+                })
+                .catch(error => {
+                    this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
+                            type: 'error'
+                        } })
+                    this.$store.commit('loaderFalse')
+                    console.log(error)
+                })
         }
     },
     validations () {
@@ -123,11 +154,12 @@ export default {
         await axios.get(`/api/v1/admin/payment/yookassa_shop/${this.$route.params.id}`)
                 .then(response => {
                     this.shop = response.data.data
-                    if (this.shop) {
-                        this.name = this.shop.name
-                        this.shop_id = this.shop.shop_id
-                        this.api_token = this.shop.api_token
-                    }
+                    this.name = this.shop.name
+                    this.shop_id = this.shop.shop_id
+                    this.api_token = this.shop.api_token
+                    this.city_ids = this.shop.cities.map(item => {
+                        return item.id
+                    })
                     console.log(this.shop)
                 })
                 .catch( (error) => {
@@ -141,5 +173,16 @@ export default {
 </script>
 
 <style scoped>
-
+.invalid-msg {
+    position: absolute;
+    bottom: -28px;
+    left: 15px;
+    transform: translateY(-50%);
+    margin: 0;
+    font-size: 12px;
+    color: tomato;
+}
+.invalid-msg--cities {
+    bottom: -18px;
+}
 </style>

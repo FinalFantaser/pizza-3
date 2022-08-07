@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid py-4">
+    <div v-if="freeCities.length > 0" class="container-fluid py-4">
         <div class="row">
             <div class="col-lg-6">
                 <h4 class="text-white">Создание магазина ю-касса</h4>
@@ -51,12 +51,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-12 col-sm-8 m-auto">
+                            <div class="col-12 col-sm-8 m-auto position-relative">
                                 <label>Города</label>
-                                <div v-for="(city, index) in stateCities" class="form-check">
+                                <div v-for="(city, index) in freeCities" class="form-check">
                                     <input
                                         :id="'city ' + (index + 1)"
-                                        v-model="cities"
+                                        v-model="city_ids"
                                         :value="city.id"
                                         class="form-check-input"
                                         type="checkbox"
@@ -67,6 +67,7 @@
                                         {{ city.name }}
                                     </label>
                                 </div>
+                                <p v-if="city_ids.length === 0" class="invalid-msg invalid-msg--cities">Выберите хотя бы один город</p>
                             </div>
                         </div>
                         <div class="row">
@@ -85,6 +86,7 @@
             </div>
         </div>
     </div>
+    <h4 v-else class="text-warning text-center my-6">Нет свободных городов</h4>
 </template>
 
 <script>
@@ -98,16 +100,12 @@ export default {
     },
     data() {
       return {
+          freeCities: [],
           name: '',
           shop_id: '',
           api_token: '',
-          cities: []
+          city_ids: []
       }
-    },
-    computed: {
-        stateCities() {
-            return this.$store.getters['serviceCities/stateCities']
-        }
     },
     methods: {
         async getCities() {
@@ -116,14 +114,14 @@ export default {
         async addShop() {
             const isFormCorrect = await this.v$.$validate()
             // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
-            if (!isFormCorrect) return
+            if (!isFormCorrect || this.city_ids.length === 0) return
             this.$store.commit('loaderTrue')
 
             axios.post('/api/v1/admin/payment/yookassa_shop', {
                 name: this.name,
                 shop_id: this.shop_id,
                 api_token: this.api_token,
-                city_ids: this.cities
+                city_ids: this.city_ids
             })
                 .then(response => {
                     this.$store.dispatch('getToast', {
@@ -150,12 +148,20 @@ export default {
         }
     },
     async mounted() {
-        await this.getCities()
-        if(this.stateCities) {
-            this.stateCities.forEach(item => {
-                this.cities.push(item.id)
+        this.$store.commit('loaderTrue')
+        await axios.get('/api/v1/admin/payment/yookassa_shop.free_cities')
+            .then(response => {
+                console.log(response.data.data)
+                this.freeCities = response.data.data
+                this.city_ids = this.freeCities.map(item => {
+                    return item.id
+                })
+                this.$store.commit('loaderFalse')
             })
-        }
+            .catch(error => {
+                console.log(error)
+                this.$store.commit('loaderFalse')
+            })
     }
 }
 </script>
@@ -169,5 +175,8 @@ export default {
     margin: 0;
     font-size: 12px;
     color: tomato;
+}
+.invalid-msg--cities {
+    bottom: -18px;
 }
 </style>
