@@ -110,6 +110,35 @@
                 </div>
             </div>
         </li>
+
+        <li class="nav-item">
+            <div class="accordion-item mx-2">
+                <h2 class="p-3 accordion-header d-flex align-items-center" id="paymantHeading">
+                    <div class="p-3 icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                        <i class="ni ni-money-coins text-warning text-sm opacity-10"></i>
+                    </div>
+                    <button class="accordion-button collapsed p-0 ms-1 text-sm" type="button" data-bs-toggle="collapse" data-bs-target="#paymant" aria-expanded="true" aria-controls="paymant">
+                        Оплата
+                    </button>
+                </h2>
+                <div id="paymant" class="accordion-collapse collapse" aria-labelledby="headingOne">
+                    <div class="accordion-body p-0">
+                        <div class="nav-item">
+                            <sidenav-item
+                                url="/yookassa"
+                                :class="getRoute() === '/yookassa' ? 'active' : ''"
+                                :navText="'Ю-касса'"
+                            >
+                                <template v-slot:icon>
+                                    <i class="top-0 fa fa-angle-double-right text-secondary text-sm opacity-10"></i>
+                                </template>
+                            </sidenav-item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
         <li class="nav-item">
             <sidenav-item
                 url="/posters"
@@ -132,24 +161,6 @@
           </template>
         </sidenav-item>
       </li>
-<!--      <li class="mt-3 nav-item">-->
-<!--        <h6-->
-<!--          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6 ms-2"-->
-<!--        >-->
-<!--          ACCOUNT PAGES-->
-<!--        </h6>-->
-<!--      </li>-->
-<!--      <li class="nav-item">-->
-<!--        <sidenav-item-->
-<!--          url="/profile"-->
-<!--          :class="getRoute() === 'profile' ? 'active' : ''"-->
-<!--          :navText="'Профиль'"-->
-<!--        >-->
-<!--          <template v-slot:icon>-->
-<!--            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>-->
-<!--          </template>-->
-<!--        </sidenav-item>-->
-<!--      </li>-->
       <li class="nav-item">
         <sidenav-item
           url="/signin"

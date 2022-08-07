@@ -18,6 +18,7 @@ import Recommended from "../views/Recommended.vue";
 import Options from "../views/Options.vue";
 import OptionCreate from "../views/OptionCreate.vue";
 import OptionEdit from "../views/OptionEdit.vue";
+import Yookassa from "../views/Yookassa.vue";
 import Posters from "../views/Posters.vue";
 import PosterCreate from "../views/PosterCreate.vue";
 import PosterEdit from "../views/PosterEdit.vue";
@@ -128,6 +129,11 @@ const routes = [
     path: "/options/:id/edit",
     name: "options.edit",
     component: OptionEdit,
+  },
+  {
+    path: "/yookassa",
+    name: "yookassa",
+    component: Yookassa,
   },
     {
     path: "/posters",
