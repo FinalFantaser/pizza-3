@@ -13,7 +13,7 @@
                             </div>
                             <div class="ms-auto my-auto mt-lg-0 mt-4">
                                 <div class="ms-auto my-auto">
-                                    <router-link to="/cities/create" class="btn bg-gradient-primary btn-sm mb-0">Создать магазин</router-link>
+                                    <router-link to="/yookassa/create" class="btn bg-gradient-primary btn-sm mb-0">Создать магазин</router-link>
                                 </div>
                             </div>
                         </div>
@@ -42,26 +42,26 @@
                                     <table class="table table-flush dataTable-table" id="products-list">
                                         <thead class="thead-light">
                                         <tr>
-                                            <th data-sortable="" style="width: 31.7521%;"><a href="#" class="dataTable-sorter">Город</a></th>
-                                            <th data-sortable="" style="width: 12.3972%;" class=""><a href="#" class="dataTable-sorter">Адрес</a></th>
-                                            <th data-sortable="" style="width: 9.55092%;" class=""><a href="#" class="dataTable-sorter">Телефон</a></th>
+                                            <th data-sortable="" style="width: 31.7521%;"><a href="#" class="dataTable-sorter">Магазин</a></th>
+                                            <th data-sortable="" style="width: 12.3972%;" class=""><a href="#" class="dataTable-sorter">ID магазина</a></th>
+                                            <th data-sortable="" style="width: 12.3972%;" class=""><a href="#" class="dataTable-sorter">Токен</a></th>
                                             <th data-sortable="" style="width: 9.55092%;" class=""><a href="#" class="dataTable-sorter">Действия</a></th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="(city, index) in stateCities">
+                                        <tr v-for="(shop, index) in stateShops" :key="index">
                                             <td>
-                                                <h6>{{ city.name }}</h6>
+                                                <h6>{{ shop.name }}</h6>
                                             </td>
-                                            <td class="text-sm">{{ city.address || 'адрес' }}</td>
-                                            <td class="text-sm">{{ city.phone || 'телефон' }}</td>
+                                            <td class="text-sm">{{ shop.shop_id }}</td>
+                                            <td class="text-sm">{{ shop.api_token }}</td>
                                             <td class="text-sm">
-                                                <router-link :to="'/cities/' + city.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
+                                                <router-link :to="'/yookassa/' + shop.id + '/edit'" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">
                                                     <i class="fa fa-pencil text-secondary" aria-hidden="true"></i>
                                                 </router-link>
                                                 <a
                                                     href="javascript:;"
-                                                    @click="deleteCity(city.id)"
+                                                    @click="deleteShop(shop.id)"
                                                 >
                                                     <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
                                                 </a>
@@ -93,7 +93,32 @@
 
 <script>
 export default {
-    name: "Yookassa"
+    name: "Yookassa",
+    computed: {
+        stateShops() {
+            return this.$store.getters['serviceYookassa/stateShops']
+        }
+    },
+    methods: {
+        deleteShop(id) {
+            this.$store.commit('loaderTrue')
+            axios.delete(`/api/v1/admin/payment/yookassa_shop/${id}`)
+                .then( (response) => {
+                    this.$store.commit('loaderFalse')
+                    this.getShops()
+                })
+                .catch(function (error) {
+                    this.$store.commit('loaderFalse')
+                    console.log(error);
+                })
+        },
+        async getShops() {
+            await this.$store.dispatch('serviceYookassa/getShops')
+        }
+    },
+    async mounted() {
+        await this.getShops()
+    }
 }
 </script>
 

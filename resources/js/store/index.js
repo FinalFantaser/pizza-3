@@ -7,6 +7,7 @@ import serviceProducts from "./service/products";
 import serviceOptions from "./service/options";
 import servicePosters from "./service/posters";
 import serviceOrders from "./service/orders";
+import serviceYookassa from "./service/payment/yookassa";
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
@@ -19,6 +20,7 @@ export default createStore({
         serviceOptions,
         servicePosters,
         serviceOrders,
+        serviceYookassa,
         argon,
         auth
     },
