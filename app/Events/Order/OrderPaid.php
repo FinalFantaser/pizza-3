@@ -2,6 +2,8 @@
 
 namespace App\Events\Order;
 
+use App\Models\Shop\Order\Order;
+use App\Models\Shop\Payment\PaymentMethod;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,21 +16,13 @@ class OrderPaid
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        public Order $order,
+        public PaymentMethod $method,
+        public int $changeSum,
+        public string $payer
+    ){}
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
     public function broadcastOn()
     {
         return new PrivateChannel('channel-name');

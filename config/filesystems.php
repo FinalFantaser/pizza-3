@@ -62,11 +62,6 @@ return [
             'username' => env('JUPITER_FTP_USERNAME'),
             'password' => env('JUPITER_FTP_PASSWORD'),
             'port' => intval( env('JUPITER_FTP_PORT') ),
-            // 'driver' => 'sftp',
-            // 'host' => '80.78.241.100',
-            // 'username' => 'pizza',
-            // 'password' => 'Rabota2606.',
-            // 'port' => 2222,
         ],
     ],
 
