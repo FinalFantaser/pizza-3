@@ -33,9 +33,6 @@ class YookassaShop extends Model
     } //city
 
     public function returnUrl(string $order_token){ //Генерирует URL, на который пользвателя возвращают после оплаты
-        return route(
-            name: 'api.home.payment.yookassa', //TODO В будущем заменить на более подходящий для редиректа URL (не API)
-            parameters: ['token' => $order_token]
-        );
+        return env('YOOKASSA_RETURN_URL') . $order_token;
     } //returnURL
 }
