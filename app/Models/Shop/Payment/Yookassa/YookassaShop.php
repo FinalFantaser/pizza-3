@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop\Payment\Yookassa;
 
+use App\Models\Shop\Order\Order;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,7 +33,7 @@ class YookassaShop extends Model
         return $this->cities->first();
     } //city
 
-    public function returnUrl(string $order_token){ //Генерирует URL, на который пользвателя возвращают после оплаты
-        return env('YOOKASSA_RETURN_URL') . $order_token;
+    public function returnUrl(Order $order){ //Генерирует URL, на который пользвателя возвращают после оплаты
+        return env('YOOKASSA_RETURN_URL') . $order->customerData->city->slug . '/ordered/' . $order->token;
     } //returnURL
 }

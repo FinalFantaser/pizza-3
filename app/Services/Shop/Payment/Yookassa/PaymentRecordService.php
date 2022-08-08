@@ -48,7 +48,7 @@ class PaymentRecordService{
                 'capture' => true,
                 'confirmation' => [
                     'type' => 'redirect',
-                    'return_url' => $shop->returnUrl($order->token),
+                    'return_url' => $shop->returnUrl($order),
                 ],
                 'description' => "Оплата за заказ №".$order->id
             ]);
