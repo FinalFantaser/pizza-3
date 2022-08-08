@@ -35,7 +35,7 @@
                                         </label>
                                     </div>
                                     <div class="dataTable-search">
-                                        <input class="dataTable-input" placeholder="Search..." type="text">
+                                        <input class="dataTable-input" placeholder="Поиск..." type="text">
                                     </div>
                                 </div>
                                 <div class="dataTable-container">
@@ -71,7 +71,7 @@
                                     </table>
                                 </div>
                                 <div class="dataTable-bottom">
-                                    <div class="dataTable-info">Showing 1 to 7 of 15 entries</div>
+                                    <div class="dataTable-info">Показано с 1 по 7 из 15 страниц</div>
                                     <nav class="dataTable-pagination">
                                         <ul class="dataTable-pagination-list">
                                             <li class="pager"><a href="#" data-page="1">‹</a></li>
