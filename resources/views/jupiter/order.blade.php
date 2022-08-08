@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?php
+  echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
 <service action="orders" id="{{$order->id}}" source="0"> <!--id - номер заказа. source - код источника заказа, коды источников обговариваются отдельно -->
   <order>
     <concept/> <!--Код концепции по мультибренду, если не используется <concept/>-->

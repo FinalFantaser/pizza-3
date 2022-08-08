@@ -82,7 +82,7 @@ class Order extends Model
             throw new DomainException('Order is already paid.');
         }
 
-        $this->update(['paid', true]);
+        $this->update(['paid' => true]);
     }
 
     public function send(): void
