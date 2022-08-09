@@ -8,15 +8,14 @@
             :class="this.$store.state.argon.isRTL ? 'text-lg-end' : 'text-lg-start'"
           >
             ©
-            {{ new Date().getFullYear() }}, made with
-            <i class="fa fa-heart"></i> by
+            {{ new Date().getFullYear() }}, сделано с
+            <i class="fa fa-heart"></i> от
             <a
-              href="https://www.creative-tim.com"
+              href="https://ldigital.ru/"
               class="font-weight-bold"
               target="_blank"
-              >Creative Tim</a
-            >
-            for a better web.
+              >L-digital</a
+            >.
           </div>
         </div>
         <div class="col-lg-6">

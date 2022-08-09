@@ -1,20 +1,13 @@
 <template>
-  <nav aria-label="breadcrumb">
+  <nav>
     <ol
       class="px-0 pt-1 pb-0 mb-0 bg-transparent breadcrumb"
-      :class="`${this.$store.state.argon.isRTL ? '' : ' me-sm-6'} ${this.$store.state.argon.isNavFixed ? 'text-dark' : 'text-white' }`"
+      :class="`${this.$store.state.argon.isNavFixed ? 'text-dark' : 'text-white' }`"
     >
       <li class="text-sm breadcrumb-item">
-        <a
-          v-if="this.$store.state.argon.isRTL"
-          class="opacity-5 ps-2"
-          href="#"
-          :class="this.$store.state.argon.isNavFixed ? 'text-dark' : 'text-white'"
-          >لوحات القيادة</a
-        >
-        <a v-else
+        <router-link
         :class="this.$store.state.argon.isNavFixed ? 'text-dark' : 'text-white'"
-         class="opacity-8" href="#">Pages</a>
+         class="opacity-8" to="/">Главная</router-link>
       </li>
       <li
         class="text-sm breadcrumb-item active"
