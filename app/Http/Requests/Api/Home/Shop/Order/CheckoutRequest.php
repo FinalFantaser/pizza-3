@@ -32,6 +32,7 @@ class CheckoutRequest extends FormRequest
     {
         return [
             "customer_data" => ['required', 'json', new CustomerDataValidation],
+            "payment_method_id" => ['required', 'exists:payment_methods,id', /*Проверка соответствия методу доставки*/ ],
             "delivery_method_id" => ['required', 'exists:delivery_methods,id'],
             "time" => ['nullable', 'string', 'max:255'],
             "pickup_point_id" => [Rule::requiredIf(DeliveryMethod::findOrFail($this->delivery_method_id)->type === DeliveryMethod::TYPE_PICKUP), 'exists:pickup_points,id'],

@@ -20,6 +20,8 @@ class Order extends Model
 
     protected $fillable = [
         'customer_data_id',
+        'payment_method_id',
+        'payment_method_name',
         'delivery_method_id',
         'delivery_method_name',
         'delivery_method_cost',

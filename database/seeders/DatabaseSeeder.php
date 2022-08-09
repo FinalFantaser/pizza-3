@@ -30,8 +30,45 @@ class DatabaseSeeder extends Seeder
         MediaLibrary::firstOrCreate([]);
 
         //Города
-        $city_aprelevka = City::firstOrCreate(['name' => 'Апрелевка'], ['phone' => '+7 000 000 00 01']);
-        $city_balabanovka = City::firstOrCreate(['name' => 'Балабаново'], ['phone' => '+7 000 000 00 02']);
+        $city_aprelevka = City::firstOrCreate([
+            'name' => 'Апрелевка'],
+            [
+                'phone' => '+7 000 000 00 01',
+                'address' => 'Тест',
+                'restaurant_id' => '000232',
+                'zone_id' => '026569',
+            ]
+        );
+
+        $city_balabanovka = City::firstOrCreate(
+            ['name' => 'Балабаново'],
+            [
+                'phone' => '+7 000 000 00 02',
+                'address' => 'Тест',
+                'restaurant_id' => '000319',
+                'zone_id' => '026332',
+            ]
+        );
+        
+        City::firstOrCreate(
+            ['name' => 'Малоярославец'],
+            [
+                'phone' => '+7 000 000 00 03',
+                'address' => 'Тест',
+                'restaurant_id' => '000434',
+                'zone_id' => '026334',
+            ]
+        );
+
+        City::firstOrCreate(
+            ['name' => 'Жуков'],
+            [
+                'phone' => '+7 000 000 00 04',
+                'address' => 'Тест',
+                'restaurant_id' => '000807',
+                'zone_id' => '027612',
+            ]
+        );
 
         // Пользователи
         $user = User::firstOrCreate( //Главный админ

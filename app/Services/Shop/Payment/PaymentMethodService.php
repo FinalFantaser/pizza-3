@@ -73,4 +73,34 @@ class PaymentMethodService{
     { 
         return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_ONLINE );
     } //findOnline
+
+    public function findCashPickup(): PaymentMethod
+    {
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_CASH_PICKUP );
+    } //findCashPickup
+
+    public function findCashDelivery(): PaymentMethod
+    {
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_CASH_DELIVERY );
+    } //findCashDelivery
+
+    public function findCardPickup(): PaymentMethod
+    {
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_CARD_PICKUP );
+    } //findCardPickup
+
+    public function findCardDelivery(): PaymentMethod
+    {
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_CARD_DELIVERY );
+    } //findCardDelivery
+
+    public function findOnlinePickup(): PaymentMethod
+    {
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_ONLINE_PICKUP );
+    } //findCardPickup
+
+    public function findOnlineDelivery(): PaymentMethod
+    {
+        return $this->paymentMethodReadRepository->findByCode( PaymentMethod::CODE_ONLINE_DELIVERY );
+    } //findCardDelivery
 };
