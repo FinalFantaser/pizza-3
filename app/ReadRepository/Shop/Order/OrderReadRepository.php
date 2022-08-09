@@ -23,7 +23,7 @@ class OrderReadRepository
                 ->first();
 
         //Если модель не найдена
-        if(!$order->exists())
+        if(is_null($order))
             throw new ModelNotFoundException;
 
         return $order;
