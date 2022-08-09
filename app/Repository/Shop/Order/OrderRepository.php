@@ -6,13 +6,16 @@ use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\Order;
 use App\Models\Shop\Order\OrderItem;
+use App\Models\Shop\Payment\PaymentMethod;
 use Illuminate\Support\Str;
 
 class OrderRepository
 {
-    public function create(?string $note, int $totalPrice, string $time = null): Order
+    public function create(?string $note, int $totalPrice, PaymentMethod $paymentMethod, string $time = null): Order
     {
         $order = Order::create([
+            'payment_method_id' => $paymentMethod->id,
+            'payment_method_name' => $paymentMethod->title,
             'note' => $note,
             'cost' => $totalPrice,
             'token' => Order::generateToken(),

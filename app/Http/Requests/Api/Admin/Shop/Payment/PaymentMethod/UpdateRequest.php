@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|unique:payment_methods,title,'.$this->payment_method->id,
-            'code' => ['required', 'integer', Rule::in([PaymentMethod::CODE_CASH, PaymentMethod::CODE_CARD, PaymentMethod::CODE_ONLINE]) ],
+        'code' => ['required', 'integer', /*Rule::in([PaymentMethod::CODE_CASH, PaymentMethod::CODE_CARD, PaymentMethod::CODE_ONLINE])*/ ],
         ];
     }
 

@@ -14,7 +14,7 @@
       <entrance></entrance> <!--Подъезд-->
       <intercom></intercom> <!--Код домофона-->
       <floor></floor> <!--Этаж-->
-      <comment/> <!--Комментарий клиента к адресу -->
+      <comment>{{$oder->note ?? ''}}</comment> <!--Комментарий клиента к адресу -->
       <map_latitude/> <!--Координаты широты (Обязательно, если сайт не определяет зоны доставки)-->
       <map_longitude/> <!--Координаты долготы (Обязательно, если сайт не определяет зоны доставки)-->
       <corp/>
@@ -23,9 +23,9 @@
     <phone>{{$order->customerData->phone}}</phone><!--Номер телефона клиента. Начиная с 8 без пробелов.-->
     <client_comment/> <!--Комментарий клиента к заказу -->
     <sum>{{$order->cost}}</sum> <!--Сумма заказа -->
-    <restaurant_id>36</restaurant_id> <!--Код ресторана, который будет выполнять заказ (Определяется сайтом по зоне доставки. Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)-->
+    <restaurant_id>{{$order->customerData?->city?->restaurant_id ?? ''}}</restaurant_id> <!--Код ресторана, который будет выполнять заказ (Определяется сайтом по зоне доставки. Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)-->
     <promo/>
-    <restaurant_zone_id>210</restaurant_zone_id> <!--Код зоны доставки, зона доставки определяется сайтом (Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)-->
+    <restaurant_zone_id>{{$order->customerData?->city?->zone_id ?? ''}}</restaurant_zone_id> <!--Код зоны доставки, зона доставки определяется сайтом (Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)-->
   </order>
   <payment> <!--Параметры оплаты заказа-->
     <payment_id>{{$order->payment?->method_id ?? ''}}</payment_id> <!--Код вида оплаты. Коды видов оплат обговариваются отдельно-->
@@ -48,13 +48,15 @@
         <!--Опции заказа-->
         @isset($item->product_options)
             @foreach ($item->product_options as $option)
+              @foreach($option['selected'] as $selected)
                 <item>
-                    <product_id>{{$option['id']}}</product_id> <!--Код модификатора-->
-                    <product_parent_id>{{$item->product_id}}</product_parent_id> <!--Код товара родителя-->
-                    <product_price></product_price> <!--Цена модификатора-->
-                    <quantity></quantity> <!--Кол-во модификатора. Умножается на кол-во базовой строки-->
-                    <name>{{$option['selected'][0]}}</name> <!--Название модификатора-->
-              </item>
+                  <product_id>{{$option['id']}}</product_id> <!--Код модификатора-->
+                  <product_parent_id>{{$item->product_id}}</product_parent_id> <!--Код товара родителя-->
+                  <product_price>{{$selected['price']}}</product_price> <!--Цена модификатора-->
+                  <quantity>{{$selected['quantity'] ?? 1}}</quantity> <!--Кол-во модификатора. Умножается на кол-во базовой строки-->
+                  <name>{{$selected['name']}}</name> <!--Название модификатора-->
+                </item>
+              @endforeach
             @endforeach
         @endisset
     @endforeach

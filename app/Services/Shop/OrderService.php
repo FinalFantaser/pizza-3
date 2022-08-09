@@ -13,11 +13,14 @@ use App\ReadRepository\Shop\Delivery\DeliveryMethodReadRepository;
 use App\ReadRepository\Shop\Delivery\PickupPointReadRepository;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\Order\OrderReadRepository;
+use App\ReadRepository\Shop\Payment\PaymentMethodReadRepository;
 use App\ReadRepository\Shop\Payment\RecordReadRepository;
 use App\ReadRepository\Shop\ProductReadRepository;
 use App\Repository\Shop\Order\CustomerDataRepository;
 use App\Repository\Shop\Order\OrderItemRepository;
+use App\Repository\Shop\Payment\PaymentMethodRepository;
 use App\Repository\Shop\Payment\RecordRepository;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -30,6 +33,7 @@ class OrderService{
         private DeliveryMethodReadRepository $deliveryMethodReadRepository,
         private PickupPointReadRepository $pickupPointReadRepository,
         private ProductReadRepository $productReadRepository,
+        private PaymentMethodReadRepository $paymentMethodReadRepository,
         private RecordRepository $paymentRecordRepository,
         private RecordReadRepository $paymentRecordReadRepository,
     )
@@ -81,6 +85,7 @@ class OrderService{
             $order = $this->orderRepository->create(
                 note: $request->note,
                 totalPrice: 0, //Пока что сумма нулевая, она будет посчитана после создания orderItems
+                paymentMethod: $this->paymentMethodReadRepository->findByCode($request->payment_method_id),
                 time: $request->time
             );
 
@@ -101,12 +106,13 @@ class OrderService{
             //Загрузка продуктов
             $products = $this->productReadRepository->findById(
                 id: Arr::pluck($rawData, 'product_id'),
-                with: 'optionRecords'
+                with: 'optionRecords', 
             );
 
             $orderItemsData = array_map(function($value) use ($products, $order){
                 $product = $products->where('id', $value->product_id)->first();
     
+                $fullOptions = null; //Полная информация по опциям
                 $additionalPrices = [];
                 if(property_exists($value, 'options')){
                     $additionalPrices = Arr::flatten( //flatten убирает вложенные массивы, которые возвращает pluck
@@ -115,6 +121,17 @@ class OrderService{
                             return $items->whereIn('name', $option->selected)->pluck('price'); //Из items, где name совпадает с selected, берутся цены
                         }, $value->options)
                     );
+
+                    $fullOptions = 
+                        array_map(function($option) use ($product){ //Перебираются опции из запроса
+                            $record = $product->optionRecords->where('id', $option->id)->first();
+                            return [
+                                'id' => $record->id,
+                                'selected' => Arr::where($record->items, function($value, $key) use ($option){
+                                    return in_array($value['name'], $option->selected);
+                                })
+                            ];
+                        }, $value->options);
                 }
 
                 //Рассчёт общей стоимости пункта продукта
@@ -126,7 +143,7 @@ class OrderService{
                     'product_name' => $product->name,
                     'product_price' => $product->price,
                     'product_quantity' => $value->product_quantity,
-                    'product_options' => json_encode($value->options ?? []),
+                    'product_options' => json_encode($fullOptions ?? []),
                     'total_price' => $price,
                     // 'additional' => $additionalPrices,
                 ];
