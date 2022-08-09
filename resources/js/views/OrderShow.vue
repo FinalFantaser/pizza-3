@@ -71,7 +71,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Адрес {{ order.pickup_point ? 'самовывоза' : 'доставки' }}</th>
-                            <th scope="row" class="text-end">{{ order.pickup_point ? order.pickup_point_address : order.customer_data.address }}</th>
+                            <th scope="row" class="text-end">г.{{order.customer_data.city.name}}, {{ order.pickup_point ? order.pickup_point_address : order.customer_data.address }}</th>
                         </tr>
                         <tr>
                             <th scope="row">Время {{ order.pickup_point ? 'самовывоза' : 'доставки' }}</th>
