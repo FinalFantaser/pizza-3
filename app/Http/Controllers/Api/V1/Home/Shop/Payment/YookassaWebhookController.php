@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V1\Home\Shop\Payment;
 
 use App\Events\Order\OrderPaid;
 use App\Http\Controllers\Controller;
+use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Order\Order;
+use App\Models\Shop\Payment\PaymentMethod;
 use App\Models\Shop\Payment\Yookassa\PaymentRecord;
 use App\Models\Shop\Payments\Record;
 use App\Services\Shop\OrderService;
@@ -32,6 +34,9 @@ class YookassaWebhookController extends Controller
         //Загрузка данных
         $record = $this->paymentRecordService->findByPaymentId($data['object']['id']);
         $order = $this->orderService->findById($record->order_id);
+        $order->load(['delivery_method']);
+
+        $paymentCode = $order->delivery_method->type === DeliveryMethod::TYPE_COURIER ? PaymentMethod::CODE_ONLINE_DELIVERY : PaymentMethod::CODE_ONLINE_PICKUP;
 
         //Данные попытки платежа обновляются
         $record->update([
@@ -43,7 +48,7 @@ class YookassaWebhookController extends Controller
         if($record->isPaid() || $record->isSucceeded())
             OrderPaid::dispatch(
                 $order,
-                $this->paymentMethodService->findOnline(),
+                $this->paymentMethodService->findByCode($paymentCode),
                 0,
                 Record::PAYER_CUSTOMER
             );
