@@ -19,6 +19,9 @@ class MakeOrderXml
 
     public function handle(OrderPlaced|OrderPaid $event)
     {
+        // Проверка включения интеграции Юпитера
+        if (!env('JUPITER_ENABLED')) return false;
+
         //Загрузка данных
         $event->order->load(['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment']);
 
