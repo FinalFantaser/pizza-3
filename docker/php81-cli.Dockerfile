@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
                                        pkg-config \
                                        libpq-dev\
                                        libyaml-dev \
+                                       ftp \
 && docker-php-ext-install pdo pdo_mysql \
 && docker-php-ext-configure intl \
 && docker-php-ext-install intl \
