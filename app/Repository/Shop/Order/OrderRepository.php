@@ -42,9 +42,9 @@ class OrderRepository
         $order->setCustomerDataInfo($data->id);
     } //setCustomerDataInfo
 
-    public function pay(Order $order): void
+    public function pay(Order $order, PaymentMethod $method): void
     {
-        $order->pay();
+        $order->pay(method: $method);
     } //pay
 
 

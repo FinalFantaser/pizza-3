@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Event;
 //События, которые будут сгенерированы с помощью event:generate
 use App\Events\Order\OrderPlaced;
 use App\Events\Order\OrderPaid;
+use App\Events\Order\OrderComplete;
 
 //События, которые будут сгенерированы с помощью event:generate
 use App\Listeners\Jupiter\Order\MakeOrderXml;
@@ -28,11 +29,15 @@ class EventServiceProvider extends ServiceProvider
         // ],
 
         OrderPlaced::class => [
-            MakeOrderXml::class,
+            // MakeOrderXml::class,
         ],
 
         OrderPaid::class => [
             MakePaymentRecord::class,
+            // MakeOrderXml::class,
+        ],
+
+        OrderComplete::class => [
             MakeOrderXml::class,
         ],
     ];

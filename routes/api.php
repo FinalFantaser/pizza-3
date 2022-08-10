@@ -91,7 +91,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     //  Управление заказами
                     Route::apiResource('orders', 'OrderController')->only(['index', 'show', 'destroy']);
                     Route::post('orders.cancel/{order}', 'OrderController@cancel')->name('order.cancel');
-                    Route::post('orders.pay/{order}', 'OrderController@pay')->name('order.pay');
+                    Route::post('orders.pay', 'OrderController@pay')->name('order.pay');
                     Route::post('orders.send/{order}', 'OrderController@send')->name('order.send');
                     Route::post('orders.complete/{order}', 'OrderController@complete')->name('order.complete');
 
@@ -118,8 +118,8 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                         Route::get('orders', 'OrderController@index')->name('index');
                         Route::get('orders/{order}', 'OrderController@show')->name('show');
 
+                        Route::post('orders.pay', 'OrderController@pay')->name('order.pay');
                         Route::post('orders.cancel/{order}', 'OrderController@cancel')->name('order.cancel');
-                        Route::post('orders.pay/{order}', 'OrderController@pay')->name('order.pay');
                         Route::post('orders.send/{order}', 'OrderController@send')->name('order.send');
                         Route::post('orders.complete/{order}', 'OrderController@complete')->name('order.complete');
                     });

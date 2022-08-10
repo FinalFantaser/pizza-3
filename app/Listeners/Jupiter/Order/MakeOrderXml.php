@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Jupiter\Order;
 
+use App\Events\Order\OrderComplete;
 use App\Events\Order\OrderPaid;
 use App\Events\Order\OrderPlaced;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,7 +18,7 @@ class MakeOrderXml
         //
     }
 
-    public function handle(OrderPlaced|OrderPaid $event)
+    public function handle(OrderPlaced|OrderPaid|OrderComplete $event)
     {
         // Проверка включения интеграции Юпитера
         if (!env(key: 'JUPITER_ENABLED', default: true)) return false;

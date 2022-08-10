@@ -44,7 +44,7 @@ class OrderService{
     //
     public function payByAdmin(Order $order, PaymentMethod $paymentMethod, int $changeSum = 0)
     {
-        $this->orderRepository->pay($order);
+        $this->orderRepository->pay(order: $order, method: $paymentMethod);
         $this->paymentRecordRepository->create(
             order: $order,
             method: $paymentMethod,
@@ -183,7 +183,7 @@ class OrderService{
 
     public function payByCustomer(Order $order, PaymentMethod $paymentMethod, int $changeSum = 0)
     {
-        $this->orderRepository->pay($order);
+        $this->orderRepository->pay(order: $order, method: $paymentMethod);
         $this->paymentRecordRepository->create(
             order: $order,
             method: $paymentMethod,

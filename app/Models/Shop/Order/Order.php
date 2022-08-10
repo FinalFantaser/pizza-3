@@ -10,7 +10,9 @@ use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Models\Shop\Delivery\PickupPoint;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Order\CustomerData;
+use App\Models\Shop\Payment\PaymentMethod;
 use App\Models\Shop\Payments\Record;
+use DomainException;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
@@ -78,13 +80,17 @@ class Order extends Model
         return $this->belongsTo(City::class);
     }
     
-    public function pay()
+    public function pay(PaymentMethod $method)
     {
         if ($this->isPaid()) {
             throw new DomainException('Order is already paid.');
         }
 
-        $this->update(['paid' => true]);
+        $this->update([
+            'paid' => true,
+            'payment_method_id' => $method->code,
+            'payment_method_name' => $method->name
+        ]);
     }
 
     public function send(): void
@@ -99,7 +105,7 @@ class Order extends Model
     public function complete(): void
     {
         if ($this->isCompleted()) {
-            throw new DomainException('Order is already completed.');
+            // throw new DomainException('Order is already completed.');
         }
 
         $this->addStatus(self::STATUS_COMPLETED);
