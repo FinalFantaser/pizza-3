@@ -80,7 +80,7 @@ class OrderService{
     // Методы для клиентов
     //
     public function checkout(CheckoutRequest $request){  //Оформить заказ
-        $token = DB::transaction(function() use ($request){            
+        $order = DB::transaction(function() use ($request){            
             //Создание записи о заказе
             $order = $this->orderRepository->create(
                 note: $request->note,
@@ -94,10 +94,15 @@ class OrderService{
             $customerData = $this->customerDataRepository->create(
                 order: $order,
                 name: $parsedJson->name,
-                email: $parsedJson->email ?? null,
                 phone:  $parsedJson->phone,
                 city_id: $parsedJson->city_id,
-                address: $parsedJson->address
+                street: $parsedJson->street,
+                house: $parsedJson->house,
+                room: $parsedJson->room,
+                entrance: $parsedJson->entrance,
+                intercom: $parsedJson->intercom,
+                floor: $parsedJson->floor,
+                corp: $parsedJson->corp,
             );
 
             //Создание пунктов заказа
@@ -170,10 +175,10 @@ class OrderService{
 
             $order->save();
 
-            return $order->token;
+            return $order;
         });
         
-        return $token;
+        return $order;
     } //checkout
 
     public function payByCustomer(Order $order, PaymentMethod $paymentMethod, int $changeSum = 0)

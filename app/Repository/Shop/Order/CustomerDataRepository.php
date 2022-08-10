@@ -12,19 +12,29 @@ class CustomerDataRepository
     public function create(
         Order $order,
         string $name,
-        string|null $email,
         int $phone,
         int $city_id,
-        string $address
+        string $street,
+        ?string $house,
+        ?string $room,
+        ?string $entrance,
+        ?string $intercom,
+        ?string $floor,
+        ?string $corp,
     ): CustomerData
     {
         $customerData = CustomerData::create([
             'order_id' => $order->id,
             'name' => $name,
-            'email' => $email,
-            'phone' => $phone,
+            'phone' => CustomerData::formatPhone($phone),
             'city_id' => $city_id,
-            'address' => $address
+            'street' => $street,
+            'house' => $house,
+            'room' => $room,
+            'entrance' => $entrance,
+            'intercom' => $intercom,
+            'floor' => $floor,
+            'corp' => $corp,
         ]);
 
         return $customerData;

@@ -15,9 +15,42 @@ class CustomerData extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id', 'name', 'email', 'phone', 'city_id', 'address'
+        'order_id',
+        'name',
+        'phone',
+        'city_id',
+        'street',
+        'house',
+        'room',
+        'entrance',
+        'intercom',
+        'floor',
+        'corp'
     ];
 
+    public static  function formatPhone(string $phone): string //Переделать номер телефона под нужный формат
+    {
+        $res = preg_replace(
+            pattern:
+            [
+                '/[\+]?([7|8])[-|\s]?\([-|\s]?(\d{3})[-|\s]?\)[-|\s]?(\d{3})[-|\s]?(\d{2})[-|\s]?(\d{2})/',
+                '/[\+]?([7|8])[-|\s]?(\d{3})[-|\s]?(\d{3})[-|\s]?(\d{2})[-|\s]?(\d{2})/',
+                '/[\+]?([7|8])[-|\s]?\([-|\s]?(\d{4})[-|\s]?\)[-|\s]?(\d{2})[-|\s]?(\d{2})[-|\s]?(\d{2})/',
+                '/[\+]?([7|8])[-|\s]?(\d{4})[-|\s]?(\d{2})[-|\s]?(\d{2})[-|\s]?(\d{2})/',
+                '/[\+]?([7|8])[-|\s]?\([-|\s]?(\d{4})[-|\s]?\)[-|\s]?(\d{3})[-|\s]?(\d{3})/',
+                '/[\+]?([7|8])[-|\s]?(\d{4})[-|\s]?(\d{3})[-|\s]?(\d{3})/',
+            ],
+            replacement: '8$2$3$4$5',
+            subject: trim($phone)
+        );
+
+        return $res;
+    } //formatPhone
+
+
+    //
+    //  Eloquent-отношения
+    //
     public function city(){
         return $this->belongsTo(City::class);
     }

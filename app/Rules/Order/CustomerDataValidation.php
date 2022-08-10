@@ -17,7 +17,7 @@ class CustomerDataValidation implements Rule
         // 'email',
         'phone',
         'city_id',
-        'address'
+        'street'
     ];
 
 
@@ -46,7 +46,6 @@ class CustomerDataValidation implements Rule
             $this->hasRequired($data)
             && $this->notEmpty($data)
             && $this->cityExists($data['city_id'])
-            && in_array(needle: 'email', haystack: $data) ? $this->validateEmail($data['email']) : true //Если email не указан, то указывается true, как если бы проверка была пройдена
             && $this->validatePhone($data['phone'])
             ;
     }
@@ -79,14 +78,6 @@ class CustomerDataValidation implements Rule
 
         return true;
     } //notEmpty
-
-    private function validateEmail(string $email): bool{ //Валидация email с помощью регулярного выражения
-        return preg_match( //Регулярное выражение взято из интернета
-            '/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD',
-            $email
-        );
-        return true;
-    } //validateEmail
 
     private function validatePhone(string $phone): bool{ //Валидация номера телефона с помощью регулярного выражения
         return preg_match('^((\+7|7|8)+([0-9]){10})$^', $phone); //Регулярное выражение взято из интернета

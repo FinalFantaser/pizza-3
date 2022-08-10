@@ -19,10 +19,10 @@ class OrderController extends Controller
     ){} //Конструктор
 
     public function checkout(CheckoutRequest $request){
-        $token = $this->orderService->checkout($request);
-        OrderPlaced::dispatch($this->orderService->findByToken(token: $token) );
+        $order = $this->orderService->checkout($request);
+        OrderPlaced::dispatch($order);
         
-        return response()->json(['message' => 'Заказ оформлен', 'api_token' => $token], 201);
+        return response()->json(['message' => 'Заказ оформлен', 'api_token' => $order->token], 201);
     } //checkout
 
     public function show(ShowRequest $request){

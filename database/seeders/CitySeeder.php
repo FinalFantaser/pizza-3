@@ -24,7 +24,7 @@ class CitySeeder extends Seeder
                 [
                     'phone' => '+7 000 000 00 01',
                     'address' => 'Тест',
-                    'restaurant_id' => '000232',
+                    'restaurant_id' => '000016',
                     'zone_id' => '026569',
                 ]
             );
@@ -34,7 +34,7 @@ class CitySeeder extends Seeder
                 [
                     'phone' => '+7 000 000 00 02',
                     'address' => 'Тест',
-                    'restaurant_id' => '000319',
+                    'restaurant_id' => '000006',
                     'zone_id' => '026332',
                 ]
             );
@@ -44,7 +44,7 @@ class CitySeeder extends Seeder
                 [
                     'phone' => '+7 000 000 00 03',
                     'address' => 'Тест',
-                    'restaurant_id' => '000434',
+                    'restaurant_id' => '000009',
                     'zone_id' => '026334',
                 ]
             );
@@ -54,7 +54,7 @@ class CitySeeder extends Seeder
                 [
                     'phone' => '+7 000 000 00 04',
                     'address' => 'Тест',
-                    'restaurant_id' => '000807',
+                    'restaurant_id' => '000014',
                     'zone_id' => '027612',
                 ]
             );
