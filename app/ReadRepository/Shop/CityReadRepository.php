@@ -13,11 +13,18 @@
             return City::orderBy('name')->get();
         } //findAll
 
-        public function findById(int|string $id){
+        public function findById(int|string $id): City
+        {
             return City::findOrFail($id);
         } //findById
 
-        public function findBySlug(string $slug){
+        public function findBySlug(string $slug): City
+        {
             return City::where('slug', $slug)->first();
         } //findBySlug
+
+        public function findByName(string $name): City
+        {
+            return City::where('name', $name)->first();
+        } //findByName
     }
