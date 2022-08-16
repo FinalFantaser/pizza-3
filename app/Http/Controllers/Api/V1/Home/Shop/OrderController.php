@@ -10,16 +10,13 @@ use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Http\Requests\Api\Home\Shop\Order\ShowRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Shop\Order\Order;
-use App\Models\Shop\Payment\PaymentMethod;
 use App\Models\Shop\Payments\Record;
 use App\Services\Shop\OrderService;
-use App\Services\Shop\Payment\PaymentMethodService;
 
 class OrderController extends Controller
 {
     public function __construct(
         private OrderService $orderService,
-        private PaymentMethodService $paymentMethodService
     ){} //Конструктор
 
     public function checkout(CheckoutRequest $request){
@@ -31,14 +28,7 @@ class OrderController extends Controller
     public function show(ShowRequest $request){
         $order = $this->orderService->findByToken(
             token: $request->token,
-            with: ['customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']
-        );
-
-        OrderPaid::dispatch(
-            $order,
-            $this->paymentMethodService->findByCode(PaymentMethod::CODE_CARD_PICKUP),
-            0,
-            Record::PAYER_CUSTOMER
+            with: ['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']
         );
 
         OrderComplete::dispatch($order);
