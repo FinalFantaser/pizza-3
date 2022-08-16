@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Shop\City;
 use App\Models\Shop\Delivery\DeliveryMethod;
+use App\Models\Shop\Delivery\DeliveryZone;
 use App\Models\Shop\Delivery\PickupPoint;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Payment\PaymentMethod;
 use App\Models\Shop\Payments\Record;
 use DomainException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
@@ -22,14 +24,11 @@ class Order extends Model
 
     protected $fillable = [
         'customer_data_id',
+        'delivery_method',
+        'delivery_zone_id',
         'payment_method_id',
         'payment_method_name',
-        'delivery_method_id',
-        'delivery_method_name',
-        'delivery_method_cost',
         'time',
-        'pickup_point_id',
-        'pickup_point_address',
         'cost',
         'note',
         'current_status',
@@ -51,12 +50,17 @@ class Order extends Model
         return Str::random(60);
     } //generateToken
 
-    public function setDeliveryMethodInfo(int $id, string $name, int $cost): void
+    public function setDeliveryMethodInfo(string $method): void
     {
         $this->update([
-            'delivery_method_id' => $id,
-            'delivery_method_name' => $name,
-            'delivery_method_cost' => $cost,
+            'delivery_method' => $method,
+        ]);
+    }
+
+    public function setDeliveryZoneInfo(DeliveryZone $deliveryZone): void
+    {
+        $this->update([
+            'delivery_zone_id' => $deliveryZone->id,
         ]);
     }
 
@@ -211,6 +215,16 @@ class Order extends Model
         return $this->current_status === self::STATUS_CANCELLED_BY_MANAGER;
     }
 
+    public function isCourier(): bool
+    {
+        return $this->delivery_method === DeliveryMethod::TYPE_COURIER;
+    }
+
+    public function isPickup(): bool
+    {
+        return $this->delivery_method === DeliveryMethod::TYPE_PICKUP;
+    }
+
     private function addStatus($value): void
     {
         $this->update([
@@ -223,6 +237,10 @@ class Order extends Model
         return $this->current_status === $status;
     }
 
+
+    //
+    //  Загрузка отношений Eloquent-моделей
+    //
     public function deliveryMethod()
     {
         return $this->belongsTo(DeliveryMethod::class, 'delivery_method_id', 'id');
@@ -247,4 +265,10 @@ class Order extends Model
     {
         return $this->hasOne(Record::class, 'order_id');
     }
+
+    public function deliveryZone(): BelongsTo
+    {
+        return $this->belongsTo(DeliveryZone::class, 'delivery_zone_id');
+    }
+    
 }

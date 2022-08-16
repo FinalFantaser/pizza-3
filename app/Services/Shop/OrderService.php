@@ -10,6 +10,7 @@ use App\Models\Shop\Payment\PaymentMethod;
 use App\Models\Shop\Payments\Record;
 use App\Models\Shop\Product;
 use App\ReadRepository\Shop\Delivery\DeliveryMethodReadRepository;
+use App\ReadRepository\Shop\Delivery\DeliveryZoneReadRepository;
 use App\ReadRepository\Shop\Delivery\PickupPointReadRepository;
 use App\Repository\Shop\Order\OrderRepository;
 use App\ReadRepository\Shop\Order\OrderReadRepository;
@@ -20,6 +21,7 @@ use App\Repository\Shop\Order\CustomerDataRepository;
 use App\Repository\Shop\Order\OrderItemRepository;
 use App\Repository\Shop\Payment\PaymentMethodRepository;
 use App\Repository\Shop\Payment\RecordRepository;
+use DomainException;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +33,7 @@ class OrderService{
         private OrderItemRepository $orderItemRepository,
         private CustomerDataRepository $customerDataRepository,
         private DeliveryMethodReadRepository $deliveryMethodReadRepository,
+        private DeliveryZoneReadRepository $deliveryZoneReadRepository,
         private PickupPointReadRepository $pickupPointReadRepository,
         private ProductReadRepository $productReadRepository,
         private PaymentMethodReadRepository $paymentMethodReadRepository,
@@ -83,6 +86,8 @@ class OrderService{
         $order = DB::transaction(function() use ($request){            
             //Создание записи о заказе
             $order = $this->orderRepository->create(
+                deliveryMethod: $request->delivery_method,
+                deliveryZoneId: $request->delivery_zone_id,
                 note: $request->note,
                 totalPrice: 0, //Пока что сумма нулевая, она будет посчитана после создания orderItems
                 paymentMethod: $this->paymentMethodReadRepository->findByCode($request->payment_method_id),
@@ -90,19 +95,19 @@ class OrderService{
             );
 
             //Создание данных о клиенте
-            $parsedJson = json_decode($request->customer_data);
+            // $parsedJson = json_decode($request->customer_data);
             $customerData = $this->customerDataRepository->create(
                 order: $order,
-                name: $parsedJson->name,
-                phone:  $parsedJson->phone,
-                city_id: $parsedJson->city_id,
-                street: $parsedJson->street,
-                house: $parsedJson->house,
-                room: $parsedJson->room,
-                entrance: $parsedJson->entrance,
-                intercom: $parsedJson->intercom,
-                floor: $parsedJson->floor,
-                corp: $parsedJson->corp,
+                name: $request->customer_data['name'],
+                phone:  $request->customer_data['phone'],
+                city_id: $request->customer_data['city_id'],
+                street: $request->customer_data['street'] ?? null,
+                house: $request->customer_data['house'] ?? null,
+                room: $request->customer_data['room'] ?? null,
+                entrance: $request->customer_data['entrance'] ?? null,
+                intercom: $request->customer_data['intercom'] ?? null,
+                floor: $request->customer_data['floor'] ?? null,
+                corp: $request->customer_data['corp'] ?? null,
             );
 
             //Создание пунктов заказа
@@ -156,24 +161,32 @@ class OrderService{
 
             $this->orderItemRepository->createBulk($orderItemsData);
 
-            //Загрузка способа доставки
-            $deliveryMethod = $this->deliveryMethodReadRepository->findById($request->delivery_method_id);
+            //Загрузка зоны доставки
+            $deliveryZone = $this->deliveryZoneReadRepository->findById($request->delivery_zone_id);
 
             //Связывание данных между собой
-            $order->setDeliveryMethodInfo($deliveryMethod->id, $deliveryMethod->name, $deliveryMethod->cost);
+            // $order->setDeliveryMethodInfo($request->delivery_method);
             $order->setCustomerDataInfo($customerData->id);
-            if($request->has('pickup_point_id')){
-                $pickupPoint = $this->pickupPointReadRepository->findById($request->pickup_point_id);
-                $order->setPickupPointInfo(id: $pickupPoint->id, address: $pickupPoint->address);
-            }
 
+            //
+            //
             //Расчет суммы заказа
+            //
+            //
+            //Стоимость всех единиц в заказе
             $order_items_total = array_sum(Arr::pluck($orderItemsData, 'total_price'));
-            $order->cost = $order_items_total >= $deliveryMethod->free_from
-                            ? $order_items_total
-                            : $order_items_total + $deliveryMethod->cost;
+            
+            //Если заказ на доставку и меньше минимальной суммы, отказать в оформлении заказа
+            // if($order->isCourier() && $order_items_total < $deliveryZone->sum_min)
+            //     throw new DomainException(message: 'Недостаточная сумма зказа');
 
-            $order->save();
+            //Если заказ на доставку и меньше суммы бесплатной доставки, добавить стоимость доставки
+            if($order->isCourier() && $order_items_total < $deliveryZone->sum_for_free)
+                $order_items_total += $deliveryZone->delivery_price;
+
+            $order->update([       
+                'cost' => $order_items_total,
+            ]);
 
             return $order;
         });

@@ -31,11 +31,11 @@ class CompliesWithDelivery implements DataAwareRule, InvokableRule
     {
         $check = [];
 
-        $deliveryMethod = $this->repository->findById( $this->data['delivery_method_id'] );
+        $deliveryMethod = $this->data['delivery_method'];
 
-        if($deliveryMethod->type === DeliveryMethod::TYPE_PICKUP)
+        if($deliveryMethod === DeliveryMethod::TYPE_PICKUP)
             $check = [PaymentMethod::CODE_CASH_PICKUP, PaymentMethod::CODE_CARD_PICKUP, PaymentMethod::CODE_ONLINE_PICKUP];
-        elseif($deliveryMethod->type === DeliveryMethod::TYPE_COURIER)
+        elseif($deliveryMethod === DeliveryMethod::TYPE_COURIER)
             $check = [PaymentMethod::CODE_CASH_DELIVERY, PaymentMethod::CODE_CARD_DELIVERY, PaymentMethod::CODE_ONLINE_DELIVERY];
 
         if( !in_array(needle: $value, haystack: $check) )

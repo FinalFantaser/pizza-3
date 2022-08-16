@@ -11,9 +11,11 @@ use Illuminate\Support\Str;
 
 class OrderRepository
 {
-    public function create(?string $note, int $totalPrice, PaymentMethod $paymentMethod, string $time = null): Order
+    public function create(string $deliveryMethod, int $deliveryZoneId,  ?string $note, int $totalPrice, PaymentMethod $paymentMethod, string $time = null): Order
     {
         $order = Order::create([
+            'delivery_method' => $deliveryMethod,
+            'delivery_zone_id' => $deliveryZoneId,
             'payment_method_id' => $paymentMethod->id,
             'payment_method_name' => $paymentMethod->title,
             'note' => $note,
@@ -32,9 +34,9 @@ class OrderRepository
         $order->delete();
     } //remove
 
-    public function setDeliveryMethodInfo(Order $order, DeliveryMethod $method): void
+    public function setDeliveryMethodInfo(Order $order, string $method): void
     {
-        $order->setDeliveryMethodInfo($method->id, $method->name, $method->cost);
+        $order->setDeliveryMethodInfo($method);
     } //setDeliveryMethodInfo
 
     public function setCustomerDataInfo(Order $order, CustomerData $data): void
