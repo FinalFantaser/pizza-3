@@ -48,16 +48,20 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
         @endisset
       </client_address>
     @isset($order->time){{--Время доставки--}}
-      <delivery_at>{{$order->time}}</delivery_at>   
+      <delivery_at>{{$order->time ?? ''}}</delivery_at>   
     @else
       <delivery_at/>
     @endisset
     <phone>{{$order->customerData->phone}}</phone>{{--Номер телефона клиента. Начиная с 8 без пробелов.--}}
     <client_comment/>{{--Комментарий клиента к заказу --}}
     <sum>{{$order->cost}}</sum>{{--Сумма заказа --}}
-    <restaurant_id>{{$order->customerData?->city?->restaurant_id ?? ''}}</restaurant_id>{{--Код ресторана, который будет выполнять заказ (Определяется сайтом по зоне доставки. Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)--}}
-    <promo/>
-    <restaurant_zone_id>{{$order->customerData?->city?->zone_id ?? ''}}</restaurant_zone_id>{{--Код зоны доставки, зона доставки определяется сайтом (Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)--}}
+    <restaurant_id>{{$order->deliveryZone?->restaurant_id ?? ''}}</restaurant_id>{{--Код ресторана, который будет выполнять заказ (Определяется сайтом по зоне доставки. Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)--}}
+    <promo/>    
+    @if($order->delivery_method === \App\Models\Shop\Delivery\DeliveryMethod::TYPE_COURIER)
+      <restaurant_zone_id>{{$order->deliveryZone?->code ?? ''}}</restaurant_zone_id>{{--Код зоны доставки, зона доставки определяется сайтом (Если сайт работает без зон доставки, то обязательно заполнить координаты широты и долготы адреса)--}}
+    @else
+      <restaurant_zone_id/>
+    @endif
   </order>
   <payment>{{--Параметры оплаты заказа--}}
     <payment_id>{{$order->payment?->method_id ?? ''}}</payment_id>{{--Код вида оплаты. Коды видов оплат обговариваются отдельно--}}

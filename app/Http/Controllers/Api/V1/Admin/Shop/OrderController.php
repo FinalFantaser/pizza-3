@@ -31,7 +31,7 @@ class OrderController extends Controller
     } //index
 
     public function show(Order $order){
-        return new OrderResource($order->load(['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment']));
+        return new OrderResource($order->load(['customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']));
     } //show
 
     public function destroy(Order $order){

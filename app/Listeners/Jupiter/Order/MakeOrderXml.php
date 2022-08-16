@@ -24,7 +24,7 @@ class MakeOrderXml
         if (!env(key: 'JUPITER_ENABLED', default: true)) return false;
 
         //Загрузка данных
-        $event->order->load(['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment']);
+        $event->order->load(['customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']);
 
         //Генерация XML-файла
         $document = View::make('jupiter.order', ['order' => $event->order]);

@@ -14,7 +14,7 @@ class CustomerDataRepository
         string $name,
         int $phone,
         int $city_id,
-        string $street,
+        ?string $street,
         ?string $house,
         ?string $room,
         ?string $entrance,

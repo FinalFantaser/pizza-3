@@ -45,7 +45,7 @@ class CheckoutRequest extends FormRequest
 
             // TODO Протестировать валидацию и переделать передачу данных под исправленную версию:
             // Данные заказчика
-            'customer_data' => [Rule::requiredIf($this->delivery_method === DeliveryMethod::TYPE_COURIER), 'array'],
+            'customer_data' => 'required|array',
             'customer_data.name' => 'required|string|max:255',
             'customer_data.phone' => ['required', 'regex:^((\+7|7|8)+([0-9]){10})$^'],
             'customer_data.city_id' => ['required', 'exists:cities,id', new CompliesWithDeliveryZone], //TODO Проверить, чтобы город соотносился с зоной доставки
