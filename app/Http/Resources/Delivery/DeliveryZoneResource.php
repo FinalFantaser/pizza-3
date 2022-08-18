@@ -18,6 +18,7 @@ class DeliveryZoneResource extends JsonResource
         // return parent::toArray($request);
 
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'city_id' => $this->city_id,
             'city' => new CityResource( $this->whenLoaded('city') ),
