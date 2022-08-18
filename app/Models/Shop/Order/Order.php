@@ -241,10 +241,10 @@ class Order extends Model
     //
     //  Загрузка отношений Eloquent-моделей
     //
-    public function deliveryMethod()
-    {
-        return $this->belongsTo(DeliveryMethod::class, 'delivery_method_id', 'id');
-    }
+    // public function deliveryMethod()
+    // {
+    //     return $this->belongsTo(DeliveryMethod::class, 'delivery_method_id', 'id');
+    // }
 
     public function customerData()
     {
