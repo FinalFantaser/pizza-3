@@ -20,10 +20,10 @@ class CompliesWithDeliveryZone implements DataAwareRule, InvokableRule
 
     public function __invoke($attribute, $value, $fail)
     {
-        $deliveryZone = $this->deliveryZone = $this->repository->findById($value);
+        $deliveryZone = $this->repository->findById( $this->data['delivery_zone_id'] );
 
-        if($this->data['customer_data']['city_id'] != $deliveryZone->city_id)
-            $fail('Указанный город не соответствует зоне доставки: [city_id: ' . $this->data['customer_data']['city_id'] . ', $delivery_zone->city_id: ' . $deliveryZone->city_id . ']');
+        if($value != $deliveryZone->city_id)
+            $fail('Указанный город не соответствует зоне доставки');
 
     }
 }
