@@ -17,13 +17,13 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->integer('customer_data_id')->nullable()->references('id')->on('order_customer_data')->onDelete('CASCADE');
             $table->integer('delivery_method_id')->nullable()->references('id')->on('delivery_methods')->onDelete('CASCADE');
-            $table->timestamps();
             $table->string('delivery_method_name', 255)->nullable();
             $table->integer('delivery_method_cost')->nullable();
             $table->integer('cost');
             $table->string('note', 500)->nullable();
             $table->string('current_status', 255);
             $table->string('cancel_reason')->nullable();
+            $table->timestamps();
         });
 
         Schema::create('order_customer_data', function (Blueprint $table) {

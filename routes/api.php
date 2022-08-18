@@ -84,8 +84,10 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                         Route::apiResources([
                             'methods' => 'DeliveryMethodController',
                             'pickup_points' => 'PickupPointController',
+                            'zones' => 'DeliveryZoneController',
                         ]);
-                        Route::get('pickup_points/city/{city_id}', 'PickupPointController@listByCity')->name('pickup_point.by_city');
+                        Route::get('pickup_points/city/{city_id}', 'PickupPointController@listByCity')->name('pickup_points.by_city');
+                        Route::get('zones/city/{city_slug}', 'DeliveryZoneController@byCity')->name('zones.by_city');
                     });
 
                     //  Управление заказами
@@ -149,6 +151,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                 Route::name('delivery.')->prefix('delivery')->namespace('Delivery')->group(function(){
                     Route::get('methods', 'ShowDeliveryMethodsController')->name('methods');
                     Route::get('pickup_points', 'ShowPickupPointsController')->name('pickup_points');
+                    Route::get('zones', 'ShowDeliveryZonesController')->name('zones');
                 });
 
                 Route::get('cities', 'ShowCitiesController')->name('cities');

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Api\Home\Shop\Order;
 
 use App\Models\Shop\Delivery\DeliveryMethod;
 use App\Rules\Order\CompliesWithDelivery;
+use App\Rules\Order\CompliesWithDeliveryZone;
 use App\Rules\Order\CustomerDataValidation;
 use App\Rules\Order\OptionsValidation;
 use App\Rules\Order\OrderItemsValidation;
@@ -32,27 +33,29 @@ class CheckoutRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_data' => ['required', 'json', new CustomerDataValidation],
-            'delivery_method_id' => ['required', 'exists:delivery_methods,id'],
+            // 'customer_data' => ['required', 'json', new CustomerDataValidation],
+            // 'delivery_method_id' => ['required', 'exists:delivery_methods,id'],
+            'delivery_method' => ['required', Rule::in([DeliveryMethod::TYPE_COURIER, DeliveryMethod::TYPE_PICKUP])],
+            'delivery_zone_id' => ['required', 'exists:delivery_zones,id'],
             'payment_method_id' => ['required', 'exists:payment_methods,id', new CompliesWithDelivery ],
             'time' => ['nullable', 'string', 'max:255'],
-            'pickup_point_id' => [Rule::requiredIf(DeliveryMethod::findOrFail($this->delivery_method_id)->type === DeliveryMethod::TYPE_PICKUP), 'exists:pickup_points,id'],
+            // 'pickup_point_id' => [Rule::requiredIf(DeliveryMethod::findOrFail($this->delivery_method_id)->type === DeliveryMethod::TYPE_PICKUP), 'exists:pickup_points,id'],
             'order_items' => ['required', 'json', new OrderItemsValidation, new OptionsValidation],
             'note' => 'nullable|string|max:255',
 
-            //TODO Протестировать валидацию и переделать передачу данных под исправленную версию:
-            //Данные заказчика
-            // 'customer_data' => 'required|array',
-            // 'customer_data.name' => 'required|string|max:255',
-            // 'customer_data.phone' => ['required', 'regex:^((\+7|7|8)+([0-9]){10})$'],
-            // 'customer_data.city_id' => 'required|exists:cities,id',
-            // 'customer_data.street' => 'required|string|max:255',
-            // 'customer_data.house' => 'nullable|string|max:255',
-            // 'customer_data.room' => 'nullable|int|gte:0',
-            // 'customer_data.entrance' => 'nullable|int|gte:0',
-            // 'customer_data.intercom' => 'nullable|string|max:255',
-            // 'customer_data.floor' => 'nullable|int|gte:1',
-            // 'customer_data.corp' => 'nullable|string|max:255',
+            // TODO Протестировать валидацию и переделать передачу данных под исправленную версию:
+            // Данные заказчика
+            'customer_data' => 'required|array',
+            'customer_data.name' => 'required|string|max:255',
+            'customer_data.phone' => ['required', 'regex:^((\+7|7|8)+([0-9]){10})$^'],
+            'customer_data.city_id' => ['required', 'exists:cities,id', new CompliesWithDeliveryZone], //TODO Проверить, чтобы город соотносился с зоной доставки
+            'customer_data.street' => 'nullable|string|max:255',
+            'customer_data.house' => 'nullable|string|max:255',
+            'customer_data.room' => 'nullable|int|gte:0',
+            'customer_data.entrance' => 'nullable|int|gte:0',
+            'customer_data.intercom' => 'nullable|string|max:255',
+            'customer_data.floor' => 'nullable|int|gte:1',
+            'customer_data.corp' => 'nullable|string|max:255',
 
             //Данные заказа
             // 'order_items' => 'required|array',

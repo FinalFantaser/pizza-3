@@ -17,7 +17,7 @@ class CustomerDataValidation implements Rule
         // 'email',
         'phone',
         'city_id',
-        'street'
+        // 'street'
     ];
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Home\Shop;
 
+use App\Events\Order\OrderComplete;
 use App\Events\Order\OrderPaid;
 use App\Events\Order\OrderPlaced;
 use App\Http\Controllers\Controller;
@@ -27,8 +28,10 @@ class OrderController extends Controller
     public function show(ShowRequest $request){
         $order = $this->orderService->findByToken(
             token: $request->token,
-            with: ['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment']
+            with: [/*'deliveryMethod',*/ 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']
         );
+
+        OrderComplete::dispatch($order);
 
         return new OrderResource($order);
     } //show

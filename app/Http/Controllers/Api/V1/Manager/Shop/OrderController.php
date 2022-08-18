@@ -29,7 +29,7 @@ class OrderController extends Controller
 
     public function show(Order $order){
         return new OrderResource(
-            $order->load(['deliveryMethod', 'customerData'])
+            $order->load([/*'deliveryMethod',*/ 'customerData'])
         );
     } //show
 
