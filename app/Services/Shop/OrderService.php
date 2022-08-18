@@ -177,8 +177,8 @@ class OrderService{
             $order_items_total = array_sum(Arr::pluck($orderItemsData, 'total_price'));
             
             //Если заказ на доставку и меньше минимальной суммы, отказать в оформлении заказа
-            // if($order->isCourier() && $order_items_total < $deliveryZone->sum_min)
-            //     throw new DomainException(message: 'Недостаточная сумма зказа');
+            if($order->isCourier() && $order_items_total < $deliveryZone->sum_min)
+                throw new DomainException(message: 'Недостаточная сумма зказа');
 
             //Если заказ на доставку и меньше суммы бесплатной доставки, добавить стоимость доставки
             if($order->isCourier() && $order_items_total < $deliveryZone->sum_for_free)
