@@ -31,8 +31,6 @@ class OrderController extends Controller
             with: [/*'deliveryMethod',*/ 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']
         );
 
-        OrderComplete::dispatch($order);
-
         return new OrderResource($order);
     } //show
 }
