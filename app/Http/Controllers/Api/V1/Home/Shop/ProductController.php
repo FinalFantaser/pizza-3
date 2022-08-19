@@ -46,9 +46,13 @@ class ProductController extends Controller
         );
     } //show
 
-    public function recommended(){
+    public function recommended(Request $request){
+        $request->validate(rules: [
+            'city_id' => 'required|exists:cities,id'
+        ]);
+
         return ProductResource::collection(
-            $this->productService->findRecommended()
+            $this->productService->findRecommended($request->city_id)
         );
     } //recommended
 }

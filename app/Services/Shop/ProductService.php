@@ -161,7 +161,7 @@
             return $this->orderItemReadRepository->popular(limit: $limit)->pluck('product');
         } //findPopular
         
-        public function findRecommended(){ //Показать продукты из таблицы "Часто заказывают"
-            return $this->productReadRepository->findRecommended();
+        public function findRecommended(int $cityId){ //Показать продукты из таблицы "Часто заказывают"
+            return $this->productReadRepository->findRecommended($cityId);
         } //findRecommended
     }

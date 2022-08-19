@@ -52,10 +52,20 @@
             return Product::where('slug', $slug)->first();
         } //findBySlug
 
-        public function findRecommended()
+        public function findRecommended(int $cityId)
         {
-            $products = Product::join('products_recommended', 'products.id', '=', 'products_recommended.product_id')->with(['cities', 'optionRecords'])->orderBy('sort')->get();
+            // $products = Product::join('products_recommended', 'products.id', '=', 'products_recommended.product_id')
+            //     ->with(['cities', 'optionRecords'])->orderBy('sort')->get();
             
+            // $products->each(function($item, $key){
+            //     $item->id = $item->product_id;
+            // });
+
+            $products = Product::join('product_city', 'product_city.product_id', '=', 'products.id')
+                ->join('products_recommended', 'products_recommended.product_id', '=', 'products.id')
+                ->where('product_city.city_id', $cityId)
+                ->get();
+
             $products->each(function($item, $key){
                 $item->id = $item->product_id;
             });
