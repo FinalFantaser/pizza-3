@@ -21,7 +21,7 @@ class OrderController extends Controller
 
     public function checkout(CheckoutRequest $request){
         $order = $this->orderService->checkout($request);
-        
+        OrderPlaced::dispatch($order);
         return response()->json(['message' => 'Заказ оформлен', 'api_token' => $order->token], 201);
     } //checkout
 

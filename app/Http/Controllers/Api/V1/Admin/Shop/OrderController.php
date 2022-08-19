@@ -48,7 +48,7 @@ class OrderController extends Controller
         return response()->json(['message' => 'Заказ отменён']);
     } //cancel
 
-    public function pay(PayRequest $request) //TODO Переделать под новую систему
+    public function pay(PayRequest $request)
     {
         $order = $this->orderService->findById($request->order_id);
         $method = $this->paymentService->findByCode($request->code);

@@ -29,12 +29,12 @@ class EventServiceProvider extends ServiceProvider
         // ],
 
         OrderPlaced::class => [
-            // MakeOrderXml::class,
+            MakeOrderXml::class,
         ],
 
         OrderPaid::class => [
             MakePaymentRecord::class,
-            // MakeOrderXml::class,
+            MakeOrderXml::class,
         ],
 
         OrderComplete::class => [
