@@ -32,7 +32,7 @@ class MakePaymentRecord
     public function handle(OrderPaid $event)
     {
         //Загрузка данных
-        $event->order->load(['deliveryMethod', 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment']);
+        $event->order->load([/*'deliveryMethod',*/ 'customerData', 'customerData.city', 'pickupPoint', 'items', 'payment']);
 
         //Создание записи о платеже
         if($event->payer === Record::PAYER_ADMIN)

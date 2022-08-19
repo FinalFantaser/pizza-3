@@ -93,7 +93,7 @@ class Order extends Model
         $this->update([
             'paid' => true,
             'payment_method_id' => $method->code,
-            'payment_method_name' => $method->name
+            'payment_method_name' => $method->title
         ]);
     }
 
