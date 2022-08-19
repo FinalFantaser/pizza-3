@@ -62,16 +62,12 @@
                             <th scope="row" class="text-end">{{ dateFormat(order.created_at) }}</th>
                         </tr>
                         <tr>
-                            <th scope="row">Вид оплаты</th>
-                            <th scope="row" class="text-end">вид оплаты</th>
+                            <th scope="row">Метод оплаты и доставки</th>
+                            <th scope="row" class="text-end">{{order.payment_method_name}}</th>
                         </tr>
                         <tr>
-                            <th scope="row">Вид доставки</th>
-                            <th scope="row" class="text-end">{{ order.delivery_method_name }}</th>
-                        </tr>
-                        <tr>
-                            <th scope="row">Адрес {{ order.pickup_point ? 'самовывоза' : 'доставки' }}</th>
-                            <th scope="row" class="text-end">г.{{order.customer_data.city.name}}, {{ order.pickup_point ? order.pickup_point_address : order.customer_data.address }}</th>
+                            <th scope="row">Адрес {{ order.delivery_method === 'pickup' ? 'самовывоза' : 'доставки' }}</th>
+                            <th scope="row" class="text-end">г.{{order.customer_data.city.name}}, {{ order.delivery_method === 'pickup' ? order.customer_data.city.address : order.delivery_address }}</th>
                         </tr>
                         <tr>
                             <th scope="row">Время {{ order.pickup_point ? 'самовывоза' : 'доставки' }}</th>
@@ -104,7 +100,12 @@
                         <tr v-for="product in order.items">
                             <th scope="row">
                                 <p class="m-0">{{ product.product_name }} - {{ product.product_quantity }}шт.</p>
-                                <p v-for="option in product.product_options" class="m-0 text-sm"><span v-for="select in option.selected">({{ select }}) </span></p>
+                                <p v-for="option in product.product_options" class="m-0 text-sm">
+                                    Опции:
+                                </p>
+                                <p v-for="option in product.product_options" class="m-0 text-sm">
+                                    <span v-for="select in option.selected">({{ select.name }}  - {{select.price}} ₽) </span>
+                                </p>
                             </th>
                             <th scope="row" class="text-end text-danger">{{ product.total_price }} ₽</th>
                         </tr>
@@ -137,10 +138,12 @@ export default {
         }
     },
     async created() {
+
         await axios.get(`/api/v1/admin/orders/${this.$route.params.id}`)
             .then(response => {
                 console.log(response.data.data)
                 this.order = response.data.data
+                this.order.delivery_address = `${this.order.customer_data.street}${', д.' + this.order.customer_data.house}${this.order.customer_data.corp === "Не указано" ? '' : ', корпус ' + this.order.customer_data.corp}${this.order.customer_data.entrance === null ? '' : ', подъезд ' + this.order.customer_data.entrance}${this.order.customer_data.room === null ? '' : ', кв.' + this.order.customer_data.room}${this.order.customer_data.floor === null ? '' : ', этаж ' + this.order.customer_data.floor}${this.order.customer_data.intercom === "Не указано" ? '' : ', домофон: ' + this.order.customer_data.intercom}`
             })
             .catch(error => {
                 console.log(error)
@@ -151,15 +154,9 @@ export default {
 
 <style scoped>
 .text-end {
-    word-break: break-all;
     font-weight: 400;
-    white-space: normal;
 }
-/*span {*/
-/*    display: block;*/
-/*    width: 100%;*/
 
-/*}*/
 .card {
     overflow: auto;
 }
