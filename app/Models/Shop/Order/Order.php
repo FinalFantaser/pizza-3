@@ -265,7 +265,7 @@ class Order extends Model
     {
         return $this->hasOne(Record::class, 'order_id');
     }
-
+    
     public function deliveryZone(): BelongsTo
     {
         return $this->belongsTo(DeliveryZone::class, 'delivery_zone_id');

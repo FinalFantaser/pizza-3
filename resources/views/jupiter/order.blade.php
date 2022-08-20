@@ -30,10 +30,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
     @endif
   </order>
   <payment>{{--Параметры оплаты заказа--}}
-    <payment_id>{{$order->payment?->method_id ?? ''}}</payment_id>{{--Код вида оплаты. Коды видов оплат обговариваются отдельно--}}
-    <payment_title>{{$order->payment?->title ?? ''}}</payment_title>
+    <payment_id>{{$order->payment?->method_id ?? $order->payment_method_id}}</payment_id>{{--Код вида оплаты. Коды видов оплат обговариваются отдельно--}}
+    <payment_title>{{$order->payment?->title ?? $order->payment_method_name}}</payment_title>
     <payment_status>{{$order->paid ? 2 : 1}}</payment_status>{{--Статус оплаты (1 - Не проведена, 2 - Проведена)--}}
-    <payment_sum>{{$order->payment?->sum ?? ''}}</payment_sum>{{--Сумма оплаты--}}
+    <payment_sum>{{$order->payment?->sum ?? $order->cost}}</payment_sum>{{--Сумма оплаты--}}
     <change_sum>{{$order->payment?->change_sum ?? ''}}</change_sum>{{--Сумма с которой нужна сдача--}}
   </payment>
   <items>{{--Товарная часть заказа. В этом разделе перечисляются товарные строки заказа.--}}
