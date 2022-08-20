@@ -21,23 +21,23 @@
                     <div class="card-body px-0 pb-0">
                         <div class="table-responsive">
                             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-                                <div class="dataTable-top">
-                                    <div class="dataTable-dropdown">
-                                        <label>
-                                            <select class="dataTable-selector">
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                            </select>
-                                            entries per page
-                                        </label>
-                                    </div>
-                                    <div class="dataTable-search">
-                                        <input class="dataTable-input" placeholder="Поиск..." type="text">
-                                    </div>
-                                </div>
+<!--                                <div class="dataTable-top">-->
+<!--                                    <div class="dataTable-dropdown">-->
+<!--                                        <label>-->
+<!--                                            <select class="dataTable-selector">-->
+<!--                                                <option value="5">5</option>-->
+<!--                                                <option value="10">10</option>-->
+<!--                                                <option value="15">15</option>-->
+<!--                                                <option value="20">20</option>-->
+<!--                                                <option value="25">25</option>-->
+<!--                                            </select>-->
+<!--                                            entries per page-->
+<!--                                        </label>-->
+<!--                                    </div>-->
+<!--                                    <div class="dataTable-search">-->
+<!--                                        <input class="dataTable-input" placeholder="Поиск..." type="text">-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div class="dataTable-container">
                                     <table class="table table-flush dataTable-table" id="products-list">
                                         <thead class="thead-light">
@@ -70,18 +70,18 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="dataTable-bottom">
-                                    <div class="dataTable-info">Показано с 1 по 7 из 15 страниц</div>
-                                    <nav class="dataTable-pagination">
-                                        <ul class="dataTable-pagination-list">
-                                            <li class="pager"><a href="#" data-page="1">‹</a></li>
-                                            <li class="active"><a href="#" data-page="1">1</a></li>
-                                            <li class=""><a href="#" data-page="2">2</a></li>
-                                            <li class=""><a href="#" data-page="3">3</a></li>
-                                            <li class="pager"><a href="#" data-page="2">›</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
+<!--                                <div class="dataTable-bottom">-->
+<!--                                    <div class="dataTable-info">Показано с 1 по 7 из 15 страниц</div>-->
+<!--                                    <nav class="dataTable-pagination">-->
+<!--                                        <ul class="dataTable-pagination-list">-->
+<!--                                            <li class="pager"><a href="#" data-page="1">‹</a></li>-->
+<!--                                            <li class="active"><a href="#" data-page="1">1</a></li>-->
+<!--                                            <li class=""><a href="#" data-page="2">2</a></li>-->
+<!--                                            <li class=""><a href="#" data-page="3">3</a></li>-->
+<!--                                            <li class="pager"><a href="#" data-page="2">›</a></li>-->
+<!--                                        </ul>-->
+<!--                                    </nav>-->
+<!--                                </div>-->
                             </div>
                         </div>
                     </div>

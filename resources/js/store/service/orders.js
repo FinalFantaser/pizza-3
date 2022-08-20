@@ -24,7 +24,7 @@ export default {
                         })
                     }
                     state.orders = data.data.data
-                    console.log(data.data.data)
+                    console.log("Orders:",data.data.data)
                 })
                 .catch(error => {
                     console.log(error)
