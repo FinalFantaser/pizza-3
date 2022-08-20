@@ -26,7 +26,9 @@ class OrderController extends Controller
     //
     public function index(){
         return OrderResource::collection(
-            $this->orderService->getMethods()->paginate(20)
+            $this->orderService->getMethods()
+                ->with(['customerData:id,name,phone'])
+                ->paginate(20)
         );
     } //index
 

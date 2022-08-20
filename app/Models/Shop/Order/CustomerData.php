@@ -47,6 +47,22 @@ class CustomerData extends Model
         return $res;
     } //formatPhone
 
+    public function getAddressAttribute(): string
+    {
+        return implode(
+            separator: ', ',
+            array: [
+                $this->street,
+                $this->house,
+                $this->room,
+                $this->entrance,
+                $this->intercom,
+                $this->floor,
+                $this->corp,
+            ]
+        );
+    }
+
 
     //
     //  Eloquent-отношения
