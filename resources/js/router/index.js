@@ -178,11 +178,11 @@ const routes = [
     name: "Profile",
     component: Profile,
   },
-  // {
-  //   path: "/signin",
-  //   name: "Signin",
-  //   component: Signin,
-  // },
+  {
+    path: "/signin",
+    name: "Signin",
+    component: Signin,
+  },
   // {
   //   path: "/signup",
   //   name: "Signup",
