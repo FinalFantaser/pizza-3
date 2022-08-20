@@ -35,23 +35,24 @@ const routes = [
   {
     path: "/",
     name: "Dashboard",
-    component: Dashboard,
+    //component: Dashboard,
+      redirect: { name: 'Orders' }
   },
-  {
-    path: "/users",
-    name: "Users",
-    component: Users,
-  },
-  {
-    path: "/users/create",
-    name: "users.create",
-    component: UserInfo,
-  },
-  {
-    path: "/users/:id/edit",
-    name: "users.edit",
-    component: UserInfo
-  },
+  // {
+  //   path: "/users",
+  //   name: "Users",
+  //   component: Users,
+  // },
+  // {
+  //   path: "/users/create",
+  //   name: "users.create",
+  //   component: UserInfo,
+  // },
+  // {
+  //   path: "/users/:id/edit",
+  //   name: "users.edit",
+  //   component: UserInfo
+  // },
     {
         path: "/cities",
         name: "Cities",
@@ -177,16 +178,16 @@ const routes = [
     name: "Profile",
     component: Profile,
   },
-  {
-    path: "/signin",
-    name: "Signin",
-    component: Signin,
-  },
-  {
-    path: "/signup",
-    name: "Signup",
-    component: Signup,
-  },
+  // {
+  //   path: "/signin",
+  //   name: "Signin",
+  //   component: Signin,
+  // },
+  // {
+  //   path: "/signup",
+  //   name: "Signup",
+  //   component: Signup,
+  // },
   {
     path: "/logout",
     name: "Logout",

@@ -15,19 +15,19 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
-        <sidenav-item
-          url="/users"
-          :class="getRoute() === 'users' ? 'active' : ''"
-          :navText="'Пользователи'"
-        >
-          <template v-slot:icon>
-            <i
-              class="fa fa-users text-warning text-sm opacity-10"
-            ></i>
-          </template>
-        </sidenav-item>
-      </li>
+<!--      <li class="nav-item">-->
+<!--        <sidenav-item-->
+<!--          url="/users"-->
+<!--          :class="getRoute() === 'users' ? 'active' : ''"-->
+<!--          :navText="'Пользователи'"-->
+<!--        >-->
+<!--          <template v-slot:icon>-->
+<!--            <i-->
+<!--              class="fa fa-users text-warning text-sm opacity-10"-->
+<!--            ></i>-->
+<!--          </template>-->
+<!--        </sidenav-item>-->
+<!--      </li>-->
         <li class="nav-item">
             <sidenav-item
                 url="/cities"
@@ -161,28 +161,28 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
-        <sidenav-item
-          url="/signin"
-          :class="getRoute() === 'signin' ? 'active' : ''"
-          :navText="'Sign In'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-single-copy-04 text-danger text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li>
-      <li class="nav-item">
-        <sidenav-item
-          url="/signup"
-          :class="getRoute() === 'signup' ? 'active' : ''"
-          :navText="'Sign Up'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-collection text-info text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li>
+<!--      <li class="nav-item">-->
+<!--        <sidenav-item-->
+<!--          url="/signin"-->
+<!--          :class="getRoute() === 'signin' ? 'active' : ''"-->
+<!--          :navText="'Sign In'"-->
+<!--        >-->
+<!--          <template v-slot:icon>-->
+<!--            <i class="ni ni-single-copy-04 text-danger text-sm opacity-10"></i>-->
+<!--          </template>-->
+<!--        </sidenav-item>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <sidenav-item-->
+<!--          url="/signup"-->
+<!--          :class="getRoute() === 'signup' ? 'active' : ''"-->
+<!--          :navText="'Sign Up'"-->
+<!--        >-->
+<!--          <template v-slot:icon>-->
+<!--            <i class="ni ni-collection text-info text-sm opacity-10"></i>-->
+<!--          </template>-->
+<!--        </sidenav-item>-->
+<!--      </li>-->
     </ul>
   </div>
   <!-- <div class="pt-3 mx-3 mt-3 sidenav-footer">

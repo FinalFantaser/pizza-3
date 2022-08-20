@@ -22,30 +22,30 @@
                     <div class="card-body px-0 pb-0">
                         <div class="table-responsive">
                             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-                                <div class="dataTable-top">
-                                    <div class="dataTable-dropdown">
-                                        <label>
-                                            <select class="dataTable-selector">
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                            </select>
-                                            entries per page
-                                        </label>
-                                    </div>
-                                    <div class="dataTable-search">
-                                        <input class="dataTable-input" placeholder="Поиск..." type="text">
-                                    </div>
-                                </div>
+<!--                                <div class="dataTable-top">-->
+<!--                                    <div class="dataTable-dropdown">-->
+<!--                                        <label>-->
+<!--                                            <select class="dataTable-selector">-->
+<!--                                                <option value="5">5</option>-->
+<!--                                                <option value="10">10</option>-->
+<!--                                                <option value="15">15</option>-->
+<!--                                                <option value="20">20</option>-->
+<!--                                                <option value="25">25</option>-->
+<!--                                            </select>-->
+<!--                                            entries per page-->
+<!--                                        </label>-->
+<!--                                    </div>-->
+<!--                                    <div class="dataTable-search">-->
+<!--                                        <input class="dataTable-input" placeholder="Поиск..." type="text">-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div class="dataTable-container">
                                     <table class="table table-flush dataTable-table" id="products-list">
                                         <thead class="thead-light">
                                         <tr>
                                             <th class="p-2"></th>
                                             <th><a href="#" class="dataTable-sorter">№ заказа</a></th>
-                                            <th><a href="#" class="dataTable-sorter">Клиент</a></th>
+                                            <th><a href="#" class="dataTable-sorter">Оплата</a></th>
                                             <th><a href="#" class="dataTable-sorter">Сумма</a></th>
                                             <th><a href="#" class="dataTable-sorter">Дата добавления</a></th>
                                             <th><a href="#" class="dataTable-sorter">Дата изменения</a></th>
@@ -64,12 +64,12 @@
 
                                                     <span class="text-sm">{{ order.id }}</span>
                                             </td>
-                                            <td class="text-sm">Имя клиента</td>
+                                            <td class="text-sm">{{ order.payment_method_name }}</td>
                                             <td class="text-sm">{{ order.cost }} ₽</td>
                                             <td class="text-sm">{{ order.created_at_format }}</td>
                                             <td class="text-sm">{{ order.updated_at_format }}</td>
                                             <td>
-                                                <span class="badge badge-success badge-sm">in Stock</span>
+                                                <span class="badge badge-success badge-sm">{{ order.current_status }}</span>
                                             </td>
                                             <td class="text-sm">
                                                 <router-link :to="'/orders/' + order.id + '/show'" class="p-1">
@@ -88,16 +88,16 @@
                                     </table>
                                 </div>
                                 <div class="dataTable-bottom">
-                                    <div class="dataTable-info">Showing 1 to 7 of 15 entries</div>
-                                    <nav class="dataTable-pagination">
-                                        <ul class="dataTable-pagination-list">
-                                            <li class="pager"><a href="#" data-page="1">‹</a></li>
-                                            <li class="active"><a href="#" data-page="1">1</a></li>
-                                            <li class=""><a href="#" data-page="2">2</a></li>
-                                            <li class=""><a href="#" data-page="3">3</a></li>
-                                            <li class="pager"><a href="#" data-page="2">›</a></li>
-                                        </ul>
-                                    </nav>
+<!--                                    <div class="dataTable-info">Showing 1 to 7 of 15 entries</div>-->
+<!--                                    <nav class="dataTable-pagination">-->
+<!--                                        <ul class="dataTable-pagination-list">-->
+<!--                                            <li class="pager"><a href="#" data-page="1">‹</a></li>-->
+<!--                                            <li class="active"><a href="#" data-page="1">1</a></li>-->
+<!--                                            <li class=""><a href="#" data-page="2">2</a></li>-->
+<!--                                            <li class=""><a href="#" data-page="3">3</a></li>-->
+<!--                                            <li class="pager"><a href="#" data-page="2">›</a></li>-->
+<!--                                        </ul>-->
+<!--                                    </nav>-->
                                 </div>
                             </div>
                         </div>
