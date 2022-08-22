@@ -54,25 +54,30 @@
 
         public function findRecommended(?int $cityId)
         {
-            // $products = Product::join('products_recommended', 'products.id', '=', 'products_recommended.product_id')
-            //     ->with(['cities', 'optionRecords'])->orderBy('sort')->get();
-            
+            // $products = Product::join('product_city', 'product_city.product_id', '=', 'products.id')
+            //     ->join('products_recommended', 'products_recommended.product_id', '=', 'products.id')
+            //     ->when(function($query) use ($cityId){
+            //         return is_null($cityId) ? $query : $query->where('product_city.city_id', $cityId);
+            //     })
+            //     ->get();
+
             // $products->each(function($item, $key){
             //     $item->id = $item->product_id;
             // });
 
-            $products = Product::join('product_city', 'product_city.product_id', '=', 'products.id')
-                ->join('products_recommended', 'products_recommended.product_id', '=', 'products.id')
+            $products = Product::with(['optionRecords'])
+                ->rightJoin('products_recommended', 'products_recommended.product_id', '=', 'products.id')
+                // ->when(function($query) use ($cityId){
+                //     return is_null($cityId) ? $query : $query->join('product_city', 'product_city.product_id', '=', 'products.id');
+                // })
                 ->when(function($query) use ($cityId){
-                    return is_null($cityId) ? $query : $query->where('product_city.city_id', $cityId);
+                    return is_null($cityId)
+                        ? $query
+                        : $query->join('product_city', 'product_city.product_id', '=', 'products.id')
+                            ->where('product_city.city_id', $cityId);
                 })
+                ->select('products.*')
                 ->get();
-
-            $products->each(function($item, $key){
-                $item->id = $item->product_id;
-            });
-
-            $products->load(['optionRecords']);
 
             return $products;
         } //findRecommended
