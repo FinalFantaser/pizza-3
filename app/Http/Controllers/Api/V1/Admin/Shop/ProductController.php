@@ -12,6 +12,7 @@ use App\Http\Requests\Api\Admin\Shop\Product\UpdateCategoryRequest;
 use App\Models\Shop\Product;
 use App\Http\Resources\ProductResource;
 use App\Services\Shop\ProductService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class ProductController extends Controller
@@ -87,9 +88,13 @@ class ProductController extends Controller
         );
     } //popular
 
-    public function showRecommended(){
+    public function showRecommended(Request $request){
+        $request->validate(rules: [
+            'city_id' => 'nullable|exists:cities,id',
+        ]);
+
         return ProductResource::collection(
-            $this->service->findRecommended()
+            $this->service->findRecommended($request->city_id)->load(['cities', 'categories'])
         );
     } //showRecommended
 
