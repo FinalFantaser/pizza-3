@@ -21,6 +21,7 @@ class OptionService{
     {
         return $this->optionRepository->create(
             name: $request->name,
+            checkout_type: $request->checkout_type,
             type_id: $request->type_id,
             items: $request->items
         );
@@ -31,6 +32,7 @@ class OptionService{
         return $this->optionRepository->update(
             option: $option,
             name: $request->name,
+            checkout_type: $request->checkout_type,
             type_id: $request->type_id,
             items: $request->items
         );

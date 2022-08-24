@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Api\Admin\Shop\Option;
 
+use App\Models\Shop\Option\Option;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class OptionRequest extends FormRequest
@@ -27,6 +29,7 @@ class OptionRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:128',
+            'checkout_type' => [ 'required', 'string', Rule::in([Option::TYPE_SIZE, Option::TYPE_ADDITIONAL, Option::TYPE_OTHER]) ],
             'type_id' => 'required|exists:option_types,id',
             'items' => 'required|json',
         ];

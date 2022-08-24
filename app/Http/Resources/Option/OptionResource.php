@@ -18,6 +18,7 @@ class OptionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'checkout_type' => $this->checkout_type,
             'type' => new OptionTypeResource($this->type),
             'items' => $this->items,
         ];

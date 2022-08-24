@@ -12,8 +12,14 @@ class Option extends Model
 
     public $timestamps = false;
 
+    //Типы опции для корректного отображения в форме заказа
+    const TYPE_SIZE = 'size'; //Размер
+    const TYPE_ADDITIONAL = 'additional'; //Дополнительный ингредиент
+    const TYPE_OTHER = 'other'; //Другое
+
     protected $fillable = [
         'name',
+        'checkout_type',
         'type_id',
         'items'
     ];
