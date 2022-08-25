@@ -21,6 +21,21 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder text-center">Информация опции</h5>
                         <div class="row">
+
+                            <div class="col-12 mb-3 col-sm-8 m-auto">
+                                <label>Тип</label>
+                                <div class="position-relative">
+                                    <select
+                                        v-model="type"
+                                        class="form-select"
+                                    >
+                                        <option value="size">Размер</option>
+                                        <option value="additional">Дополнительный ингредиент</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="col-12 mb-4 col-sm-8 m-auto">
                                 <label>Название</label>
                                 <div class="position-relative">
@@ -34,7 +49,9 @@
                                     <p v-if="v$.name.$error" class="invalid-msg">Обязательное поле</p>
                                 </div>
                             </div>
+
                             <hr>
+
                             <div class="col-12 col-sm-8 m-auto">
                                 <label>Значение</label>
                                 <div v-for="(item, index) in items" class="row flex-nowrap justify-content-between mb-3">
@@ -56,6 +73,7 @@
                                     <i class="fa fa-plus-circle text-success" aria-hidden="true"></i>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -76,6 +94,7 @@ export default {
     },
     data() {
         return {
+            type: null,
             option: null,
             name: '',
             items: []
@@ -93,6 +112,7 @@ export default {
             // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
             if (!isFormCorrect) return
             axios.put(`/api/v1/admin/options/${this.option.id}`, {
+                checkout_type: this.type,
                 name: this.name,
                 type_id: 1,
                 items: JSON.stringify(this.items)
@@ -140,6 +160,7 @@ export default {
                 this.$store.commit('loaderFalse')
             })
         if (this.option) {
+            this.type = this.option.checkout_type
             this.name = this.option.name
             this.items = this.option.items
         }

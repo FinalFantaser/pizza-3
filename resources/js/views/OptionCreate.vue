@@ -21,6 +21,24 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder text-center">Информация опции</h5>
                         <div class="row">
+
+                            <div class="col-12 mb-3 col-sm-8 m-auto">
+                                <label>Тип</label>
+                                <div class="position-relative">
+                                    <select
+                                        :style="v$.type.$error && v$.type.$dirty ? 'border-color: tomato;' : ''"
+                                        v-model="type"
+                                        class="form-select"
+                                    >
+                                        <option value="null" disabled>Выберите тип</option>
+                                        <option value="size">Размер</option>
+                                        <option value="additional">Дополнительный ингредиент</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                    <p v-if="v$.type.$error" class="invalid-msg">Выберите тип</p>
+                                </div>
+                            </div>
+
                             <div class="col-12 mb-4 col-sm-8 m-auto">
                                 <label>Название</label>
                                 <div class="position-relative">
@@ -75,6 +93,7 @@ export default {
     },
     data() {
         return {
+            type: null,
             name: '',
             items: ['']
         }
@@ -91,6 +110,7 @@ export default {
             // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
             if (!isFormCorrect) return
             axios.post('/api/v1/admin/options', {
+                checkout_type: this.type,
                 name: this.name,
                 type_id: 1,
                 items: JSON.stringify(this.items)
@@ -120,6 +140,7 @@ export default {
         }
 
         return {
+            type: {required},
             name: {required},
             items: { allInputs }
         }
