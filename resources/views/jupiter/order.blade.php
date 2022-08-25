@@ -1,7 +1,7 @@
 <?php
 echo '<?xml version="1.0" encoding="utf-8"?>';
 ?>
-<service action="orders" id="{{$order->id}}" source="0">
+<service action="orders" id="{{$order->id}}" source="1">
   <order>
     <client_id></client_id>
     <client_full_name>{{$order->customerData->name}}</client_full_name>
@@ -18,7 +18,8 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
         <map_longitude></map_longitude>{{--Координаты долготы (Обязательно, если сайт не определяет зоны доставки)--}}
         <corp>{{$order->customerData?->corp ?? ''}}</corp>
       </client_address>
-      <delivery_at>{{$order->time ?? ''}}</delivery_at>
+    <delivery_at>{{$order->time ?? ''}}</delivery_at>
+    <pickup>{{$order->delivery_method === \App\Models\Shop\Delivery\DeliveryMethod::TYPE_PICKUP ? 1 : 0}}</pickup>
     <phone>{{$order->customerData->phone}}</phone>{{--Номер телефона клиента. Начиная с 8 без пробелов.--}}
     <client_comment></client_comment>{{--Комментарий клиента к заказу --}}
     <sum>{{$order->cost}}</sum>{{--Сумма заказа --}}

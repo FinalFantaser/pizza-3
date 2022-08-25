@@ -35,7 +35,7 @@ class DeliveryZoneSeeder extends Seeder
         //Апрелевка 1-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_aprelevka->id,
-            restaurant_id: '000016',
+            restaurant_id: '000002',
             code: '026569',
             name: 'ТЗ (Ф) Апрелевка. Зона 1-1. Сумма минимального заказа 499 руб. Стоимость доставки 99 руб. При заказе от 1000 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказ 60 минут.',
             sum_min: 499,
@@ -71,7 +71,7 @@ class DeliveryZoneSeeder extends Seeder
         //Апрелевка 2-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_aprelevka->id,
-            restaurant_id: '000016',
+            restaurant_id: '000002',
             code: '026570',
             name: 'ТЗ (Ф) Апрелевка. Зона 2-1. Сумма минимального заказа 499 руб.Стоимость доставки 125 руб. При заказе от 1200 руб. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 75 минут.',
             sum_min: 499,
@@ -101,7 +101,7 @@ class DeliveryZoneSeeder extends Seeder
         //Апрелевка 3-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_aprelevka->id,
-            restaurant_id: '000016',
+            restaurant_id: '000002',
             code: '026571',
             name: 'ТЗ (Ф) Апрелевка. Зона 3-1. Сумма минимального заказа 499 руб. Стоимость доставки 150 руб. При заказе от 1500 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 90 минут.',
             sum_min: 499,
@@ -137,7 +137,7 @@ class DeliveryZoneSeeder extends Seeder
         //Апрелевка 3-2
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_aprelevka->id,
-            restaurant_id: '000016',
+            restaurant_id: '000002',
             code: '026572',
             name: 'ТЗ (Ф) Апрелевка. Зона 3-2. Сумма минимального заказа 499 руб. Стоимость доставки 150 руб. При заказе от 1500 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 90 минут.',
             sum_min: 499,
@@ -187,7 +187,7 @@ class DeliveryZoneSeeder extends Seeder
         //Балабаново 1-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_balabanovo->id,
-            restaurant_id: '000006',
+            restaurant_id: '000004',
             code: '026332',
             name: 'ТЗ (Ф) Балабаново. Зона 1-1. Сумма минимального заказа 600 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 60 минут.',
             sum_min: 600,
@@ -223,7 +223,7 @@ class DeliveryZoneSeeder extends Seeder
         //Балабаново 2-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_balabanovo->id,
-            restaurant_id: '000006',
+            restaurant_id: '000004',
             code: '026333',
             name: 'ТЗ (Ф) Балабаново. Зона 2-1. Сумма минимального заказа 900 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 75 минут.',
             sum_min: 900,
@@ -271,7 +271,7 @@ class DeliveryZoneSeeder extends Seeder
         //Малоярославец 1-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_maloyaroslavets->id,
-            restaurant_id: '000009',
+            restaurant_id: '000007',
             code: '026334',
             name: 'ТЗ (Ф) Малоярославец. Зона 1-1. Сумма минимального заказа 600 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 60 минут.',
             sum_min: 600,
@@ -301,7 +301,7 @@ class DeliveryZoneSeeder extends Seeder
         //Малоярославец 2-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_maloyaroslavets->id,
-            restaurant_id: '000009',
+            restaurant_id: '000007',
             code: '026335',
             name: 'ТЗ (Ф) Малоярославец. Зона 2-1. Сумма минимального заказа 900 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 75 минут.',
             sum_min: 900,
@@ -322,7 +322,7 @@ class DeliveryZoneSeeder extends Seeder
         //Малоярославец 2-2
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_maloyaroslavets->id,
-            restaurant_id: '000009',
+            restaurant_id: '000007',
             code: '026336',
             name: 'ТЗ (Ф) Малоярославец. Зона 2-2. Сумма минимального заказа 900 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 75 минут.',
             sum_min: 900,
@@ -351,7 +351,7 @@ class DeliveryZoneSeeder extends Seeder
         //Малоярославец 3-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_maloyaroslavets->id,
-            restaurant_id: '000009',
+            restaurant_id: '000007',
             code: '026337',
             name: 'ТЗ (Ф) Малоярославец. Зона 3-1. Сумма минимального заказа 1500 р. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 90 минут.',
             sum_min: 1500,
@@ -376,7 +376,7 @@ class DeliveryZoneSeeder extends Seeder
         //Жуков 3-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_zhukov->id,
-            restaurant_id: '000014',
+            restaurant_id: '000012',
             code: '027612',
             name: 'ТЗ (Ф) Жуков.Зона 3-1. Сумма минимального заказа 600руб.Стоимость доставки 150руб.при заказе от 1500руб  ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 90мин.',
             sum_min: 600,
@@ -405,7 +405,7 @@ class DeliveryZoneSeeder extends Seeder
         //Жуков 1-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_zhukov->id,
-            restaurant_id: '000014',
+            restaurant_id: '000012',
             code: '027613',
             name: 'ТЗ (Ф) Жуков. Зона 1-1. Сумма минимального заказа 600руб. ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 60мин.',
             sum_min: 600,
@@ -433,7 +433,7 @@ class DeliveryZoneSeeder extends Seeder
         //Жуков 2-1
         $this->zoneRepository->updateOrCreate(
             city_id: $this->city_zhukov->id,
-            restaurant_id: '000014',
+            restaurant_id: '000012',
             code: '027614',
             name: 'ТЗ (Ф) Жуков. Зона 2-1. Сумма минимального заказа 600руб. Стоимость доставки 99 руб. При заказе от 900руб ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ БЕСПЛАТНО. Время ожидания заказа 75мин.',
             sum_min: 600,
