@@ -24,6 +24,8 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
 
             //Для администраторов
             Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+                Route::apiResource('media', \App\Http\Controllers\Api\V1\Admin\MediaLibraryController::class)->only('store', 'show', 'destroy');
+
                 //  Пользователи
                 Route::apiResource('users', 'UserController');
 
