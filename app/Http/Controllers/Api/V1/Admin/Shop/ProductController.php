@@ -37,15 +37,6 @@ class ProductController extends Controller
             with: ['cities:id,name', 'categories:id,name', 'optionRecords']
         );
 
-        $service = new \App\Services\Shop\JupiterService();
-        $data = $service->findProduct(
-            product_id: $product->id,
-            option_id: 17,
-            option_selected: '40 см'
-        );
-
-        return response()->json($data);
-
         return new ProductResource($product);
     } //show
 

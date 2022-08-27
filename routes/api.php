@@ -73,6 +73,11 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::post('products.recommended.remove', 'ProductController@removeFromRecommeded')->name('recommended.remove');
                     Route::post('products.recommended.clear', 'ProductController@clearRecommended')->name('recommended.clear');
 
+                    Route::get('products.jupiter.index', [ \App\Http\Controllers\Api\V1\Admin\Shop\JupiterController::class, 'index'])->name('jupiter.index');
+                    Route::post('products.jupiter.add.product', [ \App\Http\Controllers\Api\V1\Admin\Shop\JupiterController::class, 'addProduct'])->name('jupiter.add.product');
+                    Route::post('products.jupiter.add.option', [ \App\Http\Controllers\Api\V1\Admin\Shop\JupiterController::class, 'addOption'])->name('jupiter.add.option');
+                    Route::delete('products.jupiter.remove/{id}', [ \App\Http\Controllers\Api\V1\Admin\Shop\JupiterController::class, 'remove'])->name('jupiter.add.remove');
+
                     //  Опции
                     Route::namespace('Option')->group(function(){
                         Route::apiResources([

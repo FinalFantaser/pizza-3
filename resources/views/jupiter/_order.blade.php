@@ -38,24 +38,26 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
     <change_sum>{{$order->payment?->change_sum ?? ''}}</change_sum>{{--Сумма с которой нужна сдача--}}
   </payment>
   <items>{{--Товарная часть заказа. В этом разделе перечисляются товарные строки заказа.--}}
-    @foreach ($jupiterItems as $item)
+    @foreach ($order->items as $item)
       <item>{{--Базовая строка заказа--}}
-      <product_id>{{$item->id}}</product_id>{{--Код товара--}}
+      <product_id>{{$item->product_id}}</product_id>{{--Код товара--}}
       <product_parent_id></product_parent_id>{{--Код товара родителя. Для базовой строки всегда пустое--}}
-      <price>{{$item->price}}</price>{{--Цена товара--}}
-      <quantity>{{$item->quantity}}</quantity>{{--Кол-во товара--}}
-      <name>{{$item->name}}</name>{{--Название товара--}}
+      <price>{{$item->product_price}}</price>{{--Цена товара--}}
+      <quantity>{{$item->product_quantity}}</quantity>{{--Кол-во товара--}}
+      <name>{{$item->product_name}}</name>{{--Название товара--}}
       </item>
 
-      @isset($item->options){{--Опции заказа--}}
-        @foreach ($item->options as $option)
-          <item>
-            <product_id>{{$option->id}}</product_id>{{--Код модификатора--}}
-            <product_parent_id>{{$item->id}}</product_parent_id>{{--Код товара родителя--}}
-            <product_price>{{$option->price ?? ''}}</product_price>{{--Цена модификатора--}}
-            <quantity>{{$option->quantity ?? 1}}</quantity>{{--Кол-во модификатора. Умножается на кол-во базовой строки--}}
-            <name>{{$option->name ?? ''}}</name>{{--Название модификатора--}}
-          </item>
+      @isset($item->product_options){{--Опции заказа--}}
+        @foreach ($item->product_options as $option)
+          @foreach($option['selected'] as $selected)
+            <item>
+              <product_id>{{$option['id']}}</product_id>{{--Код модификатора--}}
+              <product_parent_id>{{$item->product_id}}</product_parent_id>{{--Код товара родителя--}}
+              <product_price>{{$selected['price'] ?? ''}}</product_price>{{--Цена модификатора--}}
+              <quantity>{{$selected['quantity'] ?? 1}}</quantity>{{--Кол-во модификатора. Умножается на кол-во базовой строки--}}
+              <name>{{$selected['name'] ?? ''}}</name>{{--Название модификатора--}}
+            </item>
+          @endforeach
         @endforeach
       @endisset
     @endforeach
