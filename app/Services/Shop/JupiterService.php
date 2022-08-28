@@ -2,10 +2,21 @@
 
 namespace App\Services\Shop;
 
+use App\Models\Shop\JupiterRecord;
+use App\Models\Shop\Option\Option;
+use App\Models\Shop\Order\Order;
+use App\ReadRepository\Shop\Option\OptionReadRepository;
+use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class JupiterService{
     public function __construct(
+        private OptionReadRepository $optionReadRepository,
+        private OptionRecordReadRepository $optionRecordReadRepository
     ){} //Конструктор
 
     public function findProduct(int $product_id, ?int $option_id = null, mixed $option_selected = null): ?object
@@ -32,4 +43,109 @@ class JupiterService{
 
         return $data;
     }
+
+    public function makeJupiterRecords(Order $order)
+    {
+        //Подгрузка связей
+        $order->load(['items.product.optionRecords.option']);
+
+        $jupiterItems = [];
+
+        // 1. Перебираются опции OrderItem
+        // 2. Заготовлены пустые поля option_id, option_selected
+        // 3. Если одна из опций - это size, то option_id и option_selected заполняются и прерываются
+        // 4. Сначала разаскивается продукт по вводным
+        // 5. После этого перебираются опции продукта, которые не size
+
+        foreach($order->items as $item){
+            $option_id = null;
+            $option_selected = null;
+            
+            //Поиск опции size
+            foreach($item->product_options as $option){
+                $optionRecord = $this->optionRecordReadRepository->findById($option['id']);
+                if($optionRecord->option->checkout_type === Option::TYPE_SIZE){
+                    $option_id = $option['id'];
+                    $option_selected = Arr::first(array: $option['selected'])['name'];
+                    break;
+                }
+            }
+
+            //Поиск по базе данных с полученными вводными
+            $rawData = $this->findProduct(product_id: $item->product_id, option_id: $option_id, option_selected: $option_selected);
+            $product = new JupiterRecord(id: $rawData->jupiter_id, parent_id: null, name: $rawData->name, price: $rawData->price, quantity: $item->product_quantity);
+            
+            //Перебирание остальных опций, которые не size
+            foreach($item->product_options as $option){
+                $optionRecord = $this->optionRecordReadRepository->findById($option['id']);
+                if($optionRecord->option->checkout_type === Option::TYPE_SIZE)
+                    continue;
+                
+                foreach($option['selected'] as $selected){
+                    $raw = $this->findOption(option_id: $option['id'], option_selected: $selected['name']);
+                    // throw new Exception(message: json_encode($raw));
+                    if(!is_null($raw))
+                        $product->addOption(new JupiterRecord(id: $raw->jupiter_id, parent_id: $product->id, name: $raw->name, price: $raw->price, quantity: $selected['quantity'] ?? 1));
+                }
+            }
+            
+            //Добавлена продукта в окончательный набор
+            if(!is_null($product))
+                $jupiterItems[] = $product;
+        }
+
+        // return $order->items;
+        return $jupiterItems;
+    } //makeJupiterRecords
+
+    public function makeXml(Order $order): void //Генерация XML-файла для Юпитера
+    {
+        //Загрузка данных
+        $order->load(['customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']);
+
+        //Поиск записей из базы данных Юпитера
+        $jupiterItems = $this->makeJupiterRecords($order);
+
+        //Генерация XML-файла
+        $document = View::make('jupiter.order', ['order' => $order, 'jupiterItems' => $jupiterItems]);
+
+        if (env(key: 'JUPITER_TEST', default: true))
+            Storage::disk('public')->put('JUPITER_TEST/ORDER_'.$order->id.'.xml', $document);
+        else
+            Storage::disk('jupiter_ftp')->put( env('TO_JUPITER_FOLDER') . '/ORDER_'.$order->id.'.xml', $document);
+    } //makeXml
+
+    public function addProduct(string $name, int $price, int $product_id, int $jupiter_id, ?int $option_id = null, mixed $option_selected = null): void //Добавить продукт в таблицу Jupiter
+    {
+        DB::table('jupiter')->insert([
+            'name' => $name,
+            'price' => $price,
+            'product_id' => $product_id,
+            'jupiter_id' => $jupiter_id,
+            'option_id' => $option_id,
+            'option_selected' => $option_selected,
+        ]);
+    } //addProduct
+
+    public function addOption(string $name, int $price, int $jupiter_id, int $option_id, mixed $option_selected): void
+    {
+        DB::table('jupiter')->insert([
+            'name' => $name,
+            'price' => $price,
+            'product_id' => null,
+            'jupiter_id' => $jupiter_id,
+            'option_id' => $option_id,
+            'option_selected' => $option_selected,
+        ]);
+    } //addOption
+
+    public function remove(int $id): void
+    {
+        DB::table('jupiter')->where('id', $id)->delete();
+    } //remove
+
+    public function findAll(int $perPage = 50): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return DB::table('jupiter')->orderBy('id')->paginate($perPage);
+    } //findAll
 };

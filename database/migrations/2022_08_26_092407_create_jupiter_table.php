@@ -20,7 +20,9 @@ return new class extends Migration
             $table->integer('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->unsignedBigInteger('jupiter_id');
-            $table->foreignId('option_id')->constrained('option_records')->cascadeOnDelete()->nullable();
+            // $table->foreignId('option_id')->constrained('option_records')->cascadeOnDelete()->nullable();
+            $table->unsignedBigInteger('option_id')->nullable();
+            $table->foreign('option_id')->references('id')->on('option_records')->onDelete('cascade');
             $table->string('option_selected')->nullable();
             
         });
