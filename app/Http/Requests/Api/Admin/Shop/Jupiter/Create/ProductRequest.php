@@ -26,7 +26,7 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|string|max:256',
             'price' => 'required|numeric|gte:0',
-            'product_id' => 'nullable|exists:products,id',
+            'product_id' => 'required|exists:products,id',
             'jupiter_id' => 'required|integer',
             'option_id' => 'nullable|exists:option_records,id',
             'option_selected' => 'nullable',

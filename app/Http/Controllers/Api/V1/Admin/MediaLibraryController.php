@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Admin\MediaLibraryRequest;
+use App\Models\Media;
 use App\Models\MediaLibrary;
 use Illuminate\Http\Request;
 
@@ -29,12 +30,14 @@ class MediaLibraryController extends Controller
     {
         $image = $request->file('image');
         $name = $image->getClientOriginalName();
-
-        MediaLibrary::first()->addMedia($image)
+        
+        MediaLibrary::latest()->first()->addMedia($image)
             ->usingName($name)
             ->toMediaCollection();
 
-        return response()->json(data: ['message' => 'Изображение добавлено', 'imgUrl' => MediaLibrary::first()->getFirstMediaUrl()], status: 201);
+        $model = Media::latest()->first();
+
+        return response()->json(data: ['message' => 'Изображение добавлено', 'imgUrl' => $model->original_url, 'id' => $model->id], status: 201);
     }
 
     /**
