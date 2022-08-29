@@ -24,6 +24,7 @@ class OptionRecordResource extends JsonResource
                 'id' => $this->option->id,
                 'name' => $this->option->name,
                 'type' => $this->option->type,
+                'checkout_type' => $this->option->checkout_type,
             ],
         ];
     }
