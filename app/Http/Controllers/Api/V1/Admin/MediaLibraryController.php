@@ -17,7 +17,8 @@ class MediaLibraryController extends Controller
      */
     public function index()
     {
-        //
+        $media = Media::latest()->paginate(50);
+        return response()->json($media);
     }
 
     /**
@@ -41,36 +42,15 @@ class MediaLibraryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        $media = Media::findOrFail($id);
+        $media->delete();
+        return response('Изображение удалено', 204);
     }
 }
