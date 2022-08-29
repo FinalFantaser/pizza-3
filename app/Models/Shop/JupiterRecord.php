@@ -9,7 +9,8 @@ class JupiterRecord{
         public int $id,
         public ?int $parent_id,
         public string $name,
-        public int $price
+        public int $price,
+        public int $quantity,
     ){
         $this->options = null;
     } //Конструктор
