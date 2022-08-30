@@ -21,6 +21,19 @@ class OptionRecordRepository{
         OptionRecord::insert($data);
     } //createBulk
 
+    public function updateOrCreate(int $option_id, int $product_id, string|array $items): void
+    {
+        OptionRecord::updateOrCreate(
+            [
+                'option_id' => $option_id,
+                'product_id' => $product_id,
+            ],
+            [
+                'items' => $items
+            ]
+        );
+    }
+
     public function remove(OptionRecord $optionRecord): void
     {
         $optionRecord->delete();

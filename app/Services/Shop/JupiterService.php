@@ -161,7 +161,7 @@ class JupiterService{
                 foreach($product->optionRecords as $optionRecord){
                     //Если опция является размером, добавляется продукт вместе с размером
                     if($optionRecord->option->checkout_type === Option::TYPE_SIZE){
-                        foreach($optionRecord->items as $item){
+                        foreach($optionRecord->items as $item)
                             $this->addProduct(
                                 name: $product->name . ' ' . $item['name'],
                                 price: $item['price'],
@@ -170,7 +170,6 @@ class JupiterService{
                                 option_id: $optionRecord->option_id,
                                 option_selected: $item['name']
                             );
-                        }
                     }
                     //Если опция является чем-то другим, добавляется опция без продукта
                     else{

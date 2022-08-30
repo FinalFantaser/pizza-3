@@ -14,6 +14,7 @@
     use App\Repository\Shop\ProductRepository;
     use App\ReadRepository\Shop\ProductReadRepository;
     use App\Repository\Shop\Option\OptionRecordRepository;
+use Exception;
 
     class ProductService{
         public function __construct(
@@ -60,6 +61,10 @@
                 $request->category_id,
                 $request->city_id ?? null
             );
+            
+            if($product->optionRecords->count() > 0)
+                $this->updateOptions($product, $request);
+            else
                 $this->addOptions($product, $request);
 
             return $product;
@@ -118,6 +123,28 @@
                 $data
             );
         } //addOptions
+
+        public function updateOptions(Product $product, ProductRequest $request){
+            //Создание массива
+            $data = array_map(function($value) use ($product) {
+                return array_merge(
+                    $value, //Добавление идентификатора продукта
+                    [
+                        'product_id' => $product->id,
+                        // 'items' => json_decode($value['items']),
+                    ]);
+            }, json_decode(json: $request->options, associative: true) );
+
+            //Сравнение существующих и новых опций
+            foreach($data as $item)
+                // throw new Exception(message: $item['items']);
+
+                $this->optionRecordRepository->updateOrCreate(
+                    option_id: $item['option_id'],
+                    product_id: $item['product_id'],
+                    items: json_decode($item['items'])
+                );
+        } //uprdateOptions
 
         public function addToRecommended(AddRequest $request): void
         {
