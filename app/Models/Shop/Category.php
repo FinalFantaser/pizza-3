@@ -69,11 +69,13 @@ class Category extends Model implements HasMedia
         $this->addMediaConversion('thumb_admin')
             ->width(350)
             ->height(250)
-            ->nonOptimized();
+            ->nonOptimized()
+            ->keepOriginalImageFormat();
 
         $this->addMediaConversion('thumb')
             ->width(370)
-            ->height(370);
+            ->height(370)
+            ->keepOriginalImageFormat();
     } //registerMediaConversions
 
 }

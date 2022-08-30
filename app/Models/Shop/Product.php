@@ -141,11 +141,13 @@ class Product extends Model implements HasMedia
         $this->addMediaConversion('product_thumb_admin')
             ->width(350)
             ->height(250)
-            ->nonOptimized();
+            ->nonOptimized()
+            ->keepOriginalImageFormat();
 
         $this
             ->addMediaConversion('product')
-            ->withResponsiveImages();
+            ->withResponsiveImages()
+            ->keepOriginalImageFormat();
     }
 
     public function optionRecords(){

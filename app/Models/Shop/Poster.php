@@ -27,7 +27,8 @@ class Poster extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void{
         $this->addMediaConversion('size450')
-            ->width(450);
+            ->width(450)
+            ->keepOriginalImageFormat();
     } //registerMediaConversions
 
     public function cities(){
