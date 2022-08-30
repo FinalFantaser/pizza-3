@@ -7,6 +7,7 @@ use App\Http\Requests\Api\Admin\Shop\Jupiter\Create\OptionRequest;
 use App\Http\Requests\Api\Admin\Shop\Jupiter\Create\ProductRequest;
 use App\Http\Resources\JupiterRecordResource;
 use App\Services\Shop\JupiterService;
+use Illuminate\Http\Request;
 use \Illuminate\Http\Response;
 
 class JupiterController extends Controller
@@ -47,6 +48,16 @@ class JupiterController extends Controller
 
         return response('Опция добавлена в таблицу', 201);
     } //addOption
+
+    public function makeDraft(Request $request): Response
+    {
+        $request->validate(rules: [
+            'truncate' => 'nullable|boolean'
+        ]);
+
+        $this->jupiterService->makeDraft($request->truncate);
+        return response('Составлена черновая таблица jupiter');
+    }
 
     public function remove(int $id): Response
     {

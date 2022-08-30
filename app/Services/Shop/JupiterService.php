@@ -5,6 +5,7 @@ namespace App\Services\Shop;
 use App\Models\Shop\JupiterRecord;
 use App\Models\Shop\Option\Option;
 use App\Models\Shop\Order\Order;
+use App\Models\Shop\Product;
 use App\ReadRepository\Shop\Option\OptionReadRepository;
 use App\ReadRepository\Shop\Option\OptionRecordReadRepository;
 use Illuminate\Support\Arr;
@@ -143,6 +144,48 @@ class JupiterService{
     {
         DB::table('jupiter')->where('id', $id)->delete();
     } //remove
+
+    public function makeDraft(?bool $truncate = false): void //Добавить черновые записи в таблицу для дальнейшей работы
+    {
+        //Очистка таблицы, если указано
+        if($truncate)
+            DB::table('jupiter')->truncate();
+
+        Product::with(['optionRecords.option'])
+            ->lazyById(chunkSize: 100)
+            ->each(function($product){
+                //Добавление продукта без опций
+                $this->addProduct(name: $product->name, price: $product->price, product_id: $product->id, jupiter_id: 0);
+
+                //Добавление опций
+                foreach($product->optionRecords as $optionRecord){
+                    //Если опция является размером, добавляется продукт вместе с размером
+                    if($optionRecord->option->checkout_type === Option::TYPE_SIZE){
+                        foreach($optionRecord->items as $item){
+                            $this->addProduct(
+                                name: $product->name . ' ' . $item['name'],
+                                price: $item['price'],
+                                product_id: $product->id,
+                                jupiter_id: 0,
+                                option_id: $optionRecord->option_id,
+                                option_selected: $item['name']
+                            );
+                        }
+                    }
+                    //Если опция является чем-то другим, добавляется опция без продукта
+                    else{
+                        foreach($optionRecord->items as $item)
+                            $this->addOption(
+                                name: $item['name'],
+                                price: $item['price'],
+                                jupiter_id: 0,
+                                option_id: $optionRecord->option_id,
+                                option_selected: $item['name']
+                            );
+                    }
+                }
+            });
+    } //makeDraft
 
     public function findAll(int $perPage = 50): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
