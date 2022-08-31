@@ -66,8 +66,12 @@
                             <th scope="row" class="text-end">{{order.payment_method_name}}</th>
                         </tr>
                         <tr>
+                            <th scope="row">Зона {{ order.pickup_point ? 'самовывоза' : 'доставки' }}</th>
+                            <th scope="row" class="text-end">{{ order.customer_data.city.name }}</th>
+                        </tr>
+                        <tr>
                             <th scope="row">Адрес {{ order.delivery_method === 'pickup' ? 'самовывоза' : 'доставки' }}</th>
-                            <th scope="row" class="text-end">г.{{order.customer_data.city.name}}, {{ order.delivery_method === 'pickup' ? order.customer_data.city.address : order.delivery_address }}</th>
+                            <th scope="row" class="text-end">{{order.customer_data.actual_city}}, {{ order.delivery_method === 'pickup' ? order.customer_data.city.address : order.delivery_address }}</th>
                         </tr>
                         <tr>
                             <th scope="row">Время {{ order.pickup_point ? 'самовывоза' : 'доставки' }}</th>
