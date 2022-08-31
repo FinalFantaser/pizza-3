@@ -30,8 +30,12 @@
                 <div v-for="(item, index2) in finishOptions[index].items" class="d-flex justify-content-between option__item p-2 mb-2">
                     <div class="col-5">
                         <label>Выберите значение</label>
-                        <select v-model="finishOptions[index].items[index2].name" class="form-select mb-3" aria-label="Default select example">
-                            <option v-for="item in addedOption[index].items" :value="item">{{ item }}</option>
+                        <select
+                            @change="addImgUrlInItem(index, index2)"
+                            v-model="finishOptions[index].items[index2].name"
+                            class="form-select mb-3" aria-label="Default select example"
+                        >
+                            <option v-for="item in addedOption[index].items" :value="item.name">{{ item.name }}</option>
                         </select>
                     </div>
                     <div class="col-5">
@@ -42,6 +46,9 @@
                             type="number"
                             placeholder="Укажите цену"
                         >
+                    </div>
+                    <div v-if="finishOptions[index].items[index2].imgUrl" class="product__options__item__img">
+                        <img :src="finishOptions[index].items[index2].imgUrl" alt="img">
                     </div>
                     <div v-if="finishOptions[index].items.length !== 1" @click="deleteItem(index, index2)" class="cursor-pointer">
                         <i class="fa fa-minus-circle text-danger" aria-hidden="true"></i>
@@ -76,6 +83,12 @@ export default {
         }
     },
     methods: {
+        addImgUrlInItem(index, index2) {
+            const imgUrl = this.addedOption[index].items.find(el => {
+                return el.name === this.finishOptions[index].items[index2].name
+            }).url
+            this.finishOptions[index].items[index2].imgUrl = imgUrl
+        },
         readyData() {
             const arr = JSON.parse(JSON.stringify(this.finishOptions))
             if(arr.length > 0) {
@@ -103,7 +116,8 @@ export default {
         addItem(index) {
             const obj = {
                 name: '',
-                price: ''
+                price: '',
+                imgUrl: null
             }
             this.finishOptions[index].items.push(obj)
         },
@@ -121,7 +135,8 @@ export default {
             const obj = {}
             obj.items = [{
                 name: '',
-                price: ''
+                price: '',
+                imgUrl: null
             }]
             obj.option_id = option.id
             this.finishOptions.push(obj)
@@ -156,10 +171,11 @@ export default {
         if(this.optionsActive.length > 0) {
             this.optionsActive.forEach(item => {
                 const obj = {}
-                obj.items = [{
-                    name: '',
-                    price: ''
-                }]
+                // obj.items = [{
+                //     name: '',
+                //     price: '',
+                //     imgUrl: null
+                // }]
                 obj.option_id = item.parent.id
                 obj.items = item.items
                 this.finishOptions.push(obj)
@@ -193,5 +209,18 @@ export default {
     padding: 0;
     cursor: pointer;
     font-size: 22px;
+}
+.product__options__item__img {
+    width: 70px;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    margin: 5px;
+}
+.product__options__item__img img {
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>

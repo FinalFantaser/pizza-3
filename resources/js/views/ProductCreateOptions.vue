@@ -4,6 +4,7 @@
             <h6 class="font-weight-bolder">Выберите опцию</h6>
             <hr>
             <select v-model="option" class="form-select mb-3" aria-label="Default select example">
+                <option value="null" disabled>Выберите опцию</option>
                 <option v-for="option in stateOptions" :value="option">{{ option.name }}</option>
             </select>
 
@@ -30,8 +31,12 @@
                 <div v-for="(item, index2) in finishOptions[index].items" class="d-flex justify-content-between option__item p-2 mb-2">
                     <div class="col-5">
                         <label>Выберите значение</label>
-                        <select v-model="finishOptions[index].items[index2].name" class="form-select mb-3" aria-label="Default select example">
-                            <option v-for="item in addedOption[index].items" :value="item">{{ item }}</option>
+                        <select
+                            @change="addImgUrlInItem(index, index2)"
+                            v-model="finishOptions[index].items[index2].name"
+                            class="form-select mb-3" aria-label="Default select example"
+                        >
+                            <option v-for="item in addedOption[index].items" :value="item.name">{{ item.name }}</option>
                         </select>
                     </div>
                     <div class="col-5">
@@ -43,6 +48,9 @@
                             placeholder="Укажите цену"
                             min="0"
                         >
+                    </div>
+                    <div v-if="finishOptions[index].items[index2].imgUrl" class="product__options__item__img">
+                        <img :src="finishOptions[index].items[index2].imgUrl" alt="img">
                     </div>
                     <div v-if="finishOptions[index].items.length !== 1" @click="deleteItem(index, index2)" class="cursor-pointer">
                         <i class="fa fa-minus-circle text-danger" aria-hidden="true"></i>
@@ -65,7 +73,7 @@ export default {
     name: "ProductCreateOptions",
     data() {
         return {
-            option: '',
+            option: null,
             addedOption: [],
             finishOptions: []
         }
@@ -76,12 +84,19 @@ export default {
         }
     },
     methods: {
+        addImgUrlInItem(index, index2) {
+            const imgUrl = this.addedOption[index].items.find(el => {
+                return el.name === this.finishOptions[index].items[index2].name
+            }).url
+            this.finishOptions[index].items[index2].imgUrl = imgUrl
+        },
         readyData() {
             const arr = JSON.parse(JSON.stringify(this.finishOptions))
             if(arr.length > 0) {
                 arr.forEach(item => {
                     item.items.forEach((item2, index2, array2) => {
-                        if(item2.name == '' || item2.price == '') {
+                        if(item2.name === '' || item2.price === '') {
+                            console.log('hello')
                             array2.splice(index2,1)
                         }
                     })
@@ -101,7 +116,8 @@ export default {
         addItem(index) {
             const obj = {
                 name: '',
-                price: ''
+                price: '',
+                imgUrl: null
             }
             this.finishOptions[index].items.push(obj)
         },
@@ -113,12 +129,13 @@ export default {
             this.finishOptions.splice(index, 1)
         },
         addOption(option) {
-            this.option = ''
+            this.option = null
             this.addedOption.push(JSON.parse(JSON.stringify(option)))
             const obj = {}
             obj.items = [{
                 name: '',
-                price: ''
+                price: '',
+                imgUrl: null
             }]
             obj.option_id = option.id
             this.finishOptions.push(obj)
@@ -167,5 +184,18 @@ export default {
     padding: 0;
     cursor: pointer;
     font-size: 22px;
+}
+.product__options__item__img {
+    width: 70px;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    margin: 5px;
+}
+.product__options__item__img img {
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>

@@ -32,7 +32,6 @@
                             <div class="col-12 mt-5">
                                 <div class="d-flex">
                                     <button class="btn btn-primary btn-sm mb-0 me-2" type="button" name="button" @click.prevent="selectImage">Выбрать</button>
-<!--                                    <button class="btn btn-outline-dark btn-sm mb-0" type="button" name="button" @click.prevent="previewImage=null,image=null">Удалить</button>-->
                                 </div>
                             </div>
                         </div>
@@ -127,15 +126,6 @@
                                     </div>
                                 </div>
                                 <div class="row">
-<!--                                    <div class="col-12 mb-3 mb-sm-0 col-sm-6">-->
-<!--                                        <label>Параметры</label>-->
-<!--                                        <input-->
-<!--                                            v-model="sizes"-->
-<!--                                            class="form-control"-->
-<!--                                            type="text"-->
-<!--                                            placeholder="Введите размеры через запятую"-->
-<!--                                        >-->
-<!--                                    </div>-->
                                     <div class="col-12 col-sm-6">
                                         <label>Города</label>
                                         <div v-for="(city, index) in stateCities" class="form-check">

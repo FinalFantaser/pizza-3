@@ -21,6 +21,24 @@
                     <div class="card-body">
                         <h5 class="font-weight-bolder text-center">Информация опции</h5>
                         <div class="row">
+
+                            <div class="col-12 mb-3 col-sm-8 m-auto">
+                                <label>Тип</label>
+                                <div class="position-relative">
+                                    <select
+                                        :style="v$.type.$error && v$.type.$dirty ? 'border-color: tomato;' : ''"
+                                        v-model="type"
+                                        class="form-select"
+                                    >
+                                        <option value="null" disabled>Выберите тип</option>
+                                        <option value="size">Размер</option>
+                                        <option value="additional">Дополнительный ингредиент</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                    <p v-if="v$.type.$error" class="invalid-msg">Выберите тип</p>
+                                </div>
+                            </div>
+
                             <div class="col-12 mb-4 col-sm-8 m-auto">
                                 <label>Название</label>
                                 <div class="position-relative">
@@ -36,22 +54,46 @@
                             </div>
                             <hr>
                             <div class="col-12 col-sm-8 m-auto">
-                                <label>Значение</label>
-                                <div v-for="(item, index) in items" class="row flex-nowrap justify-content-between mb-3">
-                                    <div class="col-12 position-relative">
-                                        <input
-                                            :style="v$.items.$model[index] === '' && v$.items.$dirty ? 'border-color: tomato;' : ''"
-                                            v-model="items[index]"
-                                            class="form-control"
-                                            type="text"
-                                            placeholder="Введите значение"
-                                        >
-                                        <p v-if="v$.items.$model[index] === '' && v$.items.$dirty" class="invalid-msg invalid-msg--item">Заполните поле</p>
+                                <div v-for="(item, index) in items" class="mb-3">
+                                    <div class="row flex-nowrap justify-content-between mb-3">
+                                        <div class="col-11 position-relative">
+                                            <label>Значение</label>
+                                            <input
+                                                :style="v$.items.$model[index].name === '' && v$.items.$dirty ? 'border-color: tomato;' : ''"
+                                                v-model="items[index].name"
+                                                class="form-control"
+                                                type="text"
+                                                placeholder="Введите значение"
+                                            >
+                                            <p v-if="v$.items.$model[index].name === '' && v$.items.$dirty" class="invalid-msg invalid-msg--item">Заполните поле</p>
+                                        </div>
+                                        <div v-if="items.length > 1 " @click="deleteItem(index)" class="addItem col-1">
+                                            <i class="fa fa-minus-circle text-danger" aria-hidden="true"></i>
+                                        </div>
                                     </div>
-                                    <div v-if="items.length > 1 " @click="deleteItem(index)" class="addItem">
-                                        <i class="fa fa-minus-circle text-danger" aria-hidden="true"></i>
+
+                                    <div class="option__item__img-wrap">
+                                        <label
+                                            :class="{'options__item__img--noimg' : !items[index].url}"
+                                            class="col-12 cursor-pointer mb-2 options__item__img m-0"
+                                        >
+                                            <p v-if="!items[index].url" class="options__item__img__text m-0">Выберите изображение при необходимости</p>
+
+                                            <div v-else
+                                                 class="options__item__img__preview border-radius-lg shadow-lg"
+                                                 :style="{ 'background-image' : `url(${items[index].url})` }"
+                                            ></div>
+                                            <input ref="fileInputs" type="file" @input="pickFile(index)" style="display: none">
+                                        </label>
+                                        <div class="col-12">
+                                            <div class="d-flex">
+                                                <button @click.prevent="selectImage(index)" class="btn btn-primary btn-sm mb-0 w-100">Выбрать</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+
                                 <div @click="addItem" class="addItem addItem--plus m-auto">
                                     <i class="fa fa-plus-circle text-success" aria-hidden="true"></i>
                                 </div>
@@ -75,22 +117,62 @@ export default {
     },
     data() {
         return {
+            type: null,
             name: '',
-            items: ['']
+            items: [{
+                name: '',
+                url: null
+            }],
+            image: null
         }
     },
     methods: {
+        selectImage(index) {
+            this.$refs.fileInputs[index].click()
+        },
+        pickFile(index) {
+            const input = this.$refs.fileInputs[index]
+            const file = input.files
+            if (file && file[0]){
+                this.image = file[0]
+                console.log(this.image)
+                const data = new FormData()
+                data.append('image', this.image)
+
+                axios.post('/api/v1/admin/media', data)
+                    .then(response => {
+                        console.log(response.data)
+                        this.items[index].url = response.data.imgUrl
+                        this.image = null
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.$store.dispatch('getToast', { msg: 'Что-то пошло не так!', settings: {
+                                type: 'error'
+                            } })
+                    })
+
+            }
+        },
         addItem() {
-            this.items.push('')
+            const obj = {
+                name: '',
+                url: null
+            }
+            this.items.push(obj)
         },
         deleteItem(index) {
             this.items.splice(index, 1)
+            this.responseImage.splice(index, 1)
+            this.image.splice(index, 1)
         },
         async addOption() {
             const isFormCorrect = await this.v$.$validate()
             // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
             if (!isFormCorrect) return
+
             axios.post('/api/v1/admin/options', {
+                checkout_type: this.type,
                 name: this.name,
                 type_id: 1,
                 items: JSON.stringify(this.items)
@@ -112,7 +194,7 @@ export default {
     validations () {
         const allInputs = (arr) => {
             for (let i = 0; i < arr.length; i++ ) {
-                if(arr[i] === '') {
+                if(arr[i].name === '') {
                     return false
                 }
             }
@@ -120,6 +202,7 @@ export default {
         }
 
         return {
+            type: {required},
             name: {required},
             items: { allInputs }
         }
@@ -152,5 +235,31 @@ export default {
 }
 .addItem--plus {
     font-size: 30px;
+}
+.option__item__img-wrap {
+    max-width: 120px;
+}
+.options__item__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 90px;
+}
+.options__item__img__preview {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.options__item__img--noimg {
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 5px;
+}
+.options__item__img__text {
+    font-size: 10px;
+    text-align: center;
 }
 </style>
