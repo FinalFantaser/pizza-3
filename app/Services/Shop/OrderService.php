@@ -101,6 +101,7 @@ class OrderService{
                 name: $request->customer_data['name'],
                 phone:  $request->customer_data['phone'],
                 city_id: $request->customer_data['city_id'],
+                actual_city: $request->customer_data['actual_city'],
                 street: $request->customer_data['street'] ?? null,
                 house: $request->customer_data['house'] ?? null,
                 room: $request->customer_data['room'] ?? null,

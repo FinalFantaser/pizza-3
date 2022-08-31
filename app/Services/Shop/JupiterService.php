@@ -111,6 +111,7 @@ class JupiterService{
         $document = View::make('jupiter.order', ['order' => $order, 'jupiterItems' => $jupiterItems]);
 
         Storage::disk('public')->put('JUPITER_TEST/ORDER_'.$order->id.'.xml', $document);
+        
         if (!env(key: 'JUPITER_TEST', default: true))
             Storage::disk('jupiter_ftp')->put( env('TO_JUPITER_FOLDER') . '/ORDER_'.$order->id.'.xml', $document);
     } //makeXml

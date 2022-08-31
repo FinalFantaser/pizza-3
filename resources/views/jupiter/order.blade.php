@@ -6,7 +6,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
     <client_id></client_id>
     <client_full_name>{{$order->customerData->name}}</client_full_name>
       <client_address>
-        <city>{{$order->customerData->city->name}}</city>
+        <city>{{$order->customerData?->actual_city ?? ''}}</city>
         <street>{{$order->customerData->street}}</street>
         <house>{{$order->customerData?->house ?? ''}}</house>
         <room>{{$order->customerData?->room ?? ''}}</room>

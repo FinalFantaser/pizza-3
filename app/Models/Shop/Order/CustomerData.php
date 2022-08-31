@@ -19,6 +19,7 @@ class CustomerData extends Model
         'name',
         'phone',
         'city_id',
+        'actual_city',
         'street',
         'house',
         'room',

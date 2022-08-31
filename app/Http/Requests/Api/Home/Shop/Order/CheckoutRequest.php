@@ -49,6 +49,7 @@ class CheckoutRequest extends FormRequest
             'customer_data.name' => 'required|string|max:255',
             'customer_data.phone' => ['required', 'regex:^((\+7|7|8)+([0-9]){10})$^'],
             'customer_data.city_id' => ['required', 'exists:cities,id', new CompliesWithDeliveryZone], //TODO Проверить, чтобы город соотносился с зоной доставки
+            'customer_data.actual_city' => 'nullable|string|max:255',
             'customer_data.street' => 'nullable|string|max:255',
             'customer_data.house' => 'nullable|string|max:255',
             'customer_data.room' => 'nullable|int|gte:0',
