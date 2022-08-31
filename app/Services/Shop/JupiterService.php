@@ -110,9 +110,8 @@ class JupiterService{
         //Генерация XML-файла
         $document = View::make('jupiter.order', ['order' => $order, 'jupiterItems' => $jupiterItems]);
 
-        if (env(key: 'JUPITER_TEST', default: true))
-            Storage::disk('public')->put('JUPITER_TEST/ORDER_'.$order->id.'.xml', $document);
-        else
+        Storage::disk('public')->put('JUPITER_TEST/ORDER_'.$order->id.'.xml', $document);
+        if (!env(key: 'JUPITER_TEST', default: true))
             Storage::disk('jupiter_ftp')->put( env('TO_JUPITER_FOLDER') . '/ORDER_'.$order->id.'.xml', $document);
     } //makeXml
 
