@@ -3,6 +3,7 @@
 namespace App\Rules\Order;
 
 use App\Models\Shop\Product;
+use Exception;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -98,7 +99,11 @@ class OrderItemsValidation implements Rule
 
     private function productsExist(array $data): bool{ //Проверка существования продуктов
         $ids = Arr::pluck($data, 'product_id');
-        return
-            Product::whereIn('id', $ids)->count() === count($ids);
+
+        foreach($ids as $id)
+            if(! Product::where('id', $id)->exists() )
+                return false;
+
+        return true;
     } //productsExist
 }

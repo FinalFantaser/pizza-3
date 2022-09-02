@@ -5,7 +5,8 @@
     use App\Models\Shop\Category;
     use App\Models\Shop\City;
     use Illuminate\Database\Eloquent\ModelNotFoundException;
-    use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
     class ProductReadRepository{
         public function getMethods()
@@ -24,9 +25,12 @@
         public function findById(int|array $id, string|array $with = null)
         {
             $product = Product::when(function($query) use ($id){
-                    return is_int($id)
-                        ? $query->where('id', $id)
-                        : $query->whereIn('id', $id);
+                    if(is_int($id)){
+                        $query->where('id', $id);
+                    }
+                    else{
+                        $query->whereIn('id', $id);
+                    }
                 })
                 ->when(function($query) use ($with){
                     return is_null($with)
@@ -36,11 +40,17 @@
                 ->get();
 
             //Проверка, найдены ли модели
-            if($product->isEmpty()
-                    || (is_array($id) && $product->count() !== count($id))
-              )
+            if( $product->isEmpty() )
                 throw new ModelNotFoundException;
 
+            //Проверка, что найдены все модели
+            if( is_array($id) ){
+                foreach($product->pluck('id') as $needle){
+                    if( !in_array(needle: $needle, haystack: $id) )
+                        throw new ModelNotFoundException;
+                }
+            }
+            
             return is_int($id) ? $product->first() : $product;
         } //findById
 
@@ -54,17 +64,6 @@
 
         public function findRecommended(?int $cityId)
         {
-            // $products = Product::join('product_city', 'product_city.product_id', '=', 'products.id')
-            //     ->join('products_recommended', 'products_recommended.product_id', '=', 'products.id')
-            //     ->when(function($query) use ($cityId){
-            //         return is_null($cityId) ? $query : $query->where('product_city.city_id', $cityId);
-            //     })
-            //     ->get();
-
-            // $products->each(function($item, $key){
-            //     $item->id = $item->product_id;
-            // });
-
             $products = Product::with(['optionRecords'])
                 ->rightJoin('products_recommended', 'products_recommended.product_id', '=', 'products.id')
                 // ->when(function($query) use ($cityId){
