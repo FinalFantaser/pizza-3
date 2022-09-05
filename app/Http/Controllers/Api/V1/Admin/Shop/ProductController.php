@@ -34,7 +34,8 @@ class ProductController extends Controller
     public function show($product){
         $product = $this->service->findById(
             id: $product,
-            with: ['cities:id,name', 'categories:id,name', 'optionRecords']
+            // with: ['cities:id,name', 'categories:id,name', 'optionRecords']
+            with: ['cities', 'categories:id,name', 'optionRecords']
         );
 
         return new ProductResource($product);

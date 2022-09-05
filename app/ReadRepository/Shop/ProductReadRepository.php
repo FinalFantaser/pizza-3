@@ -26,10 +26,10 @@ use Illuminate\Support\Facades\DB;
         {
             $product = Product::when(function($query) use ($id){
                     if(is_int($id)){
-                        $query->where('id', $id);
+                        return $query->where('id', $id);
                     }
                     else{
-                        $query->whereIn('id', $id);
+                        return $query->whereIn('id', $id);
                     }
                 })
                 ->when(function($query) use ($with){
