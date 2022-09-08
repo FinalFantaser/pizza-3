@@ -3,6 +3,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 ?>
 <service action="orders" id="{{$order->id}}" source="1">
   <order>
+    <concept>9</concept>
     <client_id></client_id>
     <client_full_name>{{$order->customerData->name}}</client_full_name>
       <client_address>
