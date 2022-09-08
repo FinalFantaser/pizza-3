@@ -27,7 +27,7 @@ class ProductController extends Controller
     //  REST API-методы
     //
     public function index(){
-        $products = $this->service->getMethods()->with(['cities:id,name', 'categories:id,name', 'optionRecords'])->get();
+        $products = $this->service->getMethods()->with(['cities:id,name', 'categories:id,name', 'optionRecords'])->paginate(50);
         return ProductResource::collection($products);
     } //index
 
