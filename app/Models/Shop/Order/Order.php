@@ -33,8 +33,13 @@ class Order extends Model
         'note',
         'current_status',
         'paid',
+        'viewed',
         'cancel_reason',
         'token',
+    ];
+
+    protected $casts = [
+        'viewed' => 'boolean',
     ];
 
     //Статусы заказа
@@ -223,6 +228,11 @@ class Order extends Model
     public function isPickup(): bool
     {
         return $this->delivery_method === DeliveryMethod::TYPE_PICKUP;
+    }
+
+    public function isViewed(): bool
+    {
+        return $this->viewed;
     }
 
     private function addStatus($value): void

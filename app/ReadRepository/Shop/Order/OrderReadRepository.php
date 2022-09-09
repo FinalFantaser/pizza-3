@@ -58,4 +58,9 @@ class OrderReadRepository
 
         return $order;
     } //findByToken
+
+    public function findUnviewed()
+    {
+        return Order::where('viewed', false)->orderByDesc('created_at')->paginate(50);
+    } //findUnviewed
 }

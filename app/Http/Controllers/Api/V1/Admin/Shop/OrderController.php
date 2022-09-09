@@ -27,14 +27,22 @@ class OrderController extends Controller
     public function index(){
         return OrderResource::collection(
             $this->orderService->getMethods()
-                ->with(['customerData:id,name,phone'])
+                ->with(['customerData:id,name,phone,actual_city,city_id', 'customerData.city:id,name'])
                 ->paginate(20)
         );
     } //index
 
     public function show(Order $order){
+        $this->orderService->makeViewed($order);
         return new OrderResource($order->load(['customerData', 'customerData.city', 'pickupPoint', 'items', 'payment', 'deliveryZone']));
     } //show
+
+    public function findUnviewed()
+    {
+        return OrderResource::collection(
+            $this->orderService->findUnviewed()
+        );
+    } //findUnviewed
 
     public function destroy(Order $order){
         $this->orderService->remove($order);
@@ -46,6 +54,7 @@ class OrderController extends Controller
     //    
     public function cancel(CancelRequest $request, Order $order)
     {
+        $this->orderService->makeViewed($order);
         $this->orderService->cancelByAdmin($request, $order);
         return response()->json(['message' => 'Заказ отменён']);
     } //cancel
@@ -53,6 +62,7 @@ class OrderController extends Controller
     public function pay(PayRequest $request)
     {
         $order = $this->orderService->findById($request->order_id);
+        $this->orderService->makeViewed($order);
         $method = $this->paymentService->findByCode($request->code);
 
         if($request->payer === Record::PAYER_ADMIN)
@@ -62,19 +72,27 @@ class OrderController extends Controller
         else
             throw new DomainException(message: 'Плательщик отсутствует в базе');
 
-        return response()->json(['message' => 'Заказ оплачен']);
+        return response('Заказ оплачен');
     } //pay
 
     public function send(Order $order)
     {
+        $this->orderService->makeViewed($order);
         $this->orderService->makeSent($order);
-        return response()->json(['message' => 'Заказ отправлен']);
+        return response('Заказ отправлен');
     } //sent
 
     public function complete(Order $order)
     {
+        $this->orderService->makeViewed($order);
         $this->orderService->makeCompleted($order);
         OrderComplete::dispatch($order);
-        return response()->json(['message' => 'Заказ выполнен']);
+        return response('Заказ выполнен');
     } //complete
+
+    public function makeViewed(Order $order)
+    {
+        $this->orderService->makeViewed($order);
+        return response('Заказ помечен как просмотренный');
+    }
 }

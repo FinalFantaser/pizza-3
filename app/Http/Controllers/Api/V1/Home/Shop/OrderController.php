@@ -39,6 +39,8 @@ class OrderController extends Controller
                 ]
         );
 
+        $this->orderService->makeViewed($order);
+
         return new OrderResource($order);
     } //show
 }

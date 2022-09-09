@@ -23,6 +23,7 @@ class OrderRepository
             'token' => Order::generateToken(),
             'current_status' => Order::STATUS_NEW,
             'paid' => 0,
+            'viewed' => false,
             'time' => $time,
         ]);
 
@@ -74,4 +75,9 @@ class OrderRepository
     {
         $order->cancelByCustomer($reason);
     } //cancelByUser
+
+    public function makeViewed(Order $order): void //Пометить заказ как "просмотренный"
+    {
+        $order->update(['viewed' => true]);
+    } //makeViewed
 }

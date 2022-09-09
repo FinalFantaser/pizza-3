@@ -184,8 +184,8 @@ use Exception;
             return $this->productReadRepository->findByCityAndCategory($city, $category, $with, $status);
         } //findByCityAndCategory
 
-        public function findPopular(int $limit = 8){ //Посчитать наиболее часто заказываемые продукты по статистике заказов
-            return $this->orderItemReadRepository->popular(limit: $limit)->pluck('product');
+        public function findPopular(){ //Посчитать наиболее часто заказываемые продукты по статистике заказов
+            return $this->orderItemReadRepository->popular()->pluck('product');
         } //findPopular
         
         public function findRecommended(?int $cityId){ //Показать продукты из таблицы "Часто заказывают"

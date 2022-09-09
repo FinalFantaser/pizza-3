@@ -13,14 +13,13 @@ class OrderItemReadRepository{
         return OrderItem::orderByDesc('created_at');
     } //getMethods
 
-    public function popular(int $limit = 8) //Найти наиболее часто заказываемые продукты
+    public function popular() //Найти наиболее часто заказываемые продукты
     {
         return 
             OrderItem::groupBy('product_id')
                 ->select('product_id', DB::raw('count(*) as total'))
                 ->orderByDesc('total')
-                ->limit($limit)
                 ->with(['product', 'product.optionRecords'])
-                ->get();
+                ->paginate(50);
     } //popular
 };

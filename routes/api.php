@@ -105,6 +105,8 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::post('orders.pay', 'OrderController@pay')->name('order.pay');
                     Route::post('orders.send/{order}', 'OrderController@send')->name('order.send');
                     Route::post('orders.complete/{order}', 'OrderController@complete')->name('order.complete');
+                    Route::post('orders.view/{order}', 'OrderController@makeViewed')->name('order.view');
+                    Route::get('orders.unviewed', 'OrderController@findUnviewed')->name('order.unviewed');
 
                     //Оплата
                     Route::prefix('payment')->namespace('Payment')->name('payment.')->group(function(){

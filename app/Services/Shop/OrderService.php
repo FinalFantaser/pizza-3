@@ -23,6 +23,7 @@ use App\Repository\Shop\Payment\PaymentMethodRepository;
 use App\Repository\Shop\Payment\RecordRepository;
 use DomainException;
 use Exception;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -211,6 +212,11 @@ class OrderService{
        $this->orderRepository->cancelByCustomer($order, $request->reason);
     } //cancelByAdmin
 
+    public function makeViewed(Order $order): void
+    {
+        $this->orderRepository->makeViewed($order);
+    } //makeViewed
+
     //
     //Методы для запросов В БД
     //
@@ -232,4 +238,9 @@ class OrderService{
             token: $token,
             with: $with);
     } //findByToken
+
+    public function findUnviewed()
+    {
+        return $this->orderReadRepository->findUnviewed();
+    } //findUnviewed
 }
