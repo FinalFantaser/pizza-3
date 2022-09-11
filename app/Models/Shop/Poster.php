@@ -30,9 +30,13 @@ class Poster extends Model implements HasMedia
             ->width(450)
             ->keepOriginalImageFormat();
 
-        $this->addMediaConversion('size_original')
+        $this->addMediaConversion('jpg')
             ->optimize()
-            ->keepOriginalImageFormat();
+            ->format('jpg');
+
+        $this->addMediaConversion('jpg450')
+            ->width(450)
+            ->format('jpg');
 
         $this->addMediaConversion('webp')
             ->optimize()

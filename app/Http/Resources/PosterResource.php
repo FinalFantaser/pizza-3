@@ -23,6 +23,8 @@ class PosterResource extends JsonResource
             'cities' => $this->whenLoaded('cities'),
             'imageUrl' => $this->getFirstMediaUrl('posters'),
             'imageUrl450' => $this->getFirstMediaUrl('posters', 'size450'),
+            'imageUrlJpg' => $this->getFirstMediaUrl('posters', 'jpg'),
+            'imageUrlJpg450' => $this->getFirstMediaUrl('posters', 'jpg450'),
             'imageUrlWebp' => $this->getFirstMediaUrl('posters', 'webp'),
             'imageUrlWebp450' => $this->getFirstMediaUrl('posters', 'webp450'),
         ];

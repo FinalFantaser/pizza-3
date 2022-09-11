@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(function () {
     Route::namespace('Api\V1')->group(function(){
-        Route::middleware(['auth:sanctum'])->group(function () {
+        Route::middleware(['auth:sanctum','sanctum.csrf'])->group(function () {
 
 
             //Для администраторов
@@ -67,7 +67,7 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::post('products.draft/{product}', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'draft']);
 
                     Route::get('products.popular', [\App\Http\Controllers\Api\V1\Admin\Shop\ProductController::class,'popular']);
-                    
+
                     Route::get('products.recommended.index', 'ProductController@showRecommended')->name('recommended.index');
                     Route::post('products.recommended.add', 'ProductController@addToRecommended')->name('recommended.add');
                     Route::post('products.recommended.remove', 'ProductController@removeFromRecommeded')->name('recommended.remove');
