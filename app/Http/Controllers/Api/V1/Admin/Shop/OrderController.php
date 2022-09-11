@@ -51,7 +51,7 @@ class OrderController extends Controller
 
     //
     //                  Управление заказами
-    //    
+    //
     public function cancel(CancelRequest $request, Order $order)
     {
         $this->orderService->makeViewed($order);
