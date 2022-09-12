@@ -29,6 +29,22 @@ class Poster extends Model implements HasMedia
         $this->addMediaConversion('size450')
             ->width(450)
             ->keepOriginalImageFormat();
+
+        $this->addMediaConversion('jpg')
+            ->optimize()
+            ->format('jpg');
+
+        $this->addMediaConversion('jpg450')
+            ->width(450)
+            ->format('jpg');
+
+        $this->addMediaConversion('webp')
+            ->optimize()
+            ->format('webp');
+
+        $this->addMediaConversion('webp450')
+            ->width(450)
+            ->format('webp');
     } //registerMediaConversions
 
     public function cities(){
