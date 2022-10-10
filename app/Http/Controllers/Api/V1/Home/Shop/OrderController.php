@@ -10,6 +10,7 @@ use App\Http\Requests\Api\Home\Shop\Order\CheckoutRequest;
 use App\Http\Requests\Api\Home\Shop\Order\ShowRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Shop\Order\Order;
+use App\Models\Shop\Payment\PaymentMethod;
 use App\Models\Shop\Payments\Record;
 use App\Services\Shop\OrderService;
 
@@ -21,7 +22,10 @@ class OrderController extends Controller
 
     public function checkout(CheckoutRequest $request){
         $order = $this->orderService->checkout($request);
-        OrderPlaced::dispatch($order);
+
+        if(! in_array(needle: $request->payment_method_id, haystack: [PaymentMethod::CODE_ONLINE, PaymentMethod::CODE_ONLINE_DELIVERY, PaymentMethod::CODE_ONLINE_PICKUP]))
+            OrderPlaced::dispatch($order);
+
         return response()->json(['message' => 'Заказ оформлен', 'api_token' => $order->token], 201);
     } //checkout
 
