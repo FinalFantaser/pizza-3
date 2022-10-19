@@ -36,7 +36,7 @@ class CompliesWithDelivery implements DataAwareRule, InvokableRule
         if($deliveryMethod === DeliveryMethod::TYPE_PICKUP)
             $check = [PaymentMethod::CODE_CASH_PICKUP, PaymentMethod::CODE_CARD_PICKUP, PaymentMethod::CODE_ONLINE_PICKUP];
         elseif($deliveryMethod === DeliveryMethod::TYPE_COURIER)
-            $check = [PaymentMethod::CODE_CASH_DELIVERY, PaymentMethod::CODE_CARD_DELIVERY, PaymentMethod::CODE_ONLINE_DELIVERY];
+            $check = [PaymentMethod::CODE_CASH_DELIVERY, PaymentMethod::CODE_CARD_DELIVERY, PaymentMethod::CODE_ONLINE_PICKUP];
 
         if( !in_array(needle: $value, haystack: $check) )
             $fail('Метод оплаты не соответствует методу доставки');
