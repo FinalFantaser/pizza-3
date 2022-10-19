@@ -36,7 +36,8 @@ class YookassaWebhookController extends Controller
         $order = $this->orderService->findById($record->order_id);
         // $order->load(['deliveryMethod']);
 
-        $paymentCode = $order->delivery_method === DeliveryMethod::TYPE_COURIER ? PaymentMethod::CODE_ONLINE_DELIVERY : PaymentMethod::CODE_ONLINE_PICKUP;
+        // $paymentCode = $order->delivery_method === DeliveryMethod::TYPE_COURIER ? PaymentMethod::CODE_ONLINE_DELIVERY : PaymentMethod::CODE_ONLINE_PICKUP;
+        $paymentCode = PaymentMethod::CODE_ONLINE_PICKUP;
 
         //Данные попытки платежа обновляются
         $record->update([

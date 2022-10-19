@@ -43,7 +43,7 @@ class PaymentMethod extends Model
     public const TITLE_CASH_DELIVERY = 'Наличные - Доставка';
     public const TITLE_CARD_PICKUP = 'Кредитная карта - Самовывоз';
     public const TITLE_CARD_DELIVERY = 'Кредитная карта - Доставка';
-    public const TITLE_ONLINE_PICKUP = 'Оплата кредитной картой на сайте - Самовывоз';
+    public const TITLE_ONLINE_PICKUP = 'Оплата кредитной картой на сайте';
     public const TITLE_ONLINE_DELIVERY = 'Оплата кредитной картой на сайте - Доставка';
 
     //
