@@ -12,8 +12,8 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
         <house>{{$order->customerData?->house ?? ''}}</house>
         <room>{{$order->customerData?->room ?? ''}}</room>
         <entrance>{{$order->customerData?->entrance ?? ''}}</entrance>
-        <intercom>{{$order->customerData?->entrance ?? ''}}</intercom>
-        <floor>{{$order->customerData?->entrance ?? ''}}</floor>
+        <intercom>{{$order->customerData?->intercom ?? ''}}</intercom>
+        <floor>{{$order->customerData?->floor ?? ''}}</floor>
         <comment>{{$order->note ?? ''}}</comment>
         <map_latitude></map_latitude>{{--Координаты широты (Обязательно, если сайт не определяет зоны доставки)--}}
         <map_longitude></map_longitude>{{--Координаты долготы (Обязательно, если сайт не определяет зоны доставки)--}}
