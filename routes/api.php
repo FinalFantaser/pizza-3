@@ -41,6 +41,14 @@ Route::prefix('v1')->name('api.')->namespace('App\Http\Controllers')->group(func
                     Route::delete('dismiss', 'ManagerController@dismiss')->name('managers.dismiss');
                 });
 
+                //  Настройки
+                Route::prefix('settings')->name('settings.')->group(function(){
+                    Route::get('test', 'SettingsController@test')->name('test');
+                    Route::get('index', 'SettingsController@index')->name('index');
+                    Route::post('update', 'SettingsController@update')->name('update');
+                    Route::get('reset', 'SettingsController@reset')->name('reset');
+                });
+
                 Route::namespace('Shop')->group(function(){
                     //  Постеры
                     Route::apiResource('posters', 'PosterController');

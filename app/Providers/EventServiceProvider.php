@@ -15,6 +15,7 @@ use App\Events\Order\OrderComplete;
 //События, которые будут сгенерированы с помощью event:generate
 use App\Listeners\Jupiter\Order\MakeOrderXml;
 use App\Listeners\Order\MakePaymentRecord;
+use App\Listeners\Order\SendEmailNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
 
         OrderPlaced::class => [
             MakeOrderXml::class,
+            SendEmailNotification::class,
         ],
 
         OrderPaid::class => [
